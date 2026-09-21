@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM Dashboard - Kelola Pelanggan & Pipeline</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    dialog::backdrop {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col md:flex-row">
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+  <!-- Sidebar Navigasi -->
+  <aside class="w-full md:w-64 bg-slate-900 text-slate-300 flex-shrink-0 flex flex-col justify-between shadow-xl">
+    <div>
+      <!-- Brand Logo -->
+      <div class="h-16 flex items-center gap-3 px-6 border-b border-slate-800 bg-slate-950/40">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+          <i data-lucide="layers" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="font-bold text-lg tracking-tight text-white">NEXUS<span class="text-brand-500">CRM</span></span>
+          <span class="block text-[10px] uppercase font-semibold tracking-wider text-slate-400">Enterprise Edition</span>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <div class="px-4 py-6">
+        <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-3">Menu Utama</p>
+        <nav class="space-y-1.5" id="navMenu">
+          <button onclick="switchTab('summary')" id="nav-summary" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all text-white bg-brand-600 shadow-sm shadow-brand-600/40">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+            <span>Dashboard Summary</span>
+          </button>
+          <button onclick="switchTab('customers')" id="nav-customers" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+            <i data-lucide="users" class="w-4 h-4"></i>
+            <span>Data Customers</span>
+            <span id="badgeCustomerCount" class="ml-auto text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">0</span>
+          </button>
+          <button onclick="switchTab('pipeline')" id="nav-pipeline" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+            <i data-lucide="kanban" class="w-4 h-4"></i>
+            <span>Sales Pipeline</span>
+            <span id="badgeDealsCount" class="ml-auto text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">0</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="p-4 border-t border-slate-800/80 bg-slate-950/20">
+      <div class="flex items-center gap-3 p-2 rounded-lg bg-slate-800/50">
+        <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+        <div class="text-xs">
+          <p class="font-medium text-slate-200">Database SQLite</p>
+          <p class="text-[11px] text-slate-400">Status: Terhubung & Aktif</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    
+    <!-- Top Header -->
+    <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between gap-4 sticky top-0 z-20">
+      <div class="flex items-center gap-3">
+        <h1 id="pageTitle" class="text-xl font-bold text-slate-900 tracking-tight">Dashboard Overview</h1>
+        <span class="text-xs px-2.5 py-0.5 rounded-full font-medium bg-indigo-50 text-indigo-700 border border-indigo-100 hidden sm:inline-block">API v1.0</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="loadAllData()" class="flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-lg transition-colors" title="Segarkan Data">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Refresh Data</span>
+        </button>
+
+        <button onclick="openModal()" class="flex items-center gap-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3.5 py-2 rounded-lg shadow-sm shadow-brand-500/20 transition-all">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span>Tambah Pelanggan</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Dynamic Area -->
+    <main class="flex-1 overflow-y-auto p-6 lg:p-8">
+
+      <!-- ================= TAB 1: SUMMARY ================= -->
+      <section id="tab-summary" class="space-y-6">
+        <!-- Metric Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- Card 1: Total Customers -->
+          <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Pelanggan</span>
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <i data-lucide="users" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-4 flex items-baseline gap-2">
+              <span id="statTotalCustomers" class="text-3xl font-extrabold text-slate-900">0</span>
+              <span class="text-xs font-medium text-emerald-600">Pelanggan Aktif</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Terdaftar dalam database CRM</p>
+          </div>
+
+          <!-- Card 2: Total Leads -->
+          <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Prospek (Leads)</span>
+              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                <i data-lucide="user-plus" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-4 flex items-baseline gap-2">
+              <span id="statTotalLeads" class="text-3xl font-extrabold text-slate-900">0</span>
+              <span class="text-xs font-medium text-amber-600">Potensi Baru</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Calon klien dalam tahap prospek</p>
+          </div>
+
+          <!-- Card 3: Total Deals Value -->
+          <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Nilai Deals</span>
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <i data-lucide="banknote" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-4 flex items-baseline gap-1">
+              <span id="statTotalDealsValue" class="text-2xl font-extrabold text-slate-900">Rp 0</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Estimasi nilai seluruh peluang</p>
+          </div>
+
+          <!-- Card 4: Total Deals Count -->
+          <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Peluang Penjualan</span>
+              <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                <i data-lucide="trending-up" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-4 flex items-baseline gap-2">
+              <span id="statTotalDealsCount" class="text-3xl font-extrabold text-slate-900">0</span>
+              <span class="text-xs font-medium text-purple-600">Deals Aktif</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Transaksi di sales pipeline</p>
+          </div>
+        </div>
+
+        <!-- 2 Column Section: Recent Customers & Recent Deals -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Recent Customers Card -->
+          <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <i data-lucide="user-check" class="w-5 h-5 text-brand-600"></i>
+                <h2 class="font-bold text-slate-900">Pelanggan Terbaru</h2>
+              </div>
+              <button onclick="switchTab('customers')" class="text-xs font-medium text-brand-600 hover:text-brand-700 hover:underline">Lihat Semua →</button>
+            </div>
+            <div class="p-5 divide-y divide-slate-100 flex-1" id="recentCustomersList">
+              <div class="text-center py-6 text-slate-400 text-sm">Memuat data...</div>
+            </div>
+          </div>
+
+          <!-- Recent Deals Card -->
+          <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <i data-lucide="briefcase" class="w-5 h-5 text-emerald-600"></i>
+                <h2 class="font-bold text-slate-900">Deals & Transaksi Terbaru</h2>
+              </div>
+              <button onclick="switchTab('pipeline')" class="text-xs font-medium text-brand-600 hover:text-brand-700 hover:underline">Lihat Pipeline →</button>
+            </div>
+            <div class="p-5 divide-y divide-slate-100 flex-1" id="recentDealsList">
+              <div class="text-center py-6 text-slate-400 text-sm">Memuat data...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 2: DATA CUSTOMERS ================= -->
+      <section id="tab-customers" class="hidden space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+          <!-- Table Toolbar -->
+          <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="font-bold text-lg text-slate-900">Daftar Pelanggan</h2>
+              <p class="text-xs text-slate-500">Kelola dan pantau seluruh kontak pelanggan CRM</p>
+            </div>
+            <div class="flex items-center flex-wrap gap-2.5">
+              <!-- Search Bar -->
+              <div class="relative w-full sm:w-64">
+                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" id="customerSearchInput" oninput="filterCustomerTable()" placeholder="Cari nama, email, atau nomor HP..." class="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
+              </div>
+
+              <!-- Filter Status Dropdown -->
+              <div class="relative w-full sm:w-auto">
+                <select id="customerStatusFilter" onchange="filterCustomerTable()" class="w-full sm:w-auto px-3 py-2 text-xs font-medium rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white transition-all text-slate-700 cursor-pointer">
+                  <option value="all">Semua Status</option>
+                  <option value="active">Aktif</option>
+                  <option value="prospect">Prospek</option>
+                  <option value="inactive">Inaktif</option>
+                  <option value="blocked">Blocked</option>
+                </select>
+              </div>
+
+              <!-- Action Buttons -->
+              <button onclick="exportCustomersCSV()" class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-lg shadow-sm hover:shadow transition-all whitespace-nowrap" title="Ekspor Seluruh Data ke CSV">
+                <i data-lucide="download" class="w-4 h-4 text-slate-500"></i>
+                <span>Export CSV</span>
+              </button>
+              <button onclick="openModal()" class="flex items-center gap-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3.5 py-2 rounded-lg shadow-sm shadow-brand-500/20 transition-all whitespace-nowrap">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>Tambah Pelanggan</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Customer Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                  <th class="py-3.5 px-5">ID</th>
+                  <th class="py-3.5 px-5">Pelanggan & Perusahaan</th>
+                  <th class="py-3.5 px-5">Kontak</th>
+                  <th class="py-3.5 px-5">Status</th>
+                  <th class="py-3.5 px-5">Tanggal Dibuat</th>
+                  <th class="py-3.5 px-5 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="customerTableBody" class="divide-y divide-slate-100 text-sm text-slate-700">
+                <tr>
+                  <td colspan="6" class="text-center py-8 text-slate-400">Memuat data pelanggan...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 3: SALES PIPELINE (KANBAN) ================= -->
+      <section id="tab-pipeline" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="font-bold text-lg text-slate-900">Sales Pipeline Kanban</h2>
+            <p class="text-xs text-slate-500">Visualisasi peluang transaksi berdasarkan tahap penjualan</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-500">Total Value Pipeline:</span>
+            <span id="pipelineTotalValue" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">Rp 0</span>
+          </div>
+        </div>
+
+        <!-- Kanban Board Columns Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+          <!-- Column 1: Prospect -->
+          <div class="bg-slate-100/70 rounded-2xl p-4 border border-slate-200/80 flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-blue-500"></span>
+                <span class="font-semibold text-xs uppercase tracking-wider text-slate-700">Prospect</span>
+              </div>
+              <span id="count-prospect" class="text-xs px-2 py-0.5 rounded-full font-mono font-medium bg-white text-slate-700 border border-slate-200">0</span>
+            </div>
+            <div id="col-prospect" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+          </div>
+
+          <!-- Column 2: Negotiation -->
+          <div class="bg-slate-100/70 rounded-2xl p-4 border border-slate-200/80 flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                <span class="font-semibold text-xs uppercase tracking-wider text-slate-700">Negotiation</span>
+              </div>
+              <span id="count-negotiation" class="text-xs px-2 py-0.5 rounded-full font-mono font-medium bg-white text-slate-700 border border-slate-200">0</span>
+            </div>
+            <div id="col-negotiation" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+          </div>
+
+          <!-- Column 3: Won -->
+          <div class="bg-slate-100/70 rounded-2xl p-4 border border-slate-200/80 flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                <span class="font-semibold text-xs uppercase tracking-wider text-slate-700">Won (Closing)</span>
+              </div>
+              <span id="count-won" class="text-xs px-2 py-0.5 rounded-full font-mono font-medium bg-white text-slate-700 border border-slate-200">0</span>
+            </div>
+            <div id="col-won" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+          </div>
+
+          <!-- Column 4: Lost -->
+          <div class="bg-slate-100/70 rounded-2xl p-4 border border-slate-200/80 flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                <span class="font-semibold text-xs uppercase tracking-wider text-slate-700">Lost</span>
+              </div>
+              <span id="count-lost" class="text-xs px-2 py-0.5 rounded-full font-mono font-medium bg-white text-slate-700 border border-slate-200">0</span>
+            </div>
+            <div id="col-lost" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================= MODAL TAMBAH PELANGGAN ================= -->
+  <dialog id="customerModal" class="rounded-2xl shadow-2xl p-0 w-full max-w-md border border-slate-200 bg-white">
+    <div class="p-6">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center">
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 text-base">Tambah Pelanggan Baru</h3>
+        </div>
+        <button onclick="closeModal()" type="button" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="formAddCustomer" onsubmit="handleCustomerSubmit(event)" class="mt-4 space-y-4">
+        <div>
+          <label for="inputName" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Nama Lengkap / PIC <span class="text-rose-500">*</span></label>
+          <input type="text" id="inputName" required placeholder="Contoh: Budi Santoso" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
+        </div>
+
+        <div>
+          <label for="inputCompany" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Perusahaan / Instansi</label>
+          <input type="text" id="inputCompany" placeholder="Contoh: PT Teknologi Bangsa" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="inputEmail" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Email</label>
+            <input type="email" id="inputEmail" placeholder="nama@domain.com" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
+          </div>
+          <div>
+            <label for="inputPhone" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Nomor Telepon / WA</label>
+            <input type="tel" id="inputPhone" placeholder="081234567890" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
+          </div>
+        </div>
+
+        <div>
+          <label for="selectStatus" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Status Pelanggan</label>
+          <select id="selectStatus" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all bg-white">
+            <option value="active" selected>Active (Pelanggan Aktif)</option>
+            <option value="prospect">Prospect (Prospek Terkualifikasi)</option>
+            <option value="lead">Lead (Calon Prospek)</option>
+            <option value="inactive">Inactive (Inaktif)</option>
+            <option value="blocked">Blocked (Diblokir)</option>
+          </select>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
+            Batal
+          </button>
+          <button type="submit" id="btnSubmitCustomer" class="px-4 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm shadow-brand-500/30 transition-all flex items-center gap-1.5">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i>
+            <span>Simpan Pelanggan</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // State Aplikasi
+    const API_BASE = '/api';
+    let appState = {
+      customers: [],
+      leads: [],
+      deals: []
+    };
+
+    // Inisialisasi Lucide Icons
+    function refreshIcons() {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    }
+
+    // Format Rupiah
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        maximumFractionDigits: 0
+      }).format(amount || 0);
+    }
+
+    // Format Tanggal
+    function formatDate(dateString) {
+      if (!dateString) return '-';
+      const d = new Date(dateString);
+      if (isNaN(d.getTime())) return dateString;
+      return d.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    }
+
+    // Badge Status Styling Helper
+    function getStatusBadge(status) {
+      const s = (status || '').toLowerCase();
+      switch (s) {
+        case 'active':
+          return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Aktif
+                  </span>`;
+        case 'prospect':
+          return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>Prospek
+                  </span>`;
+        case 'lead':
+          return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Lead
+                  </span>`;
+        case 'blocked':
+        case 'blokir':
+          return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Blocked
+                  </span>`;
+        case 'inactive':
+        case 'inaktif':
+        default:
+          return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>Inaktif
+                  </span>`;
+      }
+    }
+
+    // Toast Notification System
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      
+      const isSuccess = type === 'success';
+      const bgColor = isSuccess ? 'bg-emerald-600' : 'bg-rose-600';
+      const icon = isSuccess ? 'check-circle' : 'alert-circle';
+
+      toast.className = `${bgColor} text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-xs font-medium pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300 ease-out`;
+      toast.innerHTML = `
+        <i data-lucide="${icon}" class="w-4 h-4 flex-shrink-0"></i>
+        <span>${message}</span>
+      `;
+
+      container.appendChild(toast);
+      refreshIcons();
+
+      // Animasi masuk
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      // Hilangkan otomatis setelah 3.5 detik
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Switch Tab Menu
+    function switchTab(tabId) {
+      const tabs = ['summary', 'customers', 'pipeline'];
+      const pageTitles = {
+        summary: 'Dashboard Overview',
+        customers: 'Manajemen Data Pelanggan',
+        pipeline: 'Sales Pipeline (Kanban)'
+      };
+
+      tabs.forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        const btn = document.getElementById(`nav-${t}`);
+        if (t === tabId) {
+          el.classList.remove('hidden');
+          btn.className = 'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all text-white bg-brand-600 shadow-sm shadow-brand-600/40';
+        } else {
+          el.classList.add('hidden');
+          btn.className = 'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60';
+        }
+      });
+
+      document.getElementById('pageTitle').textContent = pageTitles[tabId] || 'CRM Dashboard';
+      refreshIcons();
+    }
+
+    // Fetch All API Data
+    async function loadAllData() {
+      try {
+        const [resCustomers, resLeads, resDeals] = await Promise.all([
+          fetch(`${API_BASE}/customers`).then(r => r.json()),
+          fetch(`${API_BASE}/leads`).then(r => r.json()),
+          fetch(`${API_BASE}/deals`).then(r => r.json())
+        ]);
+
+        appState.customers = resCustomers.success ? resCustomers.data : [];
+        appState.leads = resLeads.success ? resLeads.data : [];
+        appState.deals = resDeals.success ? resDeals.data : [];
+
+        // Render UI
+        renderStats();
+        renderRecentActivity();
+        filterCustomerTable();
+        renderPipeline(appState.deals);
+
+        // Update badges
+        document.getElementById('badgeCustomerCount').textContent = appState.customers.length;
+        document.getElementById('badgeDealsCount').textContent = appState.deals.length;
+
+        refreshIcons();
+      } catch (err) {
+        console.error('Gagal mengambil data dari API:', err);
+        showToast('Gagal memuat data dari server. Pastikan backend aktif.', 'error');
+      }
+    }
+
+    // Render Stats
+    function renderStats() {
+      document.getElementById('statTotalCustomers').textContent = appState.customers.length;
+      document.getElementById('statTotalLeads').textContent = appState.leads.length;
+      
+      const totalDealsVal = appState.deals.reduce((sum, d) => sum + (Number(d.value) || 0), 0);
+      document.getElementById('statTotalDealsValue').textContent = formatCurrency(totalDealsVal);
+      document.getElementById('statTotalDealsCount').textContent = appState.deals.length;
+      document.getElementById('pipelineTotalValue').textContent = formatCurrency(totalDealsVal);
+    }
+
+    // Render Recent Lists on Summary Tab
+    function renderRecentActivity() {
+      // Recent Customers (max 5)
+      const recentCustEl = document.getElementById('recentCustomersList');
+      if (appState.customers.length === 0) {
+        recentCustEl.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs">Belum ada pelanggan terdaftar.</div>`;
+      } else {
+        recentCustEl.innerHTML = appState.customers.slice(0, 5).map(c => `
+          <div class="py-3 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-600">
+                ${(c.name || 'C').substring(0, 2).toUpperCase()}
+              </div>
+              <div>
+                <p class="font-semibold text-slate-800 text-xs sm:text-sm leading-tight">${c.name}</p>
+                <p class="text-[11px] text-slate-400">${c.company || 'Perorangan'} • ${c.email || '-'}</p>
+              </div>
+            </div>
+            <div>
+              ${getStatusBadge(c.status)}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Recent Deals (max 5)
+      const recentDealsEl = document.getElementById('recentDealsList');
+      if (appState.deals.length === 0) {
+        recentDealsEl.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs">Belum ada deal transaksi.</div>`;
+      } else {
+        recentDealsEl.innerHTML = appState.deals.slice(0, 5).map(d => `
+          <div class="py-3 flex items-center justify-between gap-3">
+            <div>
+              <p class="font-semibold text-slate-800 text-xs sm:text-sm leading-tight">${d.title}</p>
+              <p class="text-[11px] text-slate-400">${d.customer_name || 'Pelanggan'} • Tahap: <span class="capitalize font-medium text-slate-600">${d.stage}</span></p>
+            </div>
+            <div class="text-right">
+              <p class="font-bold text-emerald-600 text-xs sm:text-sm">${formatCurrency(d.value)}</p>
+              <p class="text-[10px] text-slate-400">${d.expected_close_date ? formatDate(d.expected_close_date) : '-'}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Render Customers Table
+    function renderCustomerTable(customers) {
+      const tbody = document.getElementById('customerTableBody');
+      if (!customers || customers.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center py-8 text-slate-400 text-xs">
+              Tidak ada data pelanggan yang cocok.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = customers.map(c => `
+        <tr class="hover:bg-slate-50/80 transition-colors">
+          <td class="py-3.5 px-5 font-mono text-xs text-slate-500">#${c.id}</td>
+          <td class="py-3.5 px-5">
+            <div class="font-semibold text-slate-900">${c.name}</div>
+            <div class="text-xs text-slate-400">${c.company || 'Perorangan'}</div>
+          </td>
+          <td class="py-3.5 px-5 text-xs text-slate-600">
+            <div>${c.email || '-'}</div>
+            <div class="text-slate-400 font-mono text-[11px]">${c.phone || '-'}</div>
+          </td>
+          <td class="py-3.5 px-5">
+            ${getStatusBadge(c.status)}
+          </td>
+          <td class="py-3.5 px-5 text-xs text-slate-500">
+            ${formatDate(c.created_at)}
+          </td>
+          <td class="py-3.5 px-5 text-right whitespace-nowrap">
+            <div class="inline-flex items-center gap-1.5">
+              <button onclick="openWhatsApp('${c.phone || ''}', '${c.name.replace(/'/g, "\\'")}')" class="text-xs text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2.5 py-1.5 rounded-md font-medium transition-colors inline-flex items-center gap-1 shadow-sm" title="Kirim Pesan WhatsApp">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+                <span>WhatsApp</span>
+              </button>
+              <button onclick="deleteCustomer(${c.id}, '${c.name.replace(/'/g, "\\'")}')" class="text-xs text-rose-600 hover:text-rose-800 hover:bg-rose-50 px-2.5 py-1.5 rounded-md font-medium transition-colors inline-flex items-center gap-1" title="Hapus Pelanggan">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                <span>Hapus</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      refreshIcons();
+    }
+
+    // Helper pencocokan status pelanggan
+    function matchesStatus(customerStatus, filterValue) {
+      if (!filterValue || filterValue === 'all') return true;
+      const s = (customerStatus || '').toLowerCase();
+      if (filterValue === 'active') return s === 'active' || s === 'aktif';
+      if (filterValue === 'prospect') return s === 'prospect' || s === 'prospek' || s === 'lead';
+      if (filterValue === 'inactive') return s === 'inactive' || s === 'inaktif' || s === 'nonaktif';
+      if (filterValue === 'blocked') return s === 'blocked' || s === 'blokir';
+      return s === filterValue;
+    }
+
+    // Mendapatkan daftar pelanggan yang tersaring berdasarkan pencarian teks & filter status
+    function getFilteredCustomers() {
+      const searchInput = document.getElementById('customerSearchInput');
+      const statusFilter = document.getElementById('customerStatusFilter');
+      const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+      const selectedStatus = statusFilter ? statusFilter.value : 'all';
+
+      return appState.customers.filter(c => {
+        // 1. Pencarian teks real-time (Nama, Email, Nomor Telepon/HP, atau Perusahaan)
+        const matchesQuery = !query || (
+          (c.name && c.name.toLowerCase().includes(query)) ||
+          (c.email && c.email.toLowerCase().includes(query)) ||
+          (c.phone && c.phone.toLowerCase().includes(query)) ||
+          (c.company && c.company.toLowerCase().includes(query))
+        );
+
+        // 2. Filter status pelanggan ('Semua Status', 'Aktif', 'Prospek', 'Inaktif', 'Blocked')
+        const matchesStat = matchesStatus(c.status, selectedStatus);
+
+        // Keduanya harus terpenuhi (kombinasi filter & search)
+        return matchesQuery && matchesStat;
+      });
+    }
+
+    // Filter Customer Table via Search Input & Status Dropdown secara bersamaan
+    function filterCustomerTable() {
+      const filtered = getFilteredCustomers();
+      renderCustomerTable(filtered);
+    }
+
+    // Format nomor WhatsApp ke format internasional (misal 08xxx -> 628xxx)
+    function formatWhatsAppNumber(phone) {
+      if (!phone) return null;
+      let cleaned = String(phone).replace(/\D/g, ''); // bersihkan simbol +, -, spasi, tanda kurung
+      if (!cleaned) return null;
+
+      if (cleaned.startsWith('0')) {
+        cleaned = '62' + cleaned.slice(1);
+      } else if (cleaned.startsWith('8')) {
+        cleaned = '62' + cleaned;
+      }
+
+      return cleaned;
+    }
+
+    // Buka obrolan WhatsApp Web / App langsung
+    function openWhatsApp(phone, customerName) {
+      const formattedNumber = formatWhatsAppNumber(phone);
+      if (!formattedNumber) {
+        showToast(`Nomor telepon tidak tersedia atau tidak valid untuk "${customerName}".`, 'error');
+        return;
+      }
+
+      const defaultMessage = `Halo ${customerName}, perkenalkan saya dari tim Nexus CRM. Ada yang bisa kami bantu terkait kebutuhan Anda?`;
+      const waUrl = `https://wa.me/${formattedNumber}?text=${encodeURIComponent(defaultMessage)}`;
+      
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+      showToast(`Membuka WhatsApp untuk "${customerName}"...`, 'success');
+    }
+
+    // Export Data Customers ke format CSV (Excel-ready dengan UTF-8 BOM)
+    function exportCustomersCSV() {
+      const customers = getFilteredCustomers();
+      if (!customers || customers.length === 0) {
+        showToast('Tidak ada data pelanggan yang sesuai untuk diekspor.', 'error');
+        return;
+      }
+
+      // Format kolom sesuai permintaan: Nama, Email, No. Telepon, Channel, Status, Alamat
+      const headers = ['Nama', 'Email', 'No. Telepon', 'Channel', 'Status', 'Alamat'];
+      
+      const escapeCsvCell = (val) => {
+        if (val === null || val === undefined) return '""';
+        const str = String(val).replace(/"/g, '""');
+        return `"${str}"`;
+      };
+
+      const rows = customers.map(c => [
+        escapeCsvCell(c.name),
+        escapeCsvCell(c.email || '-'),
+        escapeCsvCell(c.phone || '-'),
+        escapeCsvCell(c.company || 'Website'),
+        escapeCsvCell(c.status || 'lead'),
+        escapeCsvCell(c.address || '-')
+      ].join(','));
+
+      // Sisipkan UTF-8 BOM (\uFEFF) agar Microsoft Excel otomatis membaca format UTF-8 dengan benar
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+
+      const downloadLink = document.createElement('a');
+      const today = new Date().toISOString().slice(0, 10);
+      downloadLink.href = url;
+      downloadLink.download = `data_customers_crm_${today}.csv`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      URL.revokeObjectURL(url);
+
+      showToast(`Berhasil mengekspor ${customers.length} data pelanggan ke file CSV!`, 'success');
+    }
+
+    // Render Kanban Pipeline
+    function renderPipeline(deals) {
+      const stages = ['prospect', 'negotiation', 'won', 'lost'];
+      const columnCounts = { prospect: 0, negotiation: 0, won: 0, lost: 0 };
+
+      // Reset columns
+      stages.forEach(stage => {
+        document.getElementById(`col-${stage}`).innerHTML = '';
+      });
+
+      deals.forEach(deal => {
+        const stage = (deal.stage || 'prospect').toLowerCase();
+        const targetCol = document.getElementById(`col-${stage}`) || document.getElementById('col-prospect');
+        if (columnCounts.hasOwnProperty(stage)) {
+          columnCounts[stage]++;
+        } else {
+          columnCounts.prospect++;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'bg-white p-4 rounded-xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all';
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <h4 class="font-bold text-xs sm:text-sm text-slate-800 leading-snug">${deal.title}</h4>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+            <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
+            <span>${deal.customer_name || 'Pelanggan'}</span>
+            ${deal.customer_company ? `<span class="text-slate-400 font-normal">(${deal.customer_company})</span>` : ''}
+          </p>
+          <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs font-extrabold text-emerald-600">${formatCurrency(deal.value)}</span>
+            <span class="text-[10px] text-slate-400 flex items-center gap-1">
+              <i data-lucide="calendar" class="w-3 h-3"></i>
+              <span>${deal.expected_close_date ? formatDate(deal.expected_close_date) : '-'}</span>
+            </span>
+          </div>
+        `;
+        targetCol.appendChild(card);
+      });
+
+      // Update counters
+      stages.forEach(stage => {
+        document.getElementById(`count-${stage}`).textContent = columnCounts[stage];
+        const col = document.getElementById(`col-${stage}`);
+        if (columnCounts[stage] === 0) {
+          col.innerHTML = `
+            <div class="h-28 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl text-slate-400 text-xs">
+              <span>Kosong</span>
+            </div>
+          `;
+        }
+      });
+
+      refreshIcons();
+    }
+
+    // Modal Handlers
+    const modal = document.getElementById('customerModal');
+
+    function openModal() {
+      document.getElementById('formAddCustomer').reset();
+      modal.showModal();
+      refreshIcons();
+    }
+
+    function closeModal() {
+      modal.close();
+    }
+
+    // Close modal on click outside
+    modal.addEventListener('click', (e) => {
+      const rect = modal.getBoundingClientRect();
+      const isInDialog = (
+        rect.top <= e.clientY &&
+        e.clientY <= rect.top + rect.height &&
+        rect.left <= e.clientX &&
+        e.clientX <= rect.left + rect.width
+      );
+      if (!isInDialog) {
+        closeModal();
+      }
+    });
+
+    // Handle Form Submit (POST /api/customers)
+    async function handleCustomerSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmitCustomer');
+      const originalText = btn.innerHTML;
+
+      const payload = {
+        name: document.getElementById('inputName').value.trim(),
+        company: document.getElementById('inputCompany').value.trim() || null,
+        email: document.getElementById('inputEmail').value.trim() || null,
+        phone: document.getElementById('inputPhone').value.trim() || null,
+        status: document.getElementById('selectStatus').value
+      };
+
+      try {
+        btn.disabled = true;
+        btn.innerHTML = `<span>Menyimpan...</span>`;
+
+        const res = await fetch(`${API_BASE}/customers`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast('Pelanggan baru berhasil ditambahkan!', 'success');
+          closeModal();
+          await loadAllData();
+        } else {
+          showToast(data.message || 'Gagal menambahkan pelanggan.', 'error');
+        }
+      } catch (err) {
+        console.error('Error create customer:', err);
+        showToast('Terjadi kesalahan koneksi saat menyimpan pelanggan.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        refreshIcons();
+      }
+    }
+
+    // Handle Delete Customer (DELETE /api/customers/:id)
+    async function deleteCustomer(id, name) {
+      if (!confirm(`Apakah Anda yakin ingin menghapus pelanggan "${name}"?`)) {
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/customers/${id}`, {
+          method: 'DELETE'
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast(`Pelanggan "${name}" berhasil dihapus.`, 'success');
+          await loadAllData();
+        } else {
+          showToast(data.message || 'Gagal menghapus data pelanggan.', 'error');
+        }
+      } catch (err) {
+        console.error('Error delete customer:', err);
+        showToast('Terjadi kesalahan koneksi saat menghapus data.', 'error');
+      }
+    }
+
+    // Booting saat DOM siap
+    document.addEventListener('DOMContentLoaded', () => {
+      refreshIcons();
+      loadAllData();
+    });
+  </script>
+</body>
+</html>
