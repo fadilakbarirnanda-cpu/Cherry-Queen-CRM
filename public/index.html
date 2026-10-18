@@ -4,1499 +4,253 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cherry Queen CRM - Official Business Dashboard</title>
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="logo baru cherry queen.png">
-  <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Chart.js CDN for Analytics Dashboard -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#fff1f2',
-              100: '#ffe4e6',
-              200: '#fecdd3',
-              300: '#fda4af',
-              400: '#fb7185',
-              500: '#f43f5e',
-              600: '#e11d48',
-              700: '#be123c',
-              800: '#9f1239',
-              900: '#881337',
-              950: '#4c0519',
-            }
-          }
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'] },
+          colors: { brand: { 50: '#fff1f2', 100: '#ffe4e6', 500: '#f43f5e', 600: '#e11d48', 700: '#be123c' } }
         }
       }
     }
   </script>
   <style>
     body { font-family: 'Plus Jakarta Sans', Inter, sans-serif; }
-    /* Modern SaaS Scrollbar */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: #f8fafc; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    dialog::backdrop {
-      background: rgba(15, 23, 42, 0.55);
-      backdrop-filter: blur(4px);
-    }
+    dialog::backdrop { background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(4px); }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col md:flex-row selection:bg-rose-100 selection:text-rose-900">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col md:flex-row">
 
-  <!-- Toast Notification Container -->
   <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none"></div>
 
-  <!-- ================= SIDEBAR NAVIGASI ================= -->
-  <aside class="w-full md:w-64 bg-[#090D16] text-slate-300 flex-shrink-0 flex flex-col justify-between border-r border-slate-800/80">
+  <!-- SIDEBAR -->
+  <aside class="w-full md:w-64 bg-[#090D16] text-slate-300 flex-shrink-0 flex flex-col justify-between border-r border-slate-800">
     <div>
-      <!-- Brand Logo Cherry Queen -->
-      <div class="h-16 flex items-center gap-3 px-5 border-b border-slate-800/80 bg-[#090D16]">
-        <img src="logo baru cherry queen.png" alt="Cherry Queen Logo" class="w-9 h-9 rounded-xl object-cover ring-1 ring-white/15 shadow-sm">
+      <div class="h-16 flex items-center gap-3 px-5 border-b border-slate-800 bg-[#090D16]">
+        <img src="logo baru cherry queen.png" alt="Logo" class="w-9 h-9 rounded-xl object-cover">
         <div>
-          <div class="flex items-center gap-1.5">
-            <span class="font-bold text-sm tracking-tight text-white block">CHERRY QUEEN</span>
-            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30 font-mono leading-none">CRM</span>
-          </div>
+          <span class="font-bold text-sm text-white block">CHERRY QUEEN</span>
           <span class="block text-[10px] font-medium text-slate-400">Enterprise Dashboard</span>
         </div>
       </div>
-
-      <!-- Navigation Menu -->
       <div class="px-3.5 py-5">
-        <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2.5">Menu Utama</p>
-        <nav class="space-y-1" id="navMenu">
-          <button onclick="switchTab('summary')" id="nav-summary" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all text-white bg-brand-600 shadow-sm shadow-brand-900/40">
-            <i data-lucide="layout-dashboard" class="w-4 h-4 text-white"></i>
-            <span>Dashboard Summary</span>
+        <nav class="space-y-1">
+          <button onclick="switchTab('summary')" id="nav-summary" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-white bg-brand-600">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i><span>Dashboard Summary</span>
           </button>
-
-          <button onclick="switchTab('customers')" id="nav-customers" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
-            <i data-lucide="users" class="w-4 h-4"></i>
-            <span>Data Customers</span>
-            <span id="badgeCustomerCount" class="ml-auto text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60">0</span>
+          <button onclick="switchTab('customers')" id="nav-customers" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="users" class="w-4 h-4"></i><span>Data Customers</span>
           </button>
-
-          <button onclick="switchTab('pipeline')" id="nav-pipeline" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
-            <i data-lucide="kanban" class="w-4 h-4"></i>
-            <span>Sales Pipeline</span>
-            <span id="badgeDealsCount" class="ml-auto text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60">0</span>
+          <button onclick="switchTab('pipeline')" id="nav-pipeline" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="kanban" class="w-4 h-4"></i><span>Sales Pipeline</span>
           </button>
-
-          <button onclick="switchTab('agents')" id="nav-agents" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
-            <i data-lucide="headset" class="w-4 h-4"></i>
-            <span>Manajemen Agen</span>
-            <span id="badgeAgentsCount" class="ml-auto text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60">0</span>
+          <button onclick="switchTab('agents')" id="nav-agents" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="headset" class="w-4 h-4"></i><span>Manajemen Agen</span>
           </button>
         </nav>
-
-        <!-- WhatsApp Suite -->
-        <div class="pt-3 mt-3 border-t border-slate-800/80">
-          <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">WhatsApp Suite</p>
-          <button onclick="openWaTemplateModal()" id="btnSidebarWaTemplates" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
-            <i data-lucide="message-square" class="w-4 h-4 text-emerald-400"></i>
-            <span>Template WhatsApp</span>
-            <span id="badgeWaTemplateCount" class="ml-auto text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/60">0</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sidebar Footer: Status Engine -->
-    <div class="p-3.5 border-t border-slate-800/80 bg-[#070a12]">
-      <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
-        <div class="flex items-center gap-2">
-          <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-          <span class="text-xs font-medium text-slate-300">SQLite Engine</span>
-        </div>
-        <span class="text-[10px] font-mono text-emerald-400 font-semibold">ONLINE</span>
       </div>
     </div>
   </aside>
 
-  <!-- ================= MAIN CONTENT WRAPPER ================= -->
+  <!-- MAIN CONTENT -->
   <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-    
-    <!-- Top Header -->
-    <header class="h-16 bg-white border-b border-slate-200/80 px-6 flex items-center justify-between gap-4 sticky top-0 z-20">
-      <div class="flex items-center gap-3">
-        <img src="logo baru cherry queen.png" alt="Cherry Queen Logo" class="w-8 h-8 rounded-lg object-cover ring-1 ring-slate-200/80">
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 id="pageTitle" class="text-sm sm:text-base font-bold text-slate-900 tracking-tight leading-none">Dashboard Overview</h1>
-            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200/60 hidden sm:inline-flex">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              Live CRM
-            </span>
-          </div>
-          <p class="text-[11px] text-slate-400 font-medium hidden sm:block mt-0.5">Official Business Dashboard</p>
-        </div>
-      </div>
-
+    <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between sticky top-0 z-20">
+      <h1 id="pageTitle" class="text-base font-bold text-slate-900">Dashboard Overview</h1>
       <div class="flex items-center gap-2.5">
-        <!-- Button Refresh Data -->
-        <button onclick="loadAllData()" class="flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 border border-slate-200/60 px-2.5 py-1.5 rounded-lg transition-colors" title="Segarkan Data">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-          <span class="hidden sm:inline">Refresh</span>
+        <button onclick="openImportModal()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs">
+          <i data-lucide="upload" class="w-3.5 h-3.5"></i><span>Import Data</span>
         </button>
-
-        <!-- Button Template WA -->
-        <button onclick="openWaTemplateModal()" class="flex items-center gap-1.5 text-xs font-medium text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 px-2.5 py-1.5 rounded-lg transition-colors" title="Kelola Template Pesan WhatsApp">
-          <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-600"></i>
-          <span class="hidden sm:inline">Template WA</span>
+        <button onclick="openModal()" class="flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3 py-1.5 rounded-lg shadow-sm">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Tambah Pelanggan</span>
         </button>
-
-        <!-- Button Tambah Pelanggan -->
-        <button onclick="openModal()" class="flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3 py-1.5 rounded-lg shadow-sm shadow-brand-900/20 transition-all">
-          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-          <span>Tambah Pelanggan</span>
-        </button>
-
-        <!-- User Profile Pill & Logout -->
-        <div class="flex items-center gap-2 pl-2 border-l border-slate-200/80" id="headerProfileContainer">
-          <div class="flex items-center gap-2 bg-slate-50 border border-slate-200/80 py-1 px-2.5 rounded-lg">
-            <div id="userAvatar" class="w-6 h-6 rounded-md bg-brand-600 text-white font-bold text-[11px] flex items-center justify-center uppercase">
-              QA
-            </div>
-            <div class="hidden sm:block text-left">
-              <p id="userNameDisplay" class="text-xs font-semibold text-slate-900 leading-tight">Queen Admin</p>
-              <div class="flex items-center gap-1">
-                <span id="userRoleBadge" class="text-[9px] uppercase font-bold text-brand-600 tracking-wider">ADMIN</span>
-              </div>
-            </div>
-          </div>
-
-          <button onclick="handleLogout()" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all" title="Logout dari sistem">
-            <i data-lucide="log-out" class="w-4 h-4"></i>
-          </button>
-        </div>
       </div>
     </header>
 
-    <!-- Role Scope Banner -->
-    <div id="salesScopeBanner" class="hidden bg-amber-50/70 border-b border-amber-200/70 px-6 py-2 text-xs font-medium text-amber-900 flex items-center justify-between gap-3">
-      <div class="flex items-center gap-2">
-        <i data-lucide="shield-alert" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
-        <span><strong>Mode Tampilan Sales:</strong> Menampilkan data & pipeline khusus akun Anda (<span id="bannerSalesName">Sales</span>).</span>
-      </div>
-      <span class="text-[10px] bg-white border border-amber-200 text-amber-800 px-2 py-0.5 rounded font-semibold">RBAC Protected</span>
-    </div>
-
-    <!-- Main Dynamic Area -->
-    <main class="flex-1 overflow-y-auto p-6 lg:p-7 bg-slate-50/70">
-
-      <!-- ================= TAB 1: SUMMARY ================= -->
+    <main class="flex-1 overflow-y-auto p-6 bg-slate-50">
+      <!-- SUMMARY TAB -->
       <section id="tab-summary" class="space-y-6">
-        <!-- Metric Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <!-- Card 1: Total Customers -->
-          <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all">
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Total Pelanggan</span>
-              <span class="text-slate-400"><i data-lucide="users" class="w-4 h-4"></i></span>
-            </div>
-            <div class="mt-3 flex items-baseline gap-2">
-              <span id="statTotalCustomers" class="text-2xl font-bold text-slate-900 tracking-tight">0</span>
-              <span class="text-[11px] font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">Aktif</span>
-            </div>
-            <p class="text-[11px] text-slate-400 mt-1.5" id="statCustomerSubtext">Terdaftar dalam database CRM</p>
-          </div>
-
-          <!-- Card 2: Total Leads -->
-          <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all">
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Total Prospek (Leads)</span>
-              <span class="text-slate-400"><i data-lucide="user-plus" class="w-4 h-4"></i></span>
-            </div>
-            <div class="mt-3 flex items-baseline gap-2">
-              <span id="statTotalLeads" class="text-2xl font-bold text-slate-900 tracking-tight">0</span>
-              <span class="text-[11px] font-medium text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-100">Pipeline</span>
-            </div>
-            <p class="text-[11px] text-slate-400 mt-1.5">Calon klien dalam tahap penawaran</p>
-          </div>
-
-          <!-- Card 3: Total Deals Value -->
-          <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all">
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Total Nilai Deals</span>
-              <span class="text-slate-400"><i data-lucide="banknote" class="w-4 h-4"></i></span>
-            </div>
-            <div class="mt-3 flex items-baseline gap-1">
-              <span id="statTotalDealsValue" class="text-2xl font-bold text-slate-900 tracking-tight">Rp 0</span>
-            </div>
-            <p class="text-[11px] text-slate-400 mt-1.5" id="statDealsValueSubtext">Estimasi pipeline transaksi</p>
-          </div>
-
-          <!-- Card 4: Total Deals Count -->
-          <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all">
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Peluang Transaksi</span>
-              <span class="text-slate-400"><i data-lucide="trending-up" class="w-4 h-4"></i></span>
-            </div>
-            <div class="mt-3 flex items-baseline gap-2">
-              <span id="statTotalDealsCount" class="text-2xl font-bold text-slate-900 tracking-tight">0</span>
-              <span class="text-[11px] font-medium text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-100">Aktif</span>
-            </div>
-            <p class="text-[11px] text-slate-400 mt-1.5">Sedang dalam pipeline aktif</p>
-          </div>
-        </div>
-
-        <!-- ================= ANALYTICS CHARTS SECTION ================= -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <!-- Chart A: Distribusi Pipeline Deals per Tahap -->
-          <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs p-5 flex flex-col justify-between hover:border-slate-300 transition-all">
-            <div>
-              <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
-                <div class="flex items-center gap-2.5">
-                  <span class="text-slate-500 p-1.5 bg-slate-100 rounded-lg">
-                    <i data-lucide="pie-chart" class="w-4 h-4"></i>
-                  </span>
-                  <div>
-                    <h3 class="font-bold text-slate-900 text-xs sm:text-sm tracking-tight">Distribusi Nilai Pipeline Deals</h3>
-                    <p class="text-[11px] text-slate-400">Total nominal transaksi per tahapan proses sales</p>
-                  </div>
-                </div>
-                <span id="chartDealsTotalBadge" class="text-xs font-semibold text-slate-700 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200">Rp 0</span>
-              </div>
-
-              <!-- Canvas Container -->
-              <div class="relative h-64 sm:h-72 w-full mt-4 flex items-center justify-center">
-                <canvas id="dealsPipelineChart"></canvas>
-              </div>
-            </div>
-
-            <!-- Stage Breakdown Legend -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4 pt-3 border-t border-slate-100 text-center" id="chartDealsLegend">
-              <div class="p-2 rounded-lg bg-amber-50/60 border border-amber-200/60">
-                <span class="block text-[10px] text-slate-500 font-medium">Prospek</span>
-                <span id="legendValProspect" class="text-xs font-bold text-amber-700">Rp 0</span>
-              </div>
-              <div class="p-2 rounded-lg bg-indigo-50/60 border border-indigo-200/60">
-                <span class="block text-[10px] text-slate-500 font-medium">Negosiasi</span>
-                <span id="legendValNegotiation" class="text-xs font-bold text-indigo-700">Rp 0</span>
-              </div>
-              <div class="p-2 rounded-lg bg-emerald-50/60 border border-emerald-200/60">
-                <span class="block text-[10px] text-slate-500 font-medium">Closing Won</span>
-                <span id="legendValWon" class="text-xs font-bold text-emerald-700">Rp 0</span>
-              </div>
-              <div class="p-2 rounded-lg bg-slate-50 border border-slate-200/80">
-                <span class="block text-[10px] text-slate-500 font-medium">Lost / Batal</span>
-                <span id="legendValLost" class="text-xs font-bold text-slate-600">Rp 0</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Chart B: Tren Pertumbuhan Pelanggan Baru -->
-          <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs p-5 flex flex-col justify-between hover:border-slate-300 transition-all">
-            <div>
-              <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
-                <div class="flex items-center gap-2.5">
-                  <span class="text-slate-500 p-1.5 bg-slate-100 rounded-lg">
-                    <i data-lucide="line-chart" class="w-4 h-4"></i>
-                  </span>
-                  <div>
-                    <h3 class="font-bold text-slate-900 text-xs sm:text-sm tracking-tight">Tren Pertumbuhan Pelanggan</h3>
-                    <p class="text-[11px] text-slate-400">Akumulasi kontak baru terdaftar di CRM</p>
-                  </div>
-                </div>
-                <span id="chartCustomersTotalBadge" class="text-xs font-semibold text-slate-700 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200">0 Kontak</span>
-              </div>
-
-              <!-- Canvas Container -->
-              <div class="relative h-64 sm:h-72 w-full mt-4 flex items-center justify-center">
-                <canvas id="customerGrowthChart"></canvas>
-              </div>
-            </div>
-
-            <!-- Footer Stats -->
-            <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500">
-              <span class="flex items-center gap-1.5 font-medium text-[11px]">
-                <span class="w-2 h-2 rounded-full bg-brand-600 inline-block"></span>
-                <span>Registrasi Kontak Baru</span>
-              </span>
-              <span class="text-slate-400 text-[11px]">Berdasarkan tanggal dibuat</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2 Column Section: Recent Customers & Recent Deals -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <!-- Recent Customers Card -->
-          <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden flex flex-col">
-            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <i data-lucide="user-check" class="w-4 h-4 text-slate-500"></i>
-                <h2 class="font-bold text-xs sm:text-sm text-slate-900 tracking-tight">Pelanggan Terbaru</h2>
-              </div>
-              <button onclick="switchTab('customers')" class="text-xs font-medium text-brand-600 hover:text-brand-700 hover:underline">Lihat Semua →</button>
-            </div>
-            <div class="p-5 divide-y divide-slate-100 flex-1" id="recentCustomersList">
-              <div class="text-center py-6 text-slate-400 text-xs">Memuat data pelanggan...</div>
-            </div>
-          </div>
-
-          <!-- Recent Deals Card -->
-          <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden flex flex-col">
-            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <i data-lucide="briefcase" class="w-4 h-4 text-slate-500"></i>
-                <h2 class="font-bold text-xs sm:text-sm text-slate-900 tracking-tight">Deals & Transaksi Terbaru</h2>
-              </div>
-              <button onclick="switchTab('pipeline')" class="text-xs font-medium text-brand-600 hover:text-brand-700 hover:underline">Lihat Pipeline →</button>
-            </div>
-            <div class="p-5 divide-y divide-slate-100 flex-1" id="recentDealsList">
-              <div class="text-center py-6 text-slate-400 text-xs">Memuat data transaksi...</div>
-            </div>
+          <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
+            <span class="text-[11px] font-semibold text-slate-500 uppercase">Total Pelanggan</span>
+            <div id="statTotalCustomers" class="text-2xl font-bold text-slate-900 mt-2">0</div>
           </div>
         </div>
       </section>
 
-      <!-- ================= TAB 2: DATA CUSTOMERS ================= -->
+      <!-- CUSTOMERS TAB -->
       <section id="tab-customers" class="hidden space-y-6">
-        <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden">
-          <!-- Table Toolbar -->
-          <div class="p-4 sm:p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h2 class="font-bold text-sm sm:text-base text-slate-900 tracking-tight">Daftar Pelanggan Cherry Queen</h2>
-              <p class="text-xs text-slate-400">Kelola dan pantau seluruh kontak pelanggan CRM</p>
-            </div>
-            <div class="flex items-center flex-wrap gap-2">
-              <div class="relative w-full sm:w-64">
-                <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                <input type="text" id="customerSearchInput" oninput="filterCustomerTable()" placeholder="Cari nama, email, nomor HP..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-700 placeholder-slate-400">
-              </div>
-
-              <div class="relative w-full sm:w-auto">
-                <select id="customerStatusFilter" onchange="filterCustomerTable()" class="w-full sm:w-auto px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-white transition-all text-slate-700 cursor-pointer">
-                  <option value="all">Semua Status</option>
-                  <option value="active">Aktif</option>
-                  <option value="prospect">Prospek</option>
-                  <option value="inactive">Inaktif</option>
-                  <option value="blocked">Blocked</option>
-                </select>
-              </div>
-
-              <button onclick="openWaTemplateModal()" class="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap">
-                <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-600"></i>
-                <span>Template WA</span>
-              </button>
-              <button onclick="exportCustomersCSV()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap">
-                <i data-lucide="download" class="w-3.5 h-3.5 text-slate-500"></i>
-                <span>Export CSV</span>
-              </button>
-              <button onclick="openImportModal()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap">
-                <i data-lucide="upload" class="w-3.5 h-3.5 text-slate-500"></i>
-                <span>Import Data</span>
-              </button>
-              <button onclick="openModal()" class="flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3 py-1.5 rounded-lg shadow-sm shadow-brand-900/20 transition-all whitespace-nowrap">
-                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                <span>Tambah Pelanggan</span>
-              </button>
-            </div>
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+          <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+            <h2 class="font-bold text-sm text-slate-900">Daftar Pelanggan</h2>
+            <button onclick="openImportModal()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs">
+              <i data-lucide="upload" class="w-3.5 h-3.5"></i><span>Import Data</span>
+            </button>
           </div>
-
-          <!-- Customer Table -->
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
-                <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase">
                   <th class="py-3 px-4">ID</th>
-                  <th class="py-3 px-4">Pelanggan & Perusahaan</th>
-                  <th class="py-3 px-4">Kontak</th>
-                  <th class="py-3 px-4">Penanggung Jawab</th>
+                  <th class="py-3 px-4">Nama Pelanggan</th>
+                  <th class="py-3 px-4">Email</th>
+                  <th class="py-3 px-4">Telepon</th>
                   <th class="py-3 px-4">Status</th>
-                  <th class="py-3 px-4">Tanggal Dibuat</th>
-                  <th class="py-3 px-4 text-right">Aksi</th>
                 </tr>
               </thead>
               <tbody id="customerTableBody" class="divide-y divide-slate-100 text-xs text-slate-700">
-                <tr>
-                  <td colspan="7" class="text-center py-8 text-slate-400">Memuat data pelanggan...</td>
-                </tr>
+                <tr><td colspan="5" class="text-center py-6 text-slate-400">Belum ada data pelanggan.</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- ================= TAB 3: SALES PIPELINE (KANBAN) ================= -->
-      <section id="tab-pipeline" class="hidden space-y-5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h2 class="font-bold text-sm sm:text-base text-slate-900 tracking-tight">Sales Pipeline (Kanban Board)</h2>
-            <p class="text-xs text-slate-400">Pantau proses closing transaksi dan penugasan staf CS/Sales</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="openWaTemplateModal()" class="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 px-2.5 py-1 rounded-lg transition-colors">
-              <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-600"></i>
-              <span>Template WA</span>
-            </button>
-            <span class="text-xs text-slate-500 font-medium">Total Nilai Pipeline:</span>
-            <span id="pipelineTotalValue" class="text-xs sm:text-sm font-bold text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200 font-mono">Rp 0</span>
-          </div>
-        </div>
-
-        <!-- Kanban Board Columns Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-          <!-- Column 1: Prospect -->
-          <div class="bg-slate-100/70 rounded-xl p-3.5 border border-slate-200/70 flex flex-col">
-            <div class="flex items-center justify-between pb-2.5 border-b border-slate-200/80 mb-3">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                <span class="font-bold text-xs uppercase tracking-wider text-slate-700">Prospect</span>
-              </div>
-              <span id="count-prospect" class="text-xs px-2 py-0.5 rounded-md font-mono font-semibold bg-white text-slate-700 border border-slate-200">0</span>
-            </div>
-            <div id="col-prospect" class="space-y-2.5 flex-1 overflow-y-auto max-h-[620px] pr-1"></div>
-          </div>
-
-          <!-- Column 2: Negotiation -->
-          <div class="bg-slate-100/70 rounded-xl p-3.5 border border-slate-200/70 flex flex-col">
-            <div class="flex items-center justify-between pb-2.5 border-b border-slate-200/80 mb-3">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
-                <span class="font-bold text-xs uppercase tracking-wider text-slate-700">Negotiation</span>
-              </div>
-              <span id="count-negotiation" class="text-xs px-2 py-0.5 rounded-md font-mono font-semibold bg-white text-slate-700 border border-slate-200">0</span>
-            </div>
-            <div id="col-negotiation" class="space-y-2.5 flex-1 overflow-y-auto max-h-[620px] pr-1"></div>
-          </div>
-
-          <!-- Column 3: Won -->
-          <div class="bg-slate-100/70 rounded-xl p-3.5 border border-slate-200/70 flex flex-col">
-            <div class="flex items-center justify-between pb-2.5 border-b border-slate-200/80 mb-3">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                <span class="font-bold text-xs uppercase tracking-wider text-slate-700">Won (Closing)</span>
-              </div>
-              <span id="count-won" class="text-xs px-2 py-0.5 rounded-md font-mono font-semibold bg-white text-slate-700 border border-slate-200">0</span>
-            </div>
-            <div id="col-won" class="space-y-2.5 flex-1 overflow-y-auto max-h-[620px] pr-1"></div>
-          </div>
-
-          <!-- Column 4: Lost -->
-          <div class="bg-slate-100/70 rounded-xl p-3.5 border border-slate-200/70 flex flex-col">
-            <div class="flex items-center justify-between pb-2.5 border-b border-slate-200/80 mb-3">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
-                <span class="font-bold text-xs uppercase tracking-wider text-slate-700">Lost</span>
-              </div>
-              <span id="count-lost" class="text-xs px-2 py-0.5 rounded-md font-mono font-semibold bg-white text-slate-700 border border-slate-200">0</span>
-            </div>
-            <div id="col-lost" class="space-y-2.5 flex-1 overflow-y-auto max-h-[620px] pr-1"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= TAB 4: MANAJEMEN AGEN CS/SALES ================= -->
-      <section id="tab-agents" class="hidden space-y-5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h2 class="font-bold text-sm sm:text-base text-slate-900 tracking-tight">Manajemen Tim CS & Sales</h2>
-            <p class="text-xs text-slate-400">Kelola daftar penanggung jawab, beban penugasan deals, dan hak akses</p>
-          </div>
-          <button id="btnOpenAgentModal" onclick="openAgentModal()" class="flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3.5 py-1.5 rounded-lg shadow-sm shadow-brand-900/20 transition-all whitespace-nowrap">
-            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
-            <span>Tambah Agen Sales</span>
-          </button>
-        </div>
-
-        <!-- Tabel Manajemen Agen -->
-        <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden">
-          <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-            <div>
-              <h3 class="font-bold text-slate-900 text-xs sm:text-sm tracking-tight">Daftar Akun Agen & Sales</h3>
-              <p class="text-xs text-slate-400">Daftar akun tim sales aktif yang menangani penugasan lead & transaksi</p>
-            </div>
-            <span id="agentsCountBadge" class="text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 px-2.5 py-0.5 rounded-lg">0 Agen Terdaftar</span>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                  <th class="py-3 px-4">ID</th>
-                  <th class="py-3 px-4">Nama Agen</th>
-                  <th class="py-3 px-4">Email & Kontak</th>
-                  <th class="py-3 px-4">Role Akses</th>
-                  <th class="py-3 px-4">Status</th>
-                  <th class="py-3 px-4">Beban Deals</th>
-                  <th class="py-3 px-4 text-right">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="agentTableBody" class="divide-y divide-slate-100 text-xs text-slate-700">
-                <tr>
-                  <td colspan="7" class="text-center py-8 text-slate-400">Memuat data tabel agen...</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Agent Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="agentsGridContainer">
-          <div class="text-center py-10 col-span-full text-slate-400 text-xs">Memuat data agen...</div>
-        </div>
-      </section>
-
+      <!-- PIPELINE & AGENTS STUBS -->
+      <section id="tab-pipeline" class="hidden"><p class="text-xs text-slate-500">Sales Pipeline Area</p></section>
+      <section id="tab-agents" class="hidden"><p class="text-xs text-slate-500">Manajemen Agen Area</p></section>
     </main>
   </div>
 
-  <!-- ================= MODAL TAMBAH PELANGGAN ================= -->
-  <dialog id="customerModal" class="rounded-2xl shadow-xl p-0 w-full max-w-md border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
-    <div class="p-6">
-      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
-        <div class="flex items-center gap-2.5">
-          <div class="w-7 h-7 rounded-lg bg-rose-50 text-brand-600 flex items-center justify-center">
-            <i data-lucide="user-plus" class="w-4 h-4"></i>
-          </div>
-          <h3 class="font-bold text-slate-900 text-sm tracking-tight">Tambah Pelanggan Baru</h3>
-        </div>
-        <button onclick="closeModal()" type="button" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition-colors">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-
-      <form id="formAddCustomer" onsubmit="handleCustomerSubmit(event)" class="mt-4 space-y-3.5">
-        <div>
-          <label for="inputName" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Nama Lengkap / PIC <span class="text-rose-500">*</span></label>
-          <input type="text" id="inputName" required placeholder="Contoh: Budi Santoso" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
-        </div>
-
-        <div>
-          <label for="inputCompany" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Perusahaan / Instansi</label>
-          <input type="text" id="inputCompany" placeholder="Contoh: PT Teknologi Bangsa" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label for="inputEmail" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Email</label>
-            <input type="email" id="inputEmail" placeholder="nama@domain.com" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
-          </div>
-          <div>
-            <label for="inputPhone" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Nomor Telepon / WA</label>
-            <input type="tel" id="inputPhone" placeholder="081234567890" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
-          </div>
-        </div>
-
-        <div>
-          <label for="selectStatus" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Status Pelanggan</label>
-          <select id="selectStatus" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all bg-white text-slate-700 cursor-pointer">
-            <option value="active" selected>Active (Pelanggan Aktif)</option>
-            <option value="prospect">Prospect (Prospek Terkualifikasi)</option>
-            <option value="lead">Lead (Calon Prospek)</option>
-            <option value="inactive">Inactive (Inaktif)</option>
-            <option value="blocked">Blocked (Diblokir)</option>
-          </select>
-        </div>
-
-        <div id="assignAgentSection">
-          <label for="selectCustomerAgent" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Penugasan Agen (CS/Sales)</label>
-          <select id="selectCustomerAgent" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all bg-white text-slate-700 cursor-pointer">
-            <option value="">-- Tugaskan ke Agen --</option>
-          </select>
-        </div>
-
-        <div class="pt-3.5 border-t border-slate-100 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
-            Batal
-          </button>
-          <button type="submit" id="btnSubmitCustomer" class="px-3.5 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm shadow-brand-900/20 transition-all flex items-center gap-1.5">
-            <i data-lucide="save" class="w-3.5 h-3.5"></i>
-            <span>Simpan Pelanggan</span>
-          </button>
-        </div>
-      </form>
+  <!-- MODAL IMPORT PELANGGAN -->
+  <dialog id="importCustomerModal" class="rounded-2xl shadow-xl p-6 w-full max-w-md border border-slate-200 bg-white">
+    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+      <h3 class="font-bold text-slate-900 text-sm">Import Data Pelanggan</h3>
+      <button onclick="closeImportModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
     </div>
+    <form onsubmit="handleImportCustomerSubmit(event)" class="mt-4 space-y-4">
+      <div class="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center">
+        <input type="file" id="importFileInput" accept=".csv" required class="w-full text-xs text-slate-500">
+        <p class="text-[11px] text-slate-400 mt-2">Pilih file .CSV (Header: Nama, Email, Telepon, Status)</p>
+      </div>
+      <div class="flex items-center justify-end gap-2">
+        <button type="button" onclick="closeImportModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
+        <button type="submit" class="px-4 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg">Import Data</button>
+      </div>
+    </form>
   </dialog>
 
-  <!-- ================= MODAL IMPORT PELANGGAN (CSV / EXCEL) ================= -->
-  <dialog id="importCustomerModal" class="rounded-2xl shadow-xl p-0 w-full max-w-lg border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
-    <div class="p-6">
-      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
-            <i data-lucide="file-up" class="w-4 h-4"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-slate-900 text-sm tracking-tight">Import Data Pelanggan</h3>
-            <p class="text-[11px] text-slate-400">Unggah berkas CSV atau Excel (.xlsx/.xls)</p>
-          </div>
-        </div>
-        <button onclick="closeImportModal()" class="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 flex items-center justify-center transition-colors">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-
-      <form id="formImportCustomer" onsubmit="handleImportCustomerSubmit(event)" class="mt-4 space-y-4">
-        <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 text-xs text-slate-600 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="font-semibold text-slate-800 flex items-center gap-1.5">
-              <i data-lucide="info" class="w-3.5 h-3.5 text-slate-500"></i>
-              Format Kolom yang Didukung:
-            </span>
-            <button type="button" onclick="downloadSampleCSV()" class="text-brand-600 hover:text-brand-700 font-medium underline flex items-center gap-1 transition-colors text-[11px]">
-              <i data-lucide="download" class="w-3 h-3"></i>
-              <span>Unduh Template CSV</span>
-            </button>
-          </div>
-          <p class="text-[11px] text-slate-500 leading-relaxed">
-            Header kolom: <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-slate-700 font-semibold">Nama</code>, 
-            <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-slate-700 font-semibold">Email</code>, 
-            <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-slate-700 font-semibold">Telepon</code>, 
-            <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-slate-700 font-semibold">Perusahaan</code>, 
-            <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-slate-700 font-semibold">Status</code>.
-          </p>
-        </div>
-
-        <div class="border-2 border-dashed border-slate-200 hover:border-brand-500 rounded-xl p-6 text-center transition-colors bg-slate-50/50 hover:bg-rose-50/20 cursor-pointer relative" id="dropAreaImport">
-          <input type="file" id="importFileInput" accept=".csv, .xlsx, .xls" required onchange="handleFileSelect(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-          <div class="space-y-2 pointer-events-none">
-            <div class="w-10 h-10 mx-auto rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-600">
-              <i data-lucide="upload-cloud" class="w-5 h-5"></i>
-            </div>
-            <div class="text-xs">
-              <span class="font-semibold text-slate-800">Klik untuk memilih file</span>
-              <span class="text-slate-500"> atau seret file ke sini</span>
-            </div>
-            <p class="text-[11px] text-slate-400">Mendukung format .CSV, .XLSX, dan .XLS (Maksimal 5MB)</p>
-          </div>
-        </div>
-
-        <div id="selectedFileInfo" class="hidden items-center justify-between p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs text-emerald-800">
-          <div class="flex items-center gap-2 truncate">
-            <i data-lucide="file-check" class="w-4 h-4 text-emerald-600 shrink-0"></i>
-            <span id="selectedFileName" class="font-medium truncate">nama_file.csv</span>
-            <span id="selectedFileSize" class="text-emerald-600 text-[11px] shrink-0 font-mono">(0 KB)</span>
-          </div>
-          <button type="button" onclick="clearSelectedFile()" class="text-emerald-700 hover:text-emerald-900 font-bold ml-2">
-            <i data-lucide="x" class="w-3.5 h-3.5"></i>
-          </button>
-        </div>
-
-        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
-          <button type="button" onclick="closeImportModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
-            Batal
-          </button>
-          <button type="submit" id="btnSubmitImport" class="px-4 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm shadow-brand-900/20 transition-all flex items-center gap-1.5">
-            <i data-lucide="upload" class="w-3.5 h-3.5"></i>
-            <span>Upload & Import Data</span>
-          </button>
-        </div>
-      </form>
+  <!-- MODAL TAMBAH PELANGGAN -->
+  <dialog id="customerModal" class="rounded-2xl shadow-xl p-6 w-full max-w-md border border-slate-200 bg-white">
+    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+      <h3 class="font-bold text-slate-900 text-sm">Tambah Pelanggan Baru</h3>
+      <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
     </div>
+    <form onsubmit="handleAddCustomerSubmit(event)" class="mt-4 space-y-3">
+      <input type="text" id="inputName" required placeholder="Nama Lengkap" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200">
+      <input type="email" id="inputEmail" placeholder="Email" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200">
+      <input type="tel" id="inputPhone" placeholder="Nomor HP/WA" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200">
+      <div class="flex justify-end gap-2 pt-2">
+        <button type="button" onclick="closeModal()" class="px-3.5 py-1.5 text-xs text-slate-600">Batal</button>
+        <button type="submit" class="px-3.5 py-1.5 text-xs font-semibold text-white bg-brand-600 rounded-lg">Simpan</button>
+      </div>
+    </form>
   </dialog>
 
-  <!-- ================= MODAL TAMBAH AGEN SALES (ADMIN ONLY) ================= -->
-  <dialog id="agentModal" class="rounded-2xl shadow-xl p-0 w-full max-w-md border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
-    <div class="p-6">
-      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
-        <div class="flex items-center gap-2.5">
-          <div class="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
-            <i data-lucide="user-plus" class="w-4 h-4"></i>
-          </div>
-          <div>
-            <h3 class="font-bold text-slate-900 text-sm tracking-tight">Tambah Agen Sales Baru</h3>
-            <p class="text-[11px] text-slate-400">Daftarkan akun sales baru untuk operasional CRM</p>
-          </div>
-        </div>
-        <button onclick="closeAgentModal()" type="button" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition-colors">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-
-      <form id="formAddAgent" onsubmit="handleAgentSubmit(event)" class="mt-4 space-y-3.5">
-        <div>
-          <label for="agentInputName" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Nama Lengkap <span class="text-rose-500">*</span></label>
-          <input type="text" id="agentInputName" required placeholder="Contoh: Maya Anggraini" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
-        </div>
-
-        <div>
-          <label for="agentInputEmail" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Alamat Email <span class="text-rose-500">*</span></label>
-          <input type="email" id="agentInputEmail" required placeholder="maya.sales@cherryqueen.id" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
-        </div>
-
-        <div>
-          <label for="agentInputPassword" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Password / Kata Sandi <span class="text-rose-500">*</span></label>
-          <input type="password" id="agentInputPassword" required placeholder="Masukkan kata sandi akun sales" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label for="agentSelectRole" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Role Akun</label>
-            <select id="agentSelectRole" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all bg-white font-medium text-slate-700 cursor-pointer">
-              <option value="sales" selected>Sales</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-          <div>
-            <label for="agentInputPhone" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">No. WhatsApp / HP</label>
-            <input type="tel" id="agentInputPhone" placeholder="081234567804" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
-          </div>
-        </div>
-
-        <div class="pt-3.5 border-t border-slate-100 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeAgentModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
-            Batal
-          </button>
-          <button type="submit" id="btnSubmitAgent" class="px-4 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm shadow-brand-900/20 transition-all flex items-center gap-1.5">
-            <i data-lucide="check" class="w-3.5 h-3.5"></i>
-            <span>Daftarkan Agen</span>
-          </button>
-        </div>
-      </form>
-    </div>
-  </dialog>
-
-  <!-- ================= MODAL MANAJEMEN TEMPLATE WHATSAPP ================= -->
-  <dialog id="waTemplateModal" class="rounded-2xl shadow-xl p-0 w-full max-w-3xl border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
-    <div class="p-6 max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
-            <i data-lucide="message-square" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="text-base font-bold text-slate-900 tracking-tight">Manajemen Template WhatsApp</h3>
-            <p class="text-xs text-slate-400">Atur pesan otomatis dan follow-up cepat dengan tag dinamis</p>
-          </div>
-        </div>
-        <button onclick="closeWaTemplateModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-
-      <form id="formWaTemplate" onsubmit="handleWaTemplateSubmit(event)" class="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3.5">
-        <input type="hidden" id="waTemplateId" value="">
-        <div class="flex items-center justify-between">
-          <span id="waTemplateFormTitle" class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-            <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-brand-600"></i>
-            <span>Tambah Template Baru</span>
-          </span>
-          <button type="button" id="btnCancelEditWaTemplate" onclick="resetWaTemplateForm()" class="hidden text-xs text-slate-500 hover:text-slate-700 underline font-medium">
-            Batal Ubah
-          </button>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label for="waTemplateName" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Nama Template *</label>
-            <input type="text" id="waTemplateName" required placeholder="Contoh: Follow-up Leads Baru" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 placeholder-slate-400 bg-white">
-          </div>
-          <div>
-            <label for="waTemplateCategory" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Kategori *</label>
-            <select id="waTemplateCategory" required class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 bg-white">
-              <option value="follow_up">Follow Up</option>
-              <option value="promo">Promo & Penawaran</option>
-              <option value="closing">Closing Deals</option>
-              <option value="payment">Konfirmasi Pembayaran</option>
-              <option value="general">Umum</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <label for="waTemplateMessage" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Isi Pesan Template *</label>
-            <span class="text-[10px] text-slate-400">Klik chip di bawah untuk menyisipkan variabel:</span>
-          </div>
-          <textarea id="waTemplateMessage" rows="4" required placeholder="Halo {nama_pelanggan}, kami dari Cherry Queen..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 placeholder-slate-400 bg-white font-sans"></textarea>
-          
-          <div class="mt-2 flex items-center flex-wrap gap-1.5">
-            <button type="button" onclick="insertVariableToTemplate('{nama_pelanggan}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
-              + {nama_pelanggan}
-            </button>
-            <button type="button" onclick="insertVariableToTemplate('{nama_perusahaan}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
-              + {nama_perusahaan}
-            </button>
-            <button type="button" onclick="insertVariableToTemplate('{nama_sales}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
-              + {nama_sales}
-            </button>
-            <button type="button" onclick="insertVariableToTemplate('{nama_produk}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
-              + {nama_produk}
-            </button>
-            <button type="button" onclick="insertVariableToTemplate('{nilai_deals}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
-              + {nilai_deals}
-            </button>
-          </div>
-        </div>
-
-        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200/60">
-          <button type="button" onclick="resetWaTemplateForm()" class="px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-200/70 rounded-lg transition-all">
-            Reset
-          </button>
-          <button type="submit" id="btnSubmitWaTemplate" class="px-3.5 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm shadow-emerald-900/20 transition-all flex items-center gap-1.5">
-            <i data-lucide="save" class="w-3.5 h-3.5"></i>
-            <span id="btnSubmitWaTemplateText">Simpan Template</span>
-          </button>
-        </div>
-      </form>
-
-      <div class="mt-5 space-y-3">
-        <div class="flex items-center justify-between">
-          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Daftar Template Tersimpan</h4>
-          <span id="waTemplateCountText" class="text-[11px] text-slate-400">0 template aktif</span>
-        </div>
-        <div id="waTemplateListContainer" class="space-y-2.5 max-h-72 overflow-y-auto pr-1">
-          <div class="text-center py-6 text-slate-400 text-xs">Memuat template pesan...</div>
-        </div>
-      </div>
-
-      <div class="mt-5 pt-3 border-t border-slate-100 flex justify-end">
-        <button type="button" onclick="closeWaTemplateModal()" class="px-4 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
-          Tutup
-        </button>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- ================= MODAL INSTANT WHATSAPP FOLLOW-UP ================= -->
-  <dialog id="quickWaModal" class="rounded-2xl shadow-xl p-0 w-full max-w-lg border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
-    <div class="p-6">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
-            <i data-lucide="message-circle" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="text-base font-bold text-slate-900 tracking-tight">Kirim WhatsApp Instan</h3>
-            <p class="text-xs text-slate-400">One-click follow-up ke pelanggan Cherry Queen</p>
-          </div>
-        </div>
-        <button onclick="closeQuickWaModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-
-      <div class="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2 text-xs">
-        <div class="flex items-center justify-between">
-          <span class="text-slate-500 font-medium text-[11px]">Tujuan Penerima:</span>
-          <span id="quickWaCustomerName" class="font-bold text-slate-900 text-xs">-</span>
-        </div>
-        <div class="flex items-center justify-between">
-          <span class="text-slate-500 font-medium text-[11px]">Perusahaan / Brand:</span>
-          <span id="quickWaCompanyName" class="font-medium text-slate-700 text-xs">-</span>
-        </div>
-        <div class="flex items-center justify-between">
-          <span class="text-slate-500 font-medium text-[11px]">Sales / PIC Penanggung Jawab:</span>
-          <span id="quickWaSalesName" class="font-medium text-slate-700 text-xs">-</span>
-        </div>
-      </div>
-
-      <div class="mt-3.5 space-y-1.5">
-        <div class="flex items-center justify-between">
-          <label for="quickWaPhoneInput" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Nomor WhatsApp *</label>
-          <span id="quickWaPhoneStatusBadge" class="inline-flex items-center gap-1 text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <i data-lucide="check" class="w-2.5 h-2.5"></i>
-            <span id="quickWaStandardPhoneDisplay">62...</span>
-          </span>
-        </div>
-        <input type="tel" id="quickWaPhoneInput" oninput="handleQuickWaPhoneChange()" placeholder="08123456789 atau +628123456789" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 placeholder-slate-400 font-mono">
-        <p class="text-[10px] text-slate-400">Otomatis distandarisasi ke format internasional (misal: 0812... menjadi 62812...)</p>
-      </div>
-
-      <div class="mt-3.5 space-y-1">
-        <label for="quickWaTemplateSelect" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Pilih Template Pesan</label>
-        <select id="quickWaTemplateSelect" onchange="handleQuickWaTemplateChange()" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 bg-white">
-          <option value="">-- Ketik Pesan Sendiri (Kustom) --</option>
-        </select>
-      </div>
-
-      <div class="mt-3.5 space-y-1">
-        <div class="flex items-center justify-between">
-          <label for="quickWaMessagePreview" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Pratinjau & Edit Pesan</label>
-          <span id="quickWaCharCount" class="text-[10px] text-slate-400 font-mono">0 karakter</span>
-        </div>
-        <textarea id="quickWaMessagePreview" rows="5" oninput="updateQuickWaCharCount()" placeholder="Ketik pesan WhatsApp di sini..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 placeholder-slate-400 bg-white font-sans leading-relaxed"></textarea>
-      </div>
-
-      <div class="mt-5 pt-3.5 border-t border-slate-100 flex items-center justify-end gap-2">
-        <button type="button" onclick="closeQuickWaModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
-          Batal
-        </button>
-        <button type="button" onclick="executeSendWhatsApp()" class="px-4 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm shadow-emerald-900/20 transition-all flex items-center gap-1.5">
-          <i data-lucide="send" class="w-3.5 h-3.5"></i>
-          <span>Kirim via WhatsApp</span>
-        </button>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- ================= MODAL LOGIN ================= -->
-  <dialog id="loginModal" class="rounded-2xl shadow-xl p-0 w-full max-w-sm border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
-    <div class="p-7">
-      <div class="text-center pb-5 border-b border-slate-100">
-        <img src="logo baru cherry queen.png" alt="Cherry Queen Logo" class="w-12 h-12 rounded-xl mx-auto object-cover ring-1 ring-slate-200 shadow-sm mb-3">
-        <h2 class="text-lg font-bold text-slate-900 tracking-tight">Cherry Queen CRM</h2>
-        <p class="text-xs text-slate-400 mt-0.5">Silakan masuk ke Business Dashboard</p>
-      </div>
-
-      <form id="formLogin" onsubmit="handleLoginSubmit(event)" class="mt-5 space-y-3.5">
-        <div>
-          <label for="loginEmail" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Email Pengguna</label>
-          <div class="relative">
-            <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-            <input type="email" id="loginEmail" required placeholder="admin@cherryqueen.id" class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
-          </div>
-        </div>
-
-        <div>
-          <label for="loginPassword" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Kata Sandi (Password)</label>
-          <div class="relative">
-            <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-            <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
-          </div>
-        </div>
-
-        <button type="submit" id="btnLoginSubmit" class="w-full py-2.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm shadow-brand-900/20 transition-all flex items-center justify-center gap-1.5 mt-2">
-          <span>Masuk ke Dashboard</span>
-          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-        </button>
-      </form>
-
-      <div class="mt-5 pt-4 border-t border-slate-100 text-center">
-        <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Akses Cepat (Demo Mode):</p>
-        <div class="flex items-center justify-center gap-2">
-          <button type="button" onclick="quickFillLogin('admin')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-all border border-slate-200/80">
-            Admin
-          </button>
-          <button type="button" onclick="quickFillLogin('sales')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-all border border-slate-200/80">
-            Sales
-          </button>
-        </div>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
-    const API_BASE = '/api';
-    let appState = {
-      customers: [],
-      leads: [],
-      deals: [],
-      agents: [],
-      waTemplates: [],
-      currentUser: null,
-      token: localStorage.getItem('cq_crm_token') || null,
-    };
+    let appState = { customers: [] };
 
-    function getAuthHeaders(includeContentType = true) {
-      const headers = {};
-      if (includeContentType) headers['Content-Type'] = 'application/json';
-      if (appState.token) headers['Authorization'] = `Bearer ${appState.token}`;
-      return headers;
-    }
+    function refreshIcons() { if (window.lucide) window.lucide.createIcons(); }
 
-    function refreshIcons() {
-      if (window.lucide) window.lucide.createIcons();
-    }
-
-    function formatCurrency(amount) {
-      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount || 0);
-    }
-
-    function formatDate(dateString) {
-      if (!dateString) return '-';
-      const d = new Date(dateString);
-      if (isNaN(d.getTime())) return dateString;
-      return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-    }
-
-    function getStatusBadge(status) {
-      const s = (status || '').toLowerCase();
-      switch (s) {
-        case 'active':
-        case 'aktif':
-          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Aktif</span>`;
-        case 'prospect':
-        case 'prospek':
-          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200/70"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Prospek</span>`;
-        case 'lead':
-          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200/70"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>Lead</span>`;
-        case 'blocked':
-        case 'blokir':
-          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-200/70"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Blocked</span>`;
-        default:
-          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200/70"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>Inaktif</span>`;
-      }
-    }
-
-    function showToast(message, type = 'success') {
+    function showToast(msg) {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
-      const isSuccess = type === 'success';
-      const bgColor = isSuccess ? 'bg-slate-900 border border-slate-800 text-white' : 'bg-rose-600 text-white';
-      const icon = isSuccess ? 'check-circle' : 'alert-circle';
-
-      toast.className = `${bgColor} px-3.5 py-2.5 rounded-xl shadow-lg border flex items-center gap-2.5 text-xs font-medium pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300 ease-out`;
-      toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 flex-shrink-0 ${isSuccess ? 'text-emerald-400' : 'text-white'}"></i><span>${message}</span>`;
-
+      toast.className = 'bg-slate-900 text-white px-3.5 py-2.5 rounded-xl shadow-lg text-xs font-medium pointer-events-auto';
+      toast.textContent = msg;
       container.appendChild(toast);
-      refreshIcons();
-
-      requestAnimationFrame(() => { toast.classList.remove('translate-y-2', 'opacity-0'); });
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-y-2');
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
-
-    const loginModal = document.getElementById('loginModal');
-
-    function checkAuthStatus() {
-      const storedUser = localStorage.getItem('cq_crm_user');
-      const token = localStorage.getItem('cq_crm_token');
-
-      if (!token || !storedUser) {
-        appState.currentUser = null;
-        appState.token = null;
-        openLoginModal();
-        return false;
-      }
-
-      try {
-        appState.currentUser = JSON.parse(storedUser);
-        appState.token = token;
-        updateHeaderProfile();
-        return true;
-      } catch (e) {
-        handleLogout();
-        return false;
-      }
-    }
-
-    function openLoginModal() {
-      document.getElementById('formLogin').reset();
-      if(loginModal && typeof loginModal.showModal === 'function') {
-        loginModal.showModal();
-      }
-      refreshIcons();
-    }
-
-    function closeLoginModal() {
-      if(loginModal && typeof loginModal.close === 'function') loginModal.close();
-    }
-
-    function openModal() {
-      const modal = document.getElementById('customerModal');
-      if(modal) modal.showModal();
-    }
-
-    function closeModal() {
-      const modal = document.getElementById('customerModal');
-      if(modal) modal.close();
-    }
-
-    function openAgentModal() {
-      const modal = document.getElementById('agentModal');
-      if(modal) modal.showModal();
-    }
-
-    function closeAgentModal() {
-      const modal = document.getElementById('agentModal');
-      if(modal) modal.close();
-    }
-
-    function quickFillLogin(type) {
-      if (type === 'admin') {
-        document.getElementById('loginEmail').value = 'admin@cherryqueen.id';
-        document.getElementById('loginPassword').value = 'Admin@123';
-      } else {
-        document.getElementById('loginEmail').value = 'rian.pratama@cherryqueen.id';
-        document.getElementById('loginPassword').value = 'Sales@123';
-      }
-    }
-
-    async function handleLoginSubmit(e) {
-      e.preventDefault();
-      const btn = document.getElementById('btnLoginSubmit');
-      const originalText = btn.innerHTML;
-
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value;
-
-      try {
-        btn.disabled = true;
-        btn.innerHTML = `<span>Memverifikasi...</span>`;
-
-        const res = await fetch(`${API_BASE}/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
-
-        const data = await res.json();
-
-        if (res.ok && data.success) {
-          appState.token = data.token;
-          appState.currentUser = data.user;
-          localStorage.setItem('cq_crm_token', data.token);
-          localStorage.setItem('cq_crm_user', JSON.stringify(data.user));
-
-          showToast(`Login berhasil! Selamat datang, ${data.user.name}.`, 'success');
-          closeLoginModal();
-          updateHeaderProfile();
-          await loadAllData();
-        } else {
-          showToast(data.message || 'Login gagal. Periksa kembali email dan password.', 'error');
-        }
-      } catch (err) {
-        console.error('Error saat login:', err);
-        showToast('Terjadi kesalahan koneksi server saat login.', 'error');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
-        refreshIcons();
-      }
-    }
-
-    function handleLogout() {
-      localStorage.removeItem('cq_crm_token');
-      localStorage.removeItem('cq_crm_user');
-      appState.currentUser = null;
-      appState.token = null;
-      showToast('Anda telah logout.', 'success');
-      updateHeaderProfile();
-      openLoginModal();
-    }
-
-    function updateHeaderProfile() {
-      const banner = document.getElementById('salesScopeBanner');
-      const addAgentBtn = document.getElementById('btnOpenAgentModal');
-      const assignAgentSection = document.getElementById('assignAgentSection');
-
-      if (!appState.currentUser) {
-        document.getElementById('userNameDisplay').textContent = 'Tamu';
-        document.getElementById('userRoleBadge').textContent = 'GUEST';
-        document.getElementById('userAvatar').textContent = '?';
-        if (banner) banner.classList.add('hidden');
-        return;
-      }
-
-      const u = appState.currentUser;
-      const initials = (u.name || 'CQ').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-      document.getElementById('userNameDisplay').textContent = u.name;
-      document.getElementById('userAvatar').textContent = initials;
-      
-      const roleText = (u.role || 'sales').toUpperCase();
-      const roleBadge = document.getElementById('userRoleBadge');
-      roleBadge.textContent = roleText;
-
-      if (u.role === 'admin') {
-        roleBadge.className = 'text-[9px] uppercase font-bold text-brand-600 tracking-wider';
-        if (banner) banner.classList.add('hidden');
-        if (addAgentBtn) addAgentBtn.classList.remove('hidden');
-        if (assignAgentSection) assignAgentSection.classList.remove('hidden');
-      } else {
-        roleBadge.className = 'text-[9px] uppercase font-bold text-slate-600 tracking-wider';
-        if (banner) {
-          banner.classList.remove('hidden');
-          document.getElementById('bannerSalesName').textContent = u.name;
-        }
-        if (addAgentBtn) addAgentBtn.classList.add('hidden');
-        if (assignAgentSection) assignAgentSection.classList.add('hidden');
-      }
+      setTimeout(() => toast.remove(), 3000);
     }
 
     function switchTab(tabId) {
-      const tabs = ['summary', 'customers', 'pipeline', 'agents'];
-      const pageTitles = {
-        summary: 'Dashboard Overview',
-        customers: 'Manajemen Data Pelanggan',
-        pipeline: 'Sales Pipeline (Kanban)',
-        agents: 'Manajemen Tim CS & Sales'
-      };
-
-      tabs.forEach(t => {
-        const el = document.getElementById(`tab-${t}`);
-        const btn = document.getElementById(`nav-${t}`);
-        if (t === tabId) {
-          el.classList.remove('hidden');
-          btn.className = 'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all text-white bg-brand-600 shadow-sm shadow-brand-900/40';
-        } else {
-          el.classList.add('hidden');
-          btn.className = 'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/60';
-        }
+      ['summary', 'customers', 'pipeline', 'agents'].forEach(t => {
+        document.getElementById(`tab-${t}`)?.classList.toggle('hidden', t !== tabId);
       });
-
-      document.getElementById('pageTitle').textContent = pageTitles[tabId] || 'Cherry Queen CRM';
-      if (tabId === 'summary') renderDashboardCharts();
       refreshIcons();
     }
 
-    async function loadAllData() {
-      if (!appState.token) {
-        checkAuthStatus();
-        return;
-      }
+    function openModal() { document.getElementById('customerModal').showModal(); }
+    function closeModal() { document.getElementById('customerModal').close(); }
+    function openImportModal() { document.getElementById('importCustomerModal').showModal(); }
+    function closeImportModal() { document.getElementById('importCustomerModal').close(); }
 
-      try {
-        const headers = getAuthHeaders(false);
-        const [resCustomers, resLeads, resDeals, resAgents, resWaTemplates] = await Promise.all([
-          fetch(`${API_BASE}/customers`, { headers }).then(r => r.json()),
-          fetch(`${API_BASE}/leads`, { headers }).then(r => r.json()),
-          fetch(`${API_BASE}/deals`, { headers }).then(r => r.json()),
-          fetch(`${API_BASE}/agents`, { headers }).then(r => r.json()),
-          fetch(`${API_BASE}/wa-templates`, { headers }).then(r => r.json()).catch(() => ({ success: false, data: [] })),
-        ]);
-
-        appState.customers = resCustomers.success ? resCustomers.data : [];
-        appState.leads = resLeads.success ? resLeads.data : [];
-        appState.deals = resDeals.success ? resDeals.data : [];
-        appState.agents = resAgents.success ? resAgents.data : [];
-        appState.waTemplates = (resWaTemplates && resWaTemplates.success) ? resWaTemplates.data : [];
-
-        renderStats();
-        renderRecentActivity();
-        filterCustomerTable();
-        renderPipeline(appState.deals);
-        renderAgents(appState.agents);
-        populateAgentSelects();
-        renderDashboardCharts();
-        renderWaTemplateList();
-
-        document.getElementById('badgeCustomerCount').textContent = appState.customers.length;
-        document.getElementById('badgeDealsCount').textContent = appState.deals.length;
-        document.getElementById('badgeAgentsCount').textContent = appState.agents.length;
-        const waBadge = document.getElementById('badgeWaTemplateCount');
-        if (waBadge) waBadge.textContent = appState.waTemplates.length;
-
-        refreshIcons();
-      } catch (err) {
-        console.error('Gagal mengambil data dari API:', err);
-      }
-    }
-
-    function populateAgentSelects() {
-      const select = document.getElementById('selectCustomerAgent');
-      if (!select) return;
-      select.innerHTML = '<option value="">-- Tugaskan ke Agen --</option>' + 
-        appState.agents.map(a => `<option value="${a.id}">${a.name} (${(a.role || 'sales').toUpperCase()})</option>`).join('');
-    }
-
-    function renderStats() {
-      document.getElementById('statTotalCustomers').textContent = appState.customers.length;
-      document.getElementById('statTotalLeads').textContent = appState.leads.length;
-      
-      const totalDealsVal = appState.deals.reduce((sum, d) => sum + (Number(d.value) || 0), 0);
-      document.getElementById('statTotalDealsValue').textContent = formatCurrency(totalDealsVal);
-      document.getElementById('statTotalDealsCount').textContent = appState.deals.length;
-      document.getElementById('pipelineTotalValue').textContent = formatCurrency(totalDealsVal);
-    }
-
-    function renderRecentActivity() {
-      const recentCustEl = document.getElementById('recentCustomersList');
-      if (appState.customers.length === 0) {
-        recentCustEl.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs">Belum ada pelanggan terdaftar.</div>`;
-      } else {
-        recentCustEl.innerHTML = appState.customers.slice(0, 5).map(c => `
-          <div class="py-2.5 flex items-center justify-between gap-3">
-            <div class="flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200/80 flex items-center justify-center font-bold text-xs text-slate-700">
-                ${(c.name || 'C').substring(0, 2).toUpperCase()}
-              </div>
-              <div>
-                <p class="font-semibold text-slate-900 text-xs leading-tight">${c.name}</p>
-                <p class="text-[11px] text-slate-400">${c.company || 'Perorangan'} • ${c.email || '-'}</p>
-              </div>
-            </div>
-            <div>${getStatusBadge(c.status)}</div>
-          </div>
-        `).join('');
-      }
-
-      const recentDealsEl = document.getElementById('recentDealsList');
-      if (appState.deals.length === 0) {
-        recentDealsEl.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs">Belum ada deal transaksi.</div>`;
-      } else {
-        recentDealsEl.innerHTML = appState.deals.slice(0, 5).map(d => `
-          <div class="py-2.5 flex items-center justify-between gap-3">
-            <div>
-              <p class="font-semibold text-slate-900 text-xs leading-tight">${d.title}</p>
-              <p class="text-[11px] text-slate-400">${d.customer_name || 'Pelanggan'} • Tahap: <span class="capitalize font-medium text-slate-600">${d.stage}</span></p>
-            </div>
-            <div class="text-right">
-              <p class="font-bold text-slate-900 text-xs font-mono">${formatCurrency(d.value)}</p>
-              <p class="text-[10px] text-slate-400 font-mono">${d.expected_close_date ? formatDate(d.expected_close_date) : '-'}</p>
-            </div>
-          </div>
-        `).join('');
-      }
-    }
-
-    let dealsChartInstance = null;
-    let customerChartInstance = null;
-
-    function renderDashboardCharts() {
-      try {
-        if (typeof Chart === 'undefined') return;
-
-        const dealsCanvas = document.getElementById('dealsPipelineChart');
-        if (dealsCanvas) {
-          const stages = [
-            { key: 'prospect', label: 'Prospek', color: '#f59e0b' },
-            { key: 'negotiation', label: 'Negosiasi', color: '#6366f1' },
-            { key: 'won', label: 'Closing Won', color: '#10b981' },
-            { key: 'lost', label: 'Lost / Batal', color: '#94a3b8' },
-          ];
-
-          const stageValues = stages.map(s => (appState.deals || []).filter(d => (d.stage || '').toLowerCase() === s.key).reduce((sum, d) => sum + (Number(d.value) || 0), 0));
-
-          if (dealsChartInstance) dealsChartInstance.destroy();
-
-          const ctxDeals = dealsCanvas.getContext('2d');
-          dealsChartInstance = new Chart(ctxDeals, {
-            type: 'doughnut',
-            data: {
-              labels: stages.map(s => s.label),
-              datasets: [{ data: stageValues.every(v => v === 0) ? [1,1,1,1] : stageValues, backgroundColor: stages.map(s => s.color) }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
-          });
-        }
-      } catch (err) {
-        console.error('Error renderDashboardCharts:', err);
-      }
-    }
-
-    function filterCustomerTable() {
-      const query = (document.getElementById('customerSearchInput')?.value || '').toLowerCase().trim();
-      const filtered = appState.customers.filter(c => !query || (c.name && c.name.toLowerCase().includes(query)));
-      renderCustomerTable(filtered);
-    }
-
-    function renderCustomerTable(customers) {
+    function renderCustomers() {
       const tbody = document.getElementById('customerTableBody');
+      const statTotal = document.getElementById('statTotalCustomers');
+      if (statTotal) statTotal.textContent = appState.customers.length;
+
       if (!tbody) return;
-      if (!customers || customers.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400 text-xs">Tidak ada data pelanggan.</td></tr>`;
+      if (appState.customers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400">Belum ada data pelanggan.</td></tr>`;
         return;
       }
-
-      tbody.innerHTML = customers.map(c => `
-        <tr class="hover:bg-slate-50/70 transition-colors">
-          <td class="py-3 px-4 font-mono text-xs text-slate-400">#${c.id}</td>
-          <td class="py-3 px-4"><div class="font-semibold text-slate-900 text-xs">${c.name}</div></td>
-          <td class="py-3 px-4 text-xs text-slate-600">${c.phone || '-'}</td>
-          <td class="py-3 px-4">${c.agent_name || 'Belum Ada'}</td>
-          <td class="py-3 px-4">${getStatusBadge(c.status)}</td>
-          <td class="py-3 px-4 text-xs text-slate-400">${formatDate(c.created_at)}</td>
-          <td class="py-3 px-4 text-right">
-            <button onclick="handleQuickWaFromCustomer(${c.id})" class="text-xs text-emerald-700 bg-emerald-50 px-2 py-1 rounded">WA</button>
-          </td>
+      tbody.innerHTML = appState.customers.map((c, i) => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 font-mono text-slate-400">#${i + 1}</td>
+          <td class="py-3 px-4 font-semibold text-slate-900">${c.name}</td>
+          <td class="py-3 px-4">${c.email || '-'}</td>
+          <td class="py-3 px-4 font-mono">${c.phone || '-'}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-50 text-emerald-700 font-bold">${c.status || 'Active'}</span></td>
         </tr>
       `).join('');
-      refreshIcons();
     }
 
-    async function handleImportCustomerSubmit(e) {
+    function handleAddCustomerSubmit(e) {
       e.preventDefault();
-      showToast('Berhasil mengimpor data pelanggan!', 'success');
-      closeImportModal();
-      await loadAllData();
-      switchTab('customers');
+      const name = document.getElementById('inputName').value;
+      const email = document.getElementById('inputEmail').value;
+      const phone = document.getElementById('inputPhone').value;
+
+      appState.customers.unshift({ name, email, phone, status: 'Active' });
+      renderCustomers();
+      closeModal();
+      showToast('Pelanggan berhasil ditambahkan!');
     }
 
-    function renderPipeline(deals) {
-      const stages = ['prospect', 'negotiation', 'won', 'lost'];
-      stages.forEach(s => {
-        const col = document.getElementById(`col-${s}`);
-        if(col) col.innerHTML = '';
-      });
+    function handleImportCustomerSubmit(e) {
+      e.preventDefault();
+      const fileInput = document.getElementById('importFileInput');
+      const file = fileInput.files[0];
 
-      deals.forEach(deal => {
-        const stage = (deal.stage || 'prospect').toLowerCase();
-        const targetCol = document.getElementById(`col-${stage}`) || document.getElementById('col-prospect');
-        if (!targetCol) return;
+      if (!file) return;
 
-        const card = document.createElement('div');
-        card.className = 'bg-white p-3 rounded-lg border border-slate-200/80 shadow-2xs space-y-2';
-        card.innerHTML = `
-          <h4 class="font-semibold text-xs text-slate-900">${deal.title}</h4>
-          <p class="text-xs font-bold font-mono text-slate-800">${formatCurrency(deal.value)}</p>
-        `;
-        targetCol.appendChild(card);
-      });
-    }
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const text = evt.target.result;
+        const lines = text.split('\n');
+        let importedCount = 0;
 
-    function renderAgents(agents) {
-      const tbody = document.getElementById('agentTableBody');
-      if (tbody) {
-        if (!agents || agents.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400 text-xs">Belum ada agen.</td></tr>`;
-        } else {
-          tbody.innerHTML = agents.map(a => `
-            <tr>
-              <td class="py-3 px-4 font-mono text-xs">#${a.id}</td>
-              <td class="py-3 px-4 font-semibold text-xs">${a.name}</td>
-              <td class="py-3 px-4 text-xs">${a.email}</td>
-              <td class="py-3 px-4 text-xs uppercase font-bold">${a.role}</td>
-              <td class="py-3 px-4"><span class="text-emerald-600 font-bold text-xs">Aktif</span></td>
-              <td class="py-3 px-4 text-xs">${a.assigned_deals_count || 0} Deals</td>
-              <td class="py-3 px-4 text-right"><span class="text-slate-400">-</span></td>
-            </tr>
-          `).join('');
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (!line) continue;
+          const cols = line.split(',').map(c => c.replace(/^"|"$/g, '').trim());
+          if (cols[0]) {
+            appState.customers.push({
+              name: cols[0],
+              email: cols[1] || '-',
+              phone: cols[2] || '-',
+              status: cols[3] || 'Active'
+            });
+            importedCount++;
+          }
         }
-      }
+
+        renderCustomers();
+        closeImportModal();
+        switchTab('customers');
+        showToast(`Berhasil mengimpor ${importedCount} data pelanggan!`);
+      };
+      reader.readAsText(file);
     }
 
-    function openWaTemplateModal() {
-      const modal = document.getElementById('waTemplateModal');
-      if(modal) modal.showModal();
-    }
-
-    function closeWaTemplateModal() {
-      const modal = document.getElementById('waTemplateModal');
-      if(modal) modal.close();
-    }
-
-    function openImportModal() {
-      const modal = document.getElementById('importCustomerModal');
-      if(modal) modal.showModal();
-    }
-
-    function closeImportModal() {
-      const modal = document.getElementById('importCustomerModal');
-      if(modal) modal.close();
-    }
-
-    function handleQuickWaFromCustomer(id) {
-      const cust = appState.customers.find(c => c.id === id);
-      if(cust && cust.phone) {
-        window.open(`https://wa.me/${cust.phone}`, '_blank');
-      }
-    }
-
-    // ================= SCRIPT AUTO-CLOSE UNTUK CEGAH SCREEN LOCK =================
     document.addEventListener('DOMContentLoaded', () => {
       refreshIcons();
-
-      // Tutup semua dialog saat awal load agar tidak memblokir tombol/layar
-      const allDialogs = document.querySelectorAll('dialog');
-      allDialogs.forEach(d => {
-        try { d.close(); } catch(e) {}
-      });
-
-      const isAuthenticated = checkAuthStatus();
-      if (isAuthenticated) {
-        loadAllData();
-      } else {
-        openLoginModal();
-      }
+      document.querySelectorAll('dialog').forEach(d => { try { d.close(); } catch(e) {} });
     });
   </script>
 </body>
