@@ -1,46 +1,48 @@
-const express = require('express');
-const app = express();
+module.exports = (req, res) => {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-app.use(express.json());
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
-// Mock Data
-const mockUsers = [
-  { id: 1, name: 'Queen Admin', email: 'admin@cherryqueen.id', role: 'admin' },
-  { id: 2, name: 'Rian Pratama', email: 'rian.pratama@cherryqueen.id', role: 'sales' }
-];
+  const url = req.url;
 
-const mockCustomers = [
-  { id: 1, name: 'Budi Santoso', company: 'PT Teknologi Bangsa', email: 'budi@contoh.id', phone: '081234567890', status: 'active', agent_name: 'Rian Pratama', created_at: '2026-10-01' },
-  { id: 2, name: 'Siti Rahma', company: 'CV Berkah Utama', email: 'siti@contoh.id', phone: '081987654321', status: 'prospect', agent_name: 'Rian Pratama', created_at: '2026-10-05' }
-];
+  const mockUsers = [
+    { id: 1, name: 'Queen Admin', email: 'admin@cherryqueen.id', role: 'admin' },
+    { id: 2, name: 'Rian Pratama', email: 'rian.pratama@cherryqueen.id', role: 'sales' }
+  ];
 
-// Endpoint API
-app.post('/api/auth/login', (req, res) => {
-  res.status(200).json({ success: true, token: 'mock-token', user: mockUsers[0] });
-});
+  const mockCustomers = [
+    { id: 1, name: 'Budi Santoso', company: 'PT Teknologi Bangsa', email: 'budi@contoh.id', phone: '081234567890', status: 'active', agent_name: 'Rian Pratama', created_at: '2026-10-01' },
+    { id: 2, name: 'Siti Rahma', company: 'CV Berkah Utama', email: 'siti@contoh.id', phone: '081987654321', status: 'prospect', agent_name: 'Rian Pratama', created_at: '2026-10-05' }
+  ];
 
-app.get('/api/customers', (req, res) => {
-  res.status(200).json({ success: true, data: mockCustomers });
-});
+  const mockDeals = [
+    { id: 101, title: 'Paket Skincare Bulk Purchase', customer_id: 1, customer_name: 'Budi Santoso', value: 15000000, stage: 'negotiation', expected_close_date: '2026-11-01', agent_name: 'Rian Pratama' }
+  ];
 
-app.post('/api/customers', (req, res) => {
-  res.status(200).json({ success: true, data: { id: Date.now(), ...req.body } });
-});
+  if (url.includes('/auth/login')) {
+    return res.status(200).json({ success: true, token: 'mock-jwt-token-cherry-queen', user: mockUsers[0] });
+  }
 
-app.get('/api/deals', (req, res) => {
-  res.status(200).json({ success: true, data: [] });
-});
+  if (url.includes('/customers')) {
+    return res.status(200).json({ success: true, data: mockCustomers });
+  }
 
-app.get('/api/agents', (req, res) => {
-  res.status(200).json({ success: true, data: mockUsers });
-});
+  if (url.includes('/deals')) {
+    return res.status(200).json({ success: true, data: mockDeals });
+  }
 
-app.get('/api/leads', (req, res) => {
-  res.status(200).json({ success: true, data: [] });
-});
+  if (url.includes('/agents')) {
+    return res.status(200).json({ success: true, data: mockUsers });
+  }
 
-app.get('/api/wa-templates', (req, res) => {
-  res.status(200).json({ success: true, data: [] });
-});
+  if (url.includes('/leads') || url.includes('/wa-templates')) {
+    return res.status(200).json({ success: true, data: [] });
+  }
 
-module.exports = app;
+  return res.status(200).json({ success: true, message: 'Cherry Queen CRM API Active' });
+};
