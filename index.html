@@ -56,10 +56,10 @@
           </button>
         </nav>
 
-        <!-- WhatsApp Suite Section -->
-        <div class="pt-5 mt-5 border-t border-slate-800/80">
+        <!-- WHATSAPP SUITE MENU -->
+        <div class="pt-5 mt-5 border-t border-slate-800">
           <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">WhatsApp Suite</p>
-          <button onclick="openWaTemplateModal()" id="btnSidebarWaTemplates" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+          <button onclick="openWaTemplateModal()" id="btnSidebarWaTemplates" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800">
             <i data-lucide="message-square" class="w-4 h-4 text-emerald-400"></i>
             <span>Template WhatsApp</span>
           </button>
@@ -95,8 +95,8 @@
             <div id="statTotalDeals" class="text-2xl font-bold text-slate-900 mt-2">Rp 15.500.000</div>
           </div>
           <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
-            <span class="text-[11px] font-semibold text-slate-500 uppercase">Konversi Pipeline</span>
-            <div class="text-2xl font-bold text-slate-900 mt-2">68%</div>
+            <span class="text-[11px] font-semibold text-slate-500 uppercase">Konversi WA</span>
+            <div class="text-2xl font-bold text-emerald-600 mt-2">74%</div>
           </div>
           <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
             <span class="text-[11px] font-semibold text-slate-500 uppercase">Agen Aktif</span>
@@ -133,7 +133,7 @@
                   <th class="py-3 px-4">Email</th>
                   <th class="py-3 px-4">Telepon</th>
                   <th class="py-3 px-4">Status</th>
-                  <th class="py-3 px-4 text-right">Aksi WA</th>
+                  <th class="py-3 px-4 text-right">Aksi WhatsApp</th>
                 </tr>
               </thead>
               <tbody id="customerTableBody" class="divide-y divide-slate-100 text-xs text-slate-700"></tbody>
@@ -152,8 +152,8 @@
             </div>
             <div class="bg-white p-3 rounded-lg shadow-xs border border-slate-200 space-y-2">
               <p class="font-semibold text-xs text-slate-900">Siti Rahma</p>
-              <p class="text-[10px] text-slate-500">Tertarik Gamis Muslim Fest</p>
-              <span class="inline-block px-2 py-0.5 bg-amber-50 text-amber-700 font-bold text-[10px] rounded">Follow Up</span>
+              <p class="text-[10px] text-slate-500">Tertarik Produk Cherry Queen</p>
+              <button onclick="sendWa('Halo Kak Siti, mau tanya promo Cherry Queen minggu ini?', '081987654321')" class="w-full text-center py-1 bg-emerald-50 text-emerald-700 font-bold text-[10px] rounded hover:bg-emerald-100">Chat WA</button>
             </div>
           </div>
           <div class="bg-slate-100/70 p-4 rounded-xl border border-slate-200">
@@ -163,8 +163,8 @@
             </div>
             <div class="bg-white p-3 rounded-lg shadow-xs border border-slate-200 space-y-2">
               <p class="font-semibold text-xs text-slate-900">Budi Santoso</p>
-              <p class="text-[10px] text-slate-500">Penawaran Paket Reseller</p>
-              <span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 font-bold text-[10px] rounded">Kirim Invoice</span>
+              <p class="text-[10px] text-slate-500">Paket Reseller</p>
+              <button onclick="sendWa('Halo Kak Budi, penawaran paket reseller Cherry Queen sudah siap ya.', '081234567890')" class="w-full text-center py-1 bg-blue-50 text-blue-700 font-bold text-[10px] rounded hover:bg-blue-100">Kirim Penawaran</button>
             </div>
           </div>
           <div class="bg-slate-100/70 p-4 rounded-xl border border-slate-200">
@@ -175,7 +175,7 @@
             <div class="bg-white p-3 rounded-lg shadow-xs border border-slate-200 space-y-2 border-l-4 border-l-emerald-500">
               <p class="font-semibold text-xs text-slate-900">Dian Sastro</p>
               <p class="text-[10px] text-slate-500">Lunas Rp 2.500.000</p>
-              <span class="inline-block px-2 py-0.5 bg-emerald-50 text-emerald-700 font-bold text-[10px] rounded">Paid QRIS</span>
+              <span class="block text-center py-0.5 bg-emerald-50 text-emerald-700 font-bold text-[10px] rounded">Paid QRIS</span>
             </div>
           </div>
           <div class="bg-slate-100/70 p-4 rounded-xl border border-slate-200">
@@ -196,14 +196,14 @@
             <div class="p-4 border border-slate-200 rounded-xl flex items-center justify-between bg-slate-50">
               <div>
                 <p class="font-bold text-slate-900">Rian Pratama</p>
-                <p class="text-[10px] text-slate-500">Lead Customer Service</p>
+                <p class="text-[10px] text-slate-500">Lead CS WA Operations</p>
               </div>
               <span class="px-2 py-1 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">Online</span>
             </div>
             <div class="p-4 border border-slate-200 rounded-xl flex items-center justify-between bg-slate-50">
               <div>
                 <p class="font-bold text-slate-900">Siska Amelia</p>
-                <p class="text-[10px] text-slate-500">Sales Specialist</p>
+                <p class="text-[10px] text-slate-500">WhatsApp Closing Specialist</p>
               </div>
               <span class="px-2 py-1 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">Online</span>
             </div>
@@ -216,15 +216,21 @@
   <!-- MODAL WA TEMPLATE -->
   <dialog id="waTemplateModal" class="rounded-2xl shadow-xl p-6 w-full max-w-md border border-slate-200 bg-white">
     <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-      <h3 class="font-bold text-slate-900 text-sm">WhatsApp Fast Response</h3>
+      <h3 class="font-bold text-slate-900 text-sm">WhatsApp Fast Response Suite</h3>
       <button onclick="closeWaTemplateModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
     </div>
     <div class="mt-4 space-y-3 text-xs">
-      <button onclick="sendWa('Halo Kak, terima kasih sudah menghubungi Cherry Queen! Ada yang bisa kami bantu?')" class="w-full p-3 text-left bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 font-medium">
-        💬 Sapaan Pelanggan Baru
+      <button onclick="sendWa('Halo Kak, terima kasih sudah menghubungi Cherry Queen! Ada yang bisa kami bantu?')" class="w-full p-3 text-left bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 font-medium flex items-center gap-2">
+        <i data-lucide="message-square" class="w-4 h-4 text-emerald-500"></i>
+        <span>💬 Sapaan Pelanggan Baru</span>
       </button>
-      <button onclick="sendWa('Halo Kak, pesanan paket Cherry Queen Kamu sudah kami proses dan siap dikirim ya!')" class="w-full p-3 text-left bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 font-medium">
-        📦 Konfirmasi Pengiriman
+      <button onclick="sendWa('Halo Kak, pesanan paket Cherry Queen Kamu sudah kami proses dan siap dikirim ya!')" class="w-full p-3 text-left bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 font-medium flex items-center gap-2">
+        <i data-lucide="package" class="w-4 h-4 text-blue-500"></i>
+        <span>📦 Konfirmasi Pengiriman</span>
+      </button>
+      <button onclick="sendWa('Halo Kak, berikut link pembayaran QRIS/Transfer untuk pesanan Cherry Queen Kamu ya: https://doku.com')" class="w-full p-3 text-left bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 font-medium flex items-center gap-2">
+        <i data-lucide="credit-card" class="w-4 h-4 text-purple-500"></i>
+        <span>💳 Kirim Link Pembayaran DOKU</span>
       </button>
     </div>
   </dialog>
@@ -300,7 +306,9 @@
     function closeWaTemplateModal() { document.getElementById('waTemplateModal').close(); }
 
     function sendWa(text, phone = '6281234567890') {
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+      let cleanPhone = phone.replace(/[^0-9]/g, '');
+      if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.slice(1);
+      window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`, '_blank');
     }
 
     function renderCustomers() {
@@ -331,10 +339,13 @@
           <td class="py-3 px-4 font-mono">${c.phone || '-'}</td>
           <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-50 text-emerald-700 font-bold">${c.status || 'Active'}</span></td>
           <td class="py-3 px-4 text-right">
-            <button onclick="sendWa('Halo Kak ${c.name}, terima kasih sudah menjadi bagian dari Cherry Queen!', '${c.phone}')" class="px-2.5 py-1 bg-emerald-600 text-white font-semibold rounded text-[10px] hover:bg-emerald-700">WA Chat</button>
+            <button onclick="sendWa('Halo Kak ${c.name}, terima kasih telah menghubungi Cherry Queen!', '${c.phone}')" class="px-2.5 py-1 bg-emerald-600 text-white font-semibold rounded text-[10px] hover:bg-emerald-700 inline-flex items-center gap-1">
+              <i data-lucide="message-square" class="w-3 h-3"></i> Chat WA
+            </button>
           </td>
         </tr>
       `).join('');
+      refreshIcons();
     }
 
     function handleAddCustomerSubmit(e) {
