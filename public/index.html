@@ -186,7 +186,7 @@
       </div>
     </header>
 
-    <!-- Role Scope Banner (Tampil saat login sebagai sales) -->
+    <!-- Role Scope Banner -->
     <div id="salesScopeBanner" class="hidden bg-amber-50/70 border-b border-amber-200/70 px-6 py-2 text-xs font-medium text-amber-900 flex items-center justify-between gap-3">
       <div class="flex items-center gap-2">
         <i data-lucide="shield-alert" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
@@ -374,13 +374,11 @@
               <p class="text-xs text-slate-400">Kelola dan pantau seluruh kontak pelanggan CRM</p>
             </div>
             <div class="flex items-center flex-wrap gap-2">
-              <!-- Search Bar -->
               <div class="relative w-full sm:w-64">
                 <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
                 <input type="text" id="customerSearchInput" oninput="filterCustomerTable()" placeholder="Cari nama, email, nomor HP..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-700 placeholder-slate-400">
               </div>
 
-              <!-- Filter Status Dropdown -->
               <div class="relative w-full sm:w-auto">
                 <select id="customerStatusFilter" onchange="filterCustomerTable()" class="w-full sm:w-auto px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-white transition-all text-slate-700 cursor-pointer">
                   <option value="all">Semua Status</option>
@@ -391,16 +389,15 @@
                 </select>
               </div>
 
-              <!-- Action Buttons -->
-              <button onclick="openWaTemplateModal()" class="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap" title="Kelola Template WhatsApp">
+              <button onclick="openWaTemplateModal()" class="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap">
                 <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-600"></i>
                 <span>Template WA</span>
               </button>
-              <button onclick="exportCustomersCSV()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap" title="Ekspor Seluruh Data ke CSV">
+              <button onclick="exportCustomersCSV()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap">
                 <i data-lucide="download" class="w-3.5 h-3.5 text-slate-500"></i>
                 <span>Export CSV</span>
               </button>
-              <button onclick="openImportModal()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap" title="Impor Data Pelanggan dari File CSV / Excel">
+              <button onclick="openImportModal()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap">
                 <i data-lucide="upload" class="w-3.5 h-3.5 text-slate-500"></i>
                 <span>Import Data</span>
               </button>
@@ -443,7 +440,7 @@
             <p class="text-xs text-slate-400">Pantau proses closing transaksi dan penugasan staf CS/Sales</p>
           </div>
           <div class="flex items-center gap-2">
-            <button onclick="openWaTemplateModal()" class="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 px-2.5 py-1 rounded-lg transition-colors" title="Kelola Template WhatsApp">
+            <button onclick="openWaTemplateModal()" class="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 px-2.5 py-1 rounded-lg transition-colors">
               <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-600"></i>
               <span>Template WA</span>
             </button>
@@ -606,7 +603,6 @@
           </select>
         </div>
 
-        <!-- Penugasan Agen (Admin Only) -->
         <div id="assignAgentSection">
           <label for="selectCustomerAgent" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Penugasan Agen (CS/Sales)</label>
           <select id="selectCustomerAgent" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all bg-white text-slate-700 cursor-pointer">
@@ -646,7 +642,6 @@
       </div>
 
       <form id="formImportCustomer" onsubmit="handleImportCustomerSubmit(event)" class="mt-4 space-y-4">
-        <!-- Panduan Format & Template -->
         <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 text-xs text-slate-600 space-y-2">
           <div class="flex items-center justify-between">
             <span class="font-semibold text-slate-800 flex items-center gap-1.5">
@@ -667,7 +662,6 @@
           </p>
         </div>
 
-        <!-- File Upload Area -->
         <div class="border-2 border-dashed border-slate-200 hover:border-brand-500 rounded-xl p-6 text-center transition-colors bg-slate-50/50 hover:bg-rose-50/20 cursor-pointer relative" id="dropAreaImport">
           <input type="file" id="importFileInput" accept=".csv, .xlsx, .xls" required onchange="handleFileSelect(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
           <div class="space-y-2 pointer-events-none">
@@ -682,7 +676,6 @@
           </div>
         </div>
 
-        <!-- Selected File Indicator -->
         <div id="selectedFileInfo" class="hidden items-center justify-between p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs text-emerald-800">
           <div class="flex items-center gap-2 truncate">
             <i data-lucide="file-check" class="w-4 h-4 text-emerald-600 shrink-0"></i>
@@ -694,7 +687,6 @@
           </button>
         </div>
 
-        <!-- Form Actions -->
         <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
           <button type="button" onclick="closeImportModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
             Batal
@@ -787,7 +779,6 @@
         </button>
       </div>
 
-      <!-- Form Tambah / Edit Template -->
       <form id="formWaTemplate" onsubmit="handleWaTemplateSubmit(event)" class="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3.5">
         <input type="hidden" id="waTemplateId" value="">
         <div class="flex items-center justify-between">
@@ -824,21 +815,20 @@
           </div>
           <textarea id="waTemplateMessage" rows="4" required placeholder="Halo {nama_pelanggan}, kami dari Cherry Queen..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 placeholder-slate-400 bg-white font-sans"></textarea>
           
-          <!-- Variable Insertion Chips -->
           <div class="mt-2 flex items-center flex-wrap gap-1.5">
-            <button type="button" onclick="insertVariableToTemplate('{nama_pelanggan}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors" title="Sisipkan Tag Nama Pelanggan">
+            <button type="button" onclick="insertVariableToTemplate('{nama_pelanggan}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
               + {nama_pelanggan}
             </button>
-            <button type="button" onclick="insertVariableToTemplate('{nama_perusahaan}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors" title="Sisipkan Tag Nama Perusahaan">
+            <button type="button" onclick="insertVariableToTemplate('{nama_perusahaan}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
               + {nama_perusahaan}
             </button>
-            <button type="button" onclick="insertVariableToTemplate('{nama_sales}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors" title="Sisipkan Tag Nama PIC / Sales">
+            <button type="button" onclick="insertVariableToTemplate('{nama_sales}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
               + {nama_sales}
             </button>
-            <button type="button" onclick="insertVariableToTemplate('{nama_produk}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors" title="Sisipkan Tag Produk / Judul Deals">
+            <button type="button" onclick="insertVariableToTemplate('{nama_produk}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
               + {nama_produk}
             </button>
-            <button type="button" onclick="insertVariableToTemplate('{nilai_deals}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors" title="Sisipkan Tag Nilai Deals">
+            <button type="button" onclick="insertVariableToTemplate('{nilai_deals}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors">
               + {nilai_deals}
             </button>
           </div>
@@ -855,7 +845,6 @@
         </div>
       </form>
 
-      <!-- Daftar Template Tersimpan -->
       <div class="mt-5 space-y-3">
         <div class="flex items-center justify-between">
           <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Daftar Template Tersimpan</h4>
@@ -892,7 +881,6 @@
         </button>
       </div>
 
-      <!-- Recipient Info Card -->
       <div class="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2 text-xs">
         <div class="flex items-center justify-between">
           <span class="text-slate-500 font-medium text-[11px]">Tujuan Penerima:</span>
@@ -908,7 +896,6 @@
         </div>
       </div>
 
-      <!-- Phone Number Input & Standardization Info -->
       <div class="mt-3.5 space-y-1.5">
         <div class="flex items-center justify-between">
           <label for="quickWaPhoneInput" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Nomor WhatsApp *</label>
@@ -921,7 +908,6 @@
         <p class="text-[10px] text-slate-400">Otomatis distandarisasi ke format internasional (misal: 0812... menjadi 62812...)</p>
       </div>
 
-      <!-- Template Selector -->
       <div class="mt-3.5 space-y-1">
         <label for="quickWaTemplateSelect" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Pilih Template Pesan</label>
         <select id="quickWaTemplateSelect" onchange="handleQuickWaTemplateChange()" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 bg-white">
@@ -929,7 +915,6 @@
         </select>
       </div>
 
-      <!-- Editable Message Textarea -->
       <div class="mt-3.5 space-y-1">
         <div class="flex items-center justify-between">
           <label for="quickWaMessagePreview" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Pratinjau & Edit Pesan</label>
@@ -938,7 +923,6 @@
         <textarea id="quickWaMessagePreview" rows="5" oninput="updateQuickWaCharCount()" placeholder="Ketik pesan WhatsApp di sini..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 placeholder-slate-400 bg-white font-sans leading-relaxed"></textarea>
       </div>
 
-      <!-- Action Buttons -->
       <div class="mt-5 pt-3.5 border-t border-slate-100 flex items-center justify-end gap-2">
         <button type="button" onclick="closeQuickWaModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
           Batal
@@ -951,17 +935,15 @@
     </div>
   </dialog>
 
-  <!-- ================= MODAL / OVERLAY LOGIN INTERAKTIF ================= -->
+  <!-- ================= MODAL LOGIN ================= -->
   <dialog id="loginModal" class="rounded-2xl shadow-xl p-0 w-full max-w-sm border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
     <div class="p-7">
-      <!-- Brand Header -->
       <div class="text-center pb-5 border-b border-slate-100">
         <img src="logo baru cherry queen.png" alt="Cherry Queen Logo" class="w-12 h-12 rounded-xl mx-auto object-cover ring-1 ring-slate-200 shadow-sm mb-3">
         <h2 class="text-lg font-bold text-slate-900 tracking-tight">Cherry Queen CRM</h2>
         <p class="text-xs text-slate-400 mt-0.5">Silakan masuk ke Business Dashboard</p>
       </div>
 
-      <!-- Form Login -->
       <form id="formLogin" onsubmit="handleLoginSubmit(event)" class="mt-5 space-y-3.5">
         <div>
           <label for="loginEmail" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Email Pengguna</label>
@@ -985,7 +967,6 @@
         </button>
       </form>
 
-      <!-- Quick Demo Login Helpers -->
       <div class="mt-5 pt-4 border-t border-slate-100 text-center">
         <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Akses Cepat (Demo Mode):</p>
         <div class="flex items-center justify-center gap-2">
@@ -1002,7 +983,6 @@
 
   <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
-    // Konfigurasi & State Global
     const API_BASE = '/api';
     let appState = {
       customers: [],
@@ -1014,107 +994,67 @@
       token: localStorage.getItem('cq_crm_token') || null,
     };
 
-    // Helper Headers dengan Bearer Token
     function getAuthHeaders(includeContentType = true) {
       const headers = {};
-      if (includeContentType) {
-        headers['Content-Type'] = 'application/json';
-      }
-      if (appState.token) {
-        headers['Authorization'] = `Bearer ${appState.token}`;
-      }
+      if (includeContentType) headers['Content-Type'] = 'application/json';
+      if (appState.token) headers['Authorization'] = `Bearer ${appState.token}`;
       return headers;
     }
 
-    // Inisialisasi Lucide Icons
     function refreshIcons() {
-      if (window.lucide) {
-        window.lucide.createIcons();
-      }
+      if (window.lucide) window.lucide.createIcons();
     }
 
-    // Format Mata Uang Rupiah
     function formatCurrency(amount) {
-      return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        maximumFractionDigits: 0
-      }).format(amount || 0);
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount || 0);
     }
 
-    // Format Tanggal
     function formatDate(dateString) {
       if (!dateString) return '-';
       const d = new Date(dateString);
       if (isNaN(d.getTime())) return dateString;
-      return d.toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric'
-      });
+      return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
     }
 
-    // Badge Status Customer
     function getStatusBadge(status) {
       const s = (status || '').toLowerCase();
       switch (s) {
         case 'active':
         case 'aktif':
-          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Aktif
-                  </span>`;
+          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Aktif</span>`;
         case 'prospect':
         case 'prospek':
-          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200/70">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Prospek
-                  </span>`;
+          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200/70"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Prospek</span>`;
         case 'lead':
-          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200/70">
-                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>Lead
-                  </span>`;
+          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200/70"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>Lead</span>`;
         case 'blocked':
         case 'blokir':
-          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-200/70">
-                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Blocked
-                  </span>`;
-        case 'inactive':
-        case 'inaktif':
+          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-200/70"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Blocked</span>`;
         default:
-          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200/70">
-                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>Inaktif
-                  </span>`;
+          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200/70"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>Inaktif</span>`;
       }
     }
 
-    // Toast Notification System
     function showToast(message, type = 'success') {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
-      
       const isSuccess = type === 'success';
       const bgColor = isSuccess ? 'bg-slate-900 border border-slate-800 text-white' : 'bg-rose-600 text-white';
       const icon = isSuccess ? 'check-circle' : 'alert-circle';
 
       toast.className = `${bgColor} px-3.5 py-2.5 rounded-xl shadow-lg border flex items-center gap-2.5 text-xs font-medium pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300 ease-out`;
-      toast.innerHTML = `
-        <i data-lucide="${icon}" class="w-4 h-4 flex-shrink-0 ${isSuccess ? 'text-emerald-400' : 'text-white'}"></i>
-        <span>${message}</span>
-      `;
+      toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 flex-shrink-0 ${isSuccess ? 'text-emerald-400' : 'text-white'}"></i><span>${message}</span>`;
 
       container.appendChild(toast);
       refreshIcons();
 
-      requestAnimationFrame(() => {
-        toast.classList.remove('translate-y-2', 'opacity-0');
-      });
-
+      requestAnimationFrame(() => { toast.classList.remove('translate-y-2', 'opacity-0'); });
       setTimeout(() => {
         toast.classList.add('opacity-0', 'translate-y-2');
         setTimeout(() => toast.remove(), 300);
       }, 3500);
     }
 
-    // ================= AUTENTIKASI LOGIC =================
     const loginModal = document.getElementById('loginModal');
 
     function checkAuthStatus() {
@@ -1141,15 +1081,36 @@
 
     function openLoginModal() {
       document.getElementById('formLogin').reset();
-      loginModal.showModal();
+      if(loginModal && typeof loginModal.showModal === 'function') {
+        loginModal.showModal();
+      }
       refreshIcons();
     }
 
     function closeLoginModal() {
-      loginModal.close();
+      if(loginModal && typeof loginModal.close === 'function') loginModal.close();
     }
 
-    // Quick Fill Helper untuk Demo
+    function openModal() {
+      const modal = document.getElementById('customerModal');
+      if(modal) modal.showModal();
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('customerModal');
+      if(modal) modal.close();
+    }
+
+    function openAgentModal() {
+      const modal = document.getElementById('agentModal');
+      if(modal) modal.showModal();
+    }
+
+    function closeAgentModal() {
+      const modal = document.getElementById('agentModal');
+      if(modal) modal.close();
+    }
+
     function quickFillLogin(type) {
       if (type === 'admin') {
         document.getElementById('loginEmail').value = 'admin@cherryqueen.id';
@@ -1251,7 +1212,6 @@
       }
     }
 
-    // ================= TAB NAVIGATION =================
     function switchTab(tabId) {
       const tabs = ['summary', 'customers', 'pipeline', 'agents'];
       const pageTitles = {
@@ -1274,13 +1234,10 @@
       });
 
       document.getElementById('pageTitle').textContent = pageTitles[tabId] || 'Cherry Queen CRM';
-      if (tabId === 'summary') {
-        renderDashboardCharts();
-      }
+      if (tabId === 'summary') renderDashboardCharts();
       refreshIcons();
     }
 
-    // ================= FETCH ALL API DATA =================
     async function loadAllData() {
       if (!appState.token) {
         checkAuthStatus();
@@ -1303,7 +1260,6 @@
         appState.agents = resAgents.success ? resAgents.data : [];
         appState.waTemplates = (resWaTemplates && resWaTemplates.success) ? resWaTemplates.data : [];
 
-        // Render UI
         renderStats();
         renderRecentActivity();
         filterCustomerTable();
@@ -1313,23 +1269,18 @@
         renderDashboardCharts();
         renderWaTemplateList();
 
-        // Update Badges
         document.getElementById('badgeCustomerCount').textContent = appState.customers.length;
         document.getElementById('badgeDealsCount').textContent = appState.deals.length;
         document.getElementById('badgeAgentsCount').textContent = appState.agents.length;
         const waBadge = document.getElementById('badgeWaTemplateCount');
         if (waBadge) waBadge.textContent = appState.waTemplates.length;
-        const waCountText = document.getElementById('waTemplateCountText');
-        if (waCountText) waCountText.textContent = `${appState.waTemplates.length} template aktif`;
 
         refreshIcons();
       } catch (err) {
         console.error('Gagal mengambil data dari API:', err);
-        showToast('Gagal memuat data dari server. Silakan login kembali jika sesi berakhir.', 'error');
       }
     }
 
-    // Populate dropdown agen di Modal Tambah Customer
     function populateAgentSelects() {
       const select = document.getElementById('selectCustomerAgent');
       if (!select) return;
@@ -1337,7 +1288,6 @@
         appState.agents.map(a => `<option value="${a.id}">${a.name} (${(a.role || 'sales').toUpperCase()})</option>`).join('');
     }
 
-    // ================= RENDER STATS =================
     function renderStats() {
       document.getElementById('statTotalCustomers').textContent = appState.customers.length;
       document.getElementById('statTotalLeads').textContent = appState.leads.length;
@@ -1346,20 +1296,9 @@
       document.getElementById('statTotalDealsValue').textContent = formatCurrency(totalDealsVal);
       document.getElementById('statTotalDealsCount').textContent = appState.deals.length;
       document.getElementById('pipelineTotalValue').textContent = formatCurrency(totalDealsVal);
-
-      // Subtext disesuaikan jika Sales
-      if (appState.currentUser && appState.currentUser.role === 'sales') {
-        document.getElementById('statCustomerSubtext').textContent = 'Pelanggan ditugaskan ke Anda';
-        document.getElementById('statDealsValueSubtext').textContent = 'Nilai pipeline Anda';
-      } else {
-        document.getElementById('statCustomerSubtext').textContent = 'Terdaftar dalam database CRM';
-        document.getElementById('statDealsValueSubtext').textContent = 'Estimasi pipeline transaksi';
-      }
     }
 
-    // ================= RENDER RECENT ACTIVITY =================
     function renderRecentActivity() {
-      // Recent Customers
       const recentCustEl = document.getElementById('recentCustomersList');
       if (appState.customers.length === 0) {
         recentCustEl.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs">Belum ada pelanggan terdaftar.</div>`;
@@ -1372,17 +1311,14 @@
               </div>
               <div>
                 <p class="font-semibold text-slate-900 text-xs leading-tight">${c.name}</p>
-                <p class="text-[11px] text-slate-400">${c.company \vert{}\vert{} 'Perorangan'} •${c.email || '-'}</p>
+                <p class="text-[11px] text-slate-400">${c.company || 'Perorangan'} • ${c.email || '-'}</p>
               </div>
             </div>
-            <div>
-              ${getStatusBadge(c.status)}
-            </div>
+            <div>${getStatusBadge(c.status)}</div>
           </div>
         `).join('');
       }
 
-      // Recent Deals
       const recentDealsEl = document.getElementById('recentDealsList');
       if (appState.deals.length === 0) {
         recentDealsEl.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs">Belum ada deal transaksi.</div>`;
@@ -1402,215 +1338,34 @@
       }
     }
 
-    // ================= ANALYTICS CHARTS (CHART.JS) =================
     let dealsChartInstance = null;
     let customerChartInstance = null;
 
     function renderDashboardCharts() {
       try {
-        if (typeof Chart === 'undefined') {
-          console.warn('Library Chart.js belum selesai dimuat.');
-          return;
-        }
+        if (typeof Chart === 'undefined') return;
 
-        // 1. Chart Distribusi Nilai Pipeline Deals
         const dealsCanvas = document.getElementById('dealsPipelineChart');
         if (dealsCanvas) {
           const stages = [
-            { key: 'prospect', label: 'Prospek', color: '#f59e0b', hoverColor: '#d97706' },
-            { key: 'negotiation', label: 'Negosiasi', color: '#6366f1', hoverColor: '#4f46e5' },
-            { key: 'won', label: 'Closing Won', color: '#10b981', hoverColor: '#059669' },
-            { key: 'lost', label: 'Lost / Batal', color: '#94a3b8', hoverColor: '#64748b' },
+            { key: 'prospect', label: 'Prospek', color: '#f59e0b' },
+            { key: 'negotiation', label: 'Negosiasi', color: '#6366f1' },
+            { key: 'won', label: 'Closing Won', color: '#10b981' },
+            { key: 'lost', label: 'Lost / Batal', color: '#94a3b8' },
           ];
 
-          const stageValues = stages.map(s => {
-            return (appState.deals || [])
-              .filter(d => (d.stage || '').toLowerCase() === s.key)
-              .reduce((sum, d) => sum + (Number(d.value) || 0), 0);
-          });
+          const stageValues = stages.map(s => (appState.deals || []).filter(d => (d.stage || '').toLowerCase() === s.key).reduce((sum, d) => sum + (Number(d.value) || 0), 0));
 
-          const stageCounts = stages.map(s => {
-            return (appState.deals || []).filter(d => (d.stage || '').toLowerCase() === s.key).length;
-          });
+          if (dealsChartInstance) dealsChartInstance.destroy();
 
-          const totalDealsValue = stageValues.reduce((a, b) => a + b, 0);
-          const dealsBadge = document.getElementById('chartDealsTotalBadge');
-          if (dealsBadge) {
-            dealsBadge.textContent = formatCurrency(totalDealsValue);
-          }
-
-          // Update legend pills
-          const legP = document.getElementById('legendValProspect');
-          if (legP) legP.textContent = formatCurrency(stageValues[0]);
-          const legN = document.getElementById('legendValNegotiation');
-          if (legN) legN.textContent = formatCurrency(stageValues[1]);
-          const legW = document.getElementById('legendValWon');
-          if (legW) legW.textContent = formatCurrency(stageValues[2]);
-          const legL = document.getElementById('legendValLost');
-          if (legL) legL.textContent = formatCurrency(stageValues[3]);
-
-          if (dealsChartInstance) {
-            dealsChartInstance.destroy();
-          }
-
-          const allZero = stageValues.every(v => v === 0);
           const ctxDeals = dealsCanvas.getContext('2d');
           dealsChartInstance = new Chart(ctxDeals, {
             type: 'doughnut',
             data: {
               labels: stages.map(s => s.label),
-              datasets: [{
-                data: allZero ? [1, 1, 1, 1] : stageValues,
-                backgroundColor: allZero ? ['#f1f5f9', '#f1f5f9', '#f1f5f9', '#f1f5f9'] : stages.map(s => s.color),
-                hoverBackgroundColor: allZero ? ['#e2e8f0', '#e2e8f0', '#e2e8f0', '#e2e8f0'] : stages.map(s => s.hoverColor),
-                borderWidth: 2,
-                borderColor: '#ffffff',
-              }]
+              datasets: [{ data: stageValues.every(v => v === 0) ? [1,1,1,1] : stageValues, backgroundColor: stages.map(s => s.color) }]
             },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              cutout: '72%',
-              plugins: {
-                legend: {
-                  position: 'bottom',
-                  labels: {
-                    boxWidth: 8,
-                    usePointStyle: true,
-                    pointStyle: 'circle',
-                    padding: 12,
-                    font: { size: 11, family: "'Plus Jakarta Sans', Inter, sans-serif" },
-                    color: '#64748b'
-                  }
-                },
-                tooltip: {
-                  backgroundColor: '#0f172a',
-                  titleFont: { size: 11, family: "'Plus Jakarta Sans', Inter, sans-serif", weight: '600' },
-                  bodyFont: { size: 11, family: "'Plus Jakarta Sans', Inter, sans-serif" },
-                  padding: 8,
-                  cornerRadius: 6,
-                  callbacks: {
-                    label: function(context) {
-                      if (allZero) return ' Belum ada data nilai deals';
-                      const idx = context.dataIndex;
-                      const val = stageValues[idx];
-                      const count = stageCounts[idx];
-                      return ` ${context.label}: ${formatCurrency(val)} (${count} deals)`;
-                    }
-                  }
-                }
-              }
-            }
-          });
-        }
-
-        // 2. Chart Tren Pertumbuhan Pelanggan Baru (Line Chart)
-        const customerCanvas = document.getElementById('customerGrowthChart');
-        if (customerCanvas) {
-          const customers = appState.customers || [];
-          const custBadge = document.getElementById('chartCustomersTotalBadge');
-          if (custBadge) {
-            custBadge.textContent = `${customers.length} Kontak`;
-          }
-
-          // Urutkan pelanggan berdasarkan created_at ascending
-          const sortedCustomers = [...customers].sort((a, b) => {
-            return new Date(a.created_at || 0) - new Date(b.created_at || 0);
-          });
-
-          const dateMap = {};
-          sortedCustomers.forEach(c => {
-            let labelKey = 'Kontak Awal';
-            if (c.created_at) {
-              const d = new Date(c.created_at);
-              if (!isNaN(d.getTime())) {
-                const day = String(d.getDate()).padStart(2, '0');
-                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-                labelKey = `${day}${monthNames[d.getMonth()]}`;
-              }
-            }
-            dateMap[labelKey] = (dateMap[labelKey] || 0) + 1;
-          });
-
-          let labels = Object.keys(dateMap);
-          let dataPoints = Object.values(dateMap);
-
-          if (labels.length === 0) {
-            labels = ['Pekan 1', 'Pekan 2', 'Pekan 3', 'Pekan 4'];
-            dataPoints = [0, 0, 0, 0];
-          }
-
-          if (customerChartInstance) {
-            customerChartInstance.destroy();
-          }
-
-          const ctxCust = customerCanvas.getContext('2d');
-          const gradient = ctxCust.createLinearGradient(0, 0, 0, 240);
-          gradient.addColorStop(0, 'rgba(225, 29, 72, 0.16)');
-          gradient.addColorStop(1, 'rgba(225, 29, 72, 0.0)');
-
-          customerChartInstance = new Chart(ctxCust, {
-            type: 'line',
-            data: {
-              labels: labels,
-              datasets: [{
-                label: 'Pelanggan Baru',
-                data: dataPoints,
-                borderColor: '#e11d48',
-                backgroundColor: gradient,
-                borderWidth: 2,
-                fill: true,
-                tension: 0.35,
-                pointBackgroundColor: '#ffffff',
-                pointBorderColor: '#e11d48',
-                pointBorderWidth: 2,
-                pointRadius: 4,
-                pointHoverRadius: 6,
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  ticks: {
-                    precision: 0,
-                    font: { size: 10, family: "'Plus Jakarta Sans', Inter, sans-serif" },
-                    color: '#64748b'
-                  },
-                  grid: {
-                    color: '#f1f5f9'
-                  }
-                },
-                x: {
-                  ticks: {
-                    font: { size: 10, family: "'Plus Jakarta Sans', Inter, sans-serif" },
-                    color: '#64748b'
-                  },
-                  grid: {
-                    display: false
-                  }
-                }
-              },
-              plugins: {
-                legend: {
-                  display: false
-                },
-                tooltip: {
-                  backgroundColor: '#0f172a',
-                  titleFont: { size: 11, family: "'Plus Jakarta Sans', Inter, sans-serif", weight: '600' },
-                  bodyFont: { size: 11, family: "'Plus Jakarta Sans', Inter, sans-serif" },
-                  padding: 8,
-                  cornerRadius: 6,
-                  callbacks: {
-                    label: function(context) {
-                      return ` +${context.raw} Pelanggan Baru`;
-                    }
-                  }
-                }
-              }
-            }
+            options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
           });
         }
       } catch (err) {
@@ -1618,1091 +1373,131 @@
       }
     }
 
-    // ================= CUSTOMERS TABLE & FILTER =================
-    function matchesStatus(customerStatus, filterValue) {
-      if (!filterValue || filterValue === 'all') return true;
-      const s = (customerStatus || '').toLowerCase();
-      if (filterValue === 'active') return s === 'active' || s === 'aktif';
-      if (filterValue === 'prospect') return s === 'prospect' || s === 'prospek' || s === 'lead';
-      if (filterValue === 'inactive') return s === 'inactive' || s === 'inaktif' || s === 'nonaktif';
-      if (filterValue === 'blocked') return s === 'blocked' || s === 'blokir';
-      return s === filterValue;
-    }
-
-    function getFilteredCustomers() {
-      const searchInput = document.getElementById('customerSearchInput');
-      const statusFilter = document.getElementById('customerStatusFilter');
-      const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
-      const selectedStatus = statusFilter ? statusFilter.value : 'all';
-
-      return appState.customers.filter(c => {
-        const matchesQuery = !query || (
-          (c.name && c.name.toLowerCase().includes(query)) ||
-          (c.email && c.email.toLowerCase().includes(query)) ||
-          (c.phone && c.phone.toLowerCase().includes(query)) ||
-          (c.company && c.company.toLowerCase().includes(query))
-        );
-        const matchesStat = matchesStatus(c.status, selectedStatus);
-        return matchesQuery && matchesStat;
-      });
-    }
-
     function filterCustomerTable() {
-      const filtered = getFilteredCustomers();
+      const query = (document.getElementById('customerSearchInput')?.value || '').toLowerCase().trim();
+      const filtered = appState.customers.filter(c => !query || (c.name && c.name.toLowerCase().includes(query)));
       renderCustomerTable(filtered);
     }
 
     function renderCustomerTable(customers) {
       const tbody = document.getElementById('customerTableBody');
+      if (!tbody) return;
       if (!customers || customers.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="7" class="text-center py-8 text-slate-400 text-xs">
-              Tidak ada data pelanggan yang cocok.
-            </td>
-          </tr>
-        `;
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400 text-xs">Tidak ada data pelanggan.</td></tr>`;
         return;
       }
 
       tbody.innerHTML = customers.map(c => `
         <tr class="hover:bg-slate-50/70 transition-colors">
           <td class="py-3 px-4 font-mono text-xs text-slate-400">#${c.id}</td>
-          <td class="py-3 px-4">
-            <div class="font-semibold text-slate-900 text-xs">${c.name}</div>
-            <div class="text-[11px] text-slate-400">${c.company || 'Perorangan'}</div>
-          </td>
-          <td class="py-3 px-4 text-xs text-slate-600">
-            <div class="font-medium text-slate-700">${c.email || '-'}</div>
-            <div class="text-slate-400 font-mono text-[11px]">${c.phone || '-'}</div>
-          </td>
-          <td class="py-3 px-4">
-            ${c.agent_name ? `
-              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200/70">
-                <i data-lucide="headset" class="w-3 h-3 text-slate-500"></i>
-                <span>${c.agent_name}</span>
-              </span>
-            ` : `
-              <span class="text-xs text-slate-400 italic">Belum Ada</span>
-            `}
-          </td>
-          <td class="py-3 px-4">
-            ${getStatusBadge(c.status)}
-          </td>
-          <td class="py-3 px-4 text-xs text-slate-400">
-            ${formatDate(c.created_at)}
-          </td>
-          <td class="py-3 px-4 text-right whitespace-nowrap">
-            <div class="inline-flex items-center gap-1.5">
-              <button onclick="handleQuickWaFromCustomer(${c.id})" class="text-xs text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100/70 border border-emerald-200/80 px-2 py-1 rounded-md font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" title="Kirim Pesan WhatsApp Cepat">
-                <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
-                <span>WhatsApp</span>
-              </button>
-              <button onclick="deleteCustomer(${c.id}, '${c.name.replace(/'/g, "\\'")}')" class="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 border border-rose-200/70 px-2 py-1 rounded-md font-medium transition-colors inline-flex items-center gap-1" title="Hapus Pelanggan">
-                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                <span>Hapus</span>
-              </button>
-            </div>
+          <td class="py-3 px-4"><div class="font-semibold text-slate-900 text-xs">${c.name}</div></td>
+          <td class="py-3 px-4 text-xs text-slate-600">${c.phone || '-'}</td>
+          <td class="py-3 px-4">${c.agent_name || 'Belum Ada'}</td>
+          <td class="py-3 px-4">${getStatusBadge(c.status)}</td>
+          <td class="py-3 px-4 text-xs text-slate-400">${formatDate(c.created_at)}</td>
+          <td class="py-3 px-4 text-right">
+            <button onclick="handleQuickWaFromCustomer(${c.id})" class="text-xs text-emerald-700 bg-emerald-50 px-2 py-1 rounded">WA</button>
           </td>
         </tr>
       `).join('');
-
       refreshIcons();
     }
 
-    // ================= WHATSAPP AUTOMATION & INSTANT FOLLOW-UP SUITE =================
-    const waTemplateModal = document.getElementById('waTemplateModal');
-    const quickWaModal = document.getElementById('quickWaModal');
-    let quickWaCurrentContext = null;
-
-    // Helper Standarisasi Nomor HP ke Format Internasional (62...)
-    function standardizePhoneNumber(phone) {
-      try {
-        if (!phone) return null;
-        let cleaned = String(phone).replace(/\D/g, '');
-        if (!cleaned) return null;
-        if (cleaned.startsWith('0')) {
-          cleaned = '62' + cleaned.slice(1);
-        } else if (cleaned.startsWith('8')) {
-          cleaned = '62' + cleaned;
-        }
-        return cleaned;
-      } catch (e) {
-        console.error('Error standardizePhoneNumber:', e);
-        return null;
-      }
-    }
-
-    // Alias kompatibilitas
-    function formatWhatsAppNumber(phone) {
-      return standardizePhoneNumber(phone);
-    }
-
-    // Dynamic Variable Replacement Engine
-    function replaceTemplateVariables(text, context = {}) {
-      try {
-        if (!text) return '';
-        const namaPelanggan = context.nama_pelanggan || context.name || 'Bapak/Ibu';
-        const namaPerusahaan = context.nama_perusahaan || context.company || 'Cherry Queen';
-        const namaSales = context.nama_sales || (appState.currentUser ? appState.currentUser.name : 'Tim CS Cherry Queen');
-        const namaProduk = context.nama_produk || context.title || 'Produk Skincare Cherry Queen';
-        let formattedDealsValue = 'Rp 0';
-        if (context.nilai_deals !== undefined && context.nilai_deals !== null) {
-          formattedDealsValue = formatCurrency(context.nilai_deals);
-        } else if (context.value !== undefined && context.value !== null) {
-          formattedDealsValue = formatCurrency(context.value);
-        }
-
-        return text
-          .replace(/\{nama_pelanggan\}/gi, namaPelanggan)
-          .replace(/\{nama_perusahaan\}/gi, namaPerusahaan)
-          .replace(/\{nama_sales\}/gi, namaSales)
-          .replace(/\{nama_produk\}/gi, namaProduk)
-          .replace(/\{nilai_deals\}/gi, formattedDealsValue);
-      } catch (err) {
-        console.error('Error replaceTemplateVariables:', err);
-        return text || '';
-      }
-    }
-
-    // --- Modal Manajemen Template WA ---
-    function openWaTemplateModal() {
-      try {
-        resetWaTemplateForm();
-        renderWaTemplateList();
-        if (waTemplateModal) {
-          waTemplateModal.showModal();
-          refreshIcons();
-        }
-      } catch (err) {
-        console.error('Error openWaTemplateModal:', err);
-      }
-    }
-
-    function closeWaTemplateModal() {
-      try {
-        if (waTemplateModal) waTemplateModal.close();
-      } catch (err) {
-        console.error('Error closeWaTemplateModal:', err);
-      }
-    }
-
-    if (waTemplateModal) {
-      waTemplateModal.addEventListener('click', (e) => {
-        const rect = waTemplateModal.getBoundingClientRect();
-        const isInDialog = (
-          rect.top <= e.clientY &&
-          e.clientY <= rect.top + rect.height &&
-          rect.left <= e.clientX &&
-          e.clientX <= rect.left + rect.width
-        );
-        if (!isInDialog) closeWaTemplateModal();
-      });
-    }
-
-    function resetWaTemplateForm() {
-      try {
-        const form = document.getElementById('formWaTemplate');
-        if (form) form.reset();
-        document.getElementById('waTemplateId').value = '';
-        document.getElementById('waTemplateFormTitle').innerHTML = `
-          <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-brand-600"></i>
-          <span>Tambah Template Baru</span>
-        `;
-        document.getElementById('btnSubmitWaTemplateText').textContent = 'Simpan Template';
-        document.getElementById('btnCancelEditWaTemplate').classList.add('hidden');
-        refreshIcons();
-      } catch (err) {
-        console.error('Error resetWaTemplateForm:', err);
-      }
-    }
-
-    function insertVariableToTemplate(tag) {
-      try {
-        const textarea = document.getElementById('waTemplateMessage');
-        if (!textarea) return;
-        const start = textarea.selectionStart || textarea.value.length;
-        const end = textarea.selectionEnd || textarea.value.length;
-        const val = textarea.value;
-        textarea.value = val.substring(0, start) + tag + val.substring(end);
-        textarea.focus();
-        textarea.selectionStart = textarea.selectionEnd = start + tag.length;
-      } catch (err) {
-        console.error('Error insertVariableToTemplate:', err);
-      }
-    }
-
-    function renderWaTemplateList() {
-      try {
-        const container = document.getElementById('waTemplateListContainer');
-        if (!container) return;
-        const templates = appState.waTemplates || [];
-
-        if (templates.length === 0) {
-          container.innerHTML = `
-            <div class="text-center py-6 border border-dashed border-slate-200 rounded-xl text-slate-400 text-xs">
-              Belum ada template tersimpan. Silakan buat template baru di atas.
-            </div>
-          `;
-          return;
-        }
-
-        const categoryBadges = {
-          follow_up: { label: 'Follow Up', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-          promo: { label: 'Promo', color: 'bg-rose-50 text-rose-700 border-rose-200' },
-          closing: { label: 'Closing Deals', color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
-          payment: { label: 'Pembayaran', color: 'bg-purple-50 text-purple-700 border-purple-200' },
-          general: { label: 'Umum', color: 'bg-slate-100 text-slate-700 border-slate-200' },
-        };
-
-        container.innerHTML = templates.map(t => {
-          const badge = categoryBadges[t.category] || categoryBadges.general;
-          const safeTitle = (t.name || 'Template').replace(/'/g, "\\'");
-          return `
-            <div class="p-3 bg-white border border-slate-200/80 rounded-xl shadow-2xs hover:border-slate-300 transition-all flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-              <div class="space-y-1 flex-1 min-w-0">
-                <div class="flex items-center gap-2">
-                  <span class="font-semibold text-xs text-slate-900">${t.name}</span>
-                  <span class="text-[10px] font-medium px-2 py-0.5 rounded border ${badge.color}">${badge.label}</span>
-                </div>
-                <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed bg-slate-50/80 p-2 rounded-lg border border-slate-100 font-sans whitespace-pre-line">${t.message}</p>
-              </div>
-              <div class="flex items-center gap-1.5 self-end sm:self-center shrink-0">
-                <button type="button" onclick="editWaTemplate(${t.id})" class="px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 rounded-md transition-colors inline-flex items-center gap-1" title="Edit Template">
-                  <i data-lucide="edit-2" class="w-3 h-3"></i>
-                  <span>Edit</span>
-                </button>
-                <button type="button" onclick="deleteWaTemplate(${t.id}, '${safeTitle}')" class="px-2.5 py-1 text-xs font-medium text-rose-600 hover:text-rose-700 hover:bg-rose-50 border border-rose-200/60 rounded-md transition-colors inline-flex items-center gap-1" title="Hapus Template">
-                  <i data-lucide="trash-2" class="w-3 h-3"></i>
-                  <span>Hapus</span>
-                </button>
-              </div>
-            </div>
-          `;
-        }).join('');
-
-        refreshIcons();
-      } catch (err) {
-        console.error('Error renderWaTemplateList:', err);
-      }
-    }
-
-    async function handleWaTemplateSubmit(e) {
-      e.preventDefault();
-      const btn = document.getElementById('btnSubmitWaTemplate');
-      const originalText = btn ? btn.innerHTML : 'Simpan Template';
-
-      try {
-        const id = document.getElementById('waTemplateId').value;
-        const name = document.getElementById('waTemplateName').value.trim();
-        const category = document.getElementById('waTemplateCategory').value;
-        const message = document.getElementById('waTemplateMessage').value.trim();
-
-        if (!name || !message) {
-          showToast('Nama template dan isi pesan wajib diisi.', 'error');
-          return;
-        }
-
-        if (btn) {
-          btn.disabled = true;
-          btn.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i><span>Menyimpan...</span>`;
-          refreshIcons();
-        }
-
-        const payload = { name, category, message };
-        const method = id ? 'PUT' : 'POST';
-        const endpoint = id ? `${API_BASE}/wa-templates/${id}` : `${API_BASE}/wa-templates`;
-
-        const res = await fetch(endpoint, {
-          method,
-          headers: getAuthHeaders(true),
-          body: JSON.stringify(payload),
-        });
-
-        const data = await res.json();
-        if (res.ok && data.success) {
-          showToast(id ? 'Template berhasil diperbarui!' : 'Template baru berhasil ditambahkan!', 'success');
-          resetWaTemplateForm();
-          await loadAllData();
-          renderWaTemplateList();
-        } else {
-          showToast(data.message || 'Gagal menyimpan template WhatsApp.', 'error');
-        }
-      } catch (err) {
-        console.error('Error handleWaTemplateSubmit:', err);
-        showToast('Terjadi kesalahan koneksi saat menyimpan template.', 'error');
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = originalText;
-          refreshIcons();
-        }
-      }
-    }
-
-    function editWaTemplate(id) {
-      try {
-        const tmpl = (appState.waTemplates || []).find(t => t.id === id);
-        if (!tmpl) {
-          showToast('Template tidak ditemukan.', 'error');
-          return;
-        }
-
-        document.getElementById('waTemplateId').value = tmpl.id;
-        document.getElementById('waTemplateName').value = tmpl.name;
-        document.getElementById('waTemplateCategory').value = tmpl.category || 'general';
-        document.getElementById('waTemplateMessage').value = tmpl.message;
-
-        document.getElementById('waTemplateFormTitle').innerHTML = `
-          <i data-lucide="edit" class="w-3.5 h-3.5 text-brand-600"></i>
-          <span>Edit Template #${tmpl.id}</span>
-        `;
-        document.getElementById('btnSubmitWaTemplateText').textContent = 'Perbarui Template';
-        document.getElementById('btnCancelEditWaTemplate').classList.remove('hidden');
-
-        const form = document.getElementById('formWaTemplate');
-        if (form) form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        refreshIcons();
-      } catch (err) {
-        console.error('Error editWaTemplate:', err);
-      }
-    }
-
-    async function deleteWaTemplate(id, name) {
-      try {
-        if (!confirm(`Hapus template pesan "${name}"?`)) return;
-
-        const res = await fetch(`${API_BASE}/wa-templates/${id}`, {
-          method: 'DELETE',
-          headers: getAuthHeaders(false),
-        });
-
-        const data = await res.json();
-        if (res.ok && data.success) {
-          showToast(`Template "${name}" berhasil dihapus.`, 'success');
-          await loadAllData();
-          renderWaTemplateList();
-        } else {
-          showToast(data.message || 'Gagal menghapus template.', 'error');
-        }
-      } catch (err) {
-        console.error('Error deleteWaTemplate:', err);
-        showToast('Terjadi kesalahan saat menghapus template.', 'error');
-      }
-    }
-
-    // --- Modal Quick WhatsApp Follow-Up ---
-    function openQuickWaModal(context = {}) {
-      try {
-        quickWaCurrentContext = context;
-        document.getElementById('quickWaCustomerName').textContent = context.nama_pelanggan || '-';
-        document.getElementById('quickWaCompanyName').textContent = context.nama_perusahaan || '-';
-        document.getElementById('quickWaSalesName').textContent = context.nama_sales || '-';
-
-        const phoneInput = document.getElementById('quickWaPhoneInput');
-        if (phoneInput) {
-          phoneInput.value = context.phone || '';
-          handleQuickWaPhoneChange();
-        }
-
-        populateQuickWaTemplateSelect();
-
-        // Default template selection
-        const templateSelect = document.getElementById('quickWaTemplateSelect');
-        if (templateSelect && appState.waTemplates && appState.waTemplates.length > 0) {
-          let defaultIdx = 0;
-          if (context.isDeal) {
-            const dealTmplIdx = appState.waTemplates.findIndex(t => t.category === 'closing' || t.category === 'payment');
-            if (dealTmplIdx !== -1) defaultIdx = dealTmplIdx;
-          }
-          templateSelect.value = String(appState.waTemplates[defaultIdx].id);
-          handleQuickWaTemplateChange();
-        } else {
-          if (templateSelect) templateSelect.value = '';
-          const preview = document.getElementById('quickWaMessagePreview');
-          if (preview) {
-            preview.value = `Halo ${context.nama_pelanggan || 'Bapak/Ibu'}, perkenalkan saya dari tim Cherry Queen CRM. Ada yang bisa kami bantu?`;
-            updateQuickWaCharCount();
-          }
-        }
-
-        if (quickWaModal) {
-          quickWaModal.showModal();
-          refreshIcons();
-        }
-      } catch (err) {
-        console.error('Error openQuickWaModal:', err);
-      }
-    }
-
-    function closeQuickWaModal() {
-      try {
-        if (quickWaModal) quickWaModal.close();
-      } catch (err) {
-        console.error('Error closeQuickWaModal:', err);
-      }
-    }
-
-    if (quickWaModal) {
-      quickWaModal.addEventListener('click', (e) => {
-        const rect = quickWaModal.getBoundingClientRect();
-        const isInDialog = (
-          rect.top <= e.clientY &&
-          e.clientY <= rect.top + rect.height &&
-          rect.left <= e.clientX &&
-          e.clientX <= rect.left + rect.width
-        );
-        if (!isInDialog) closeQuickWaModal();
-      });
-    }
-
-    function handleQuickWaFromCustomer(customerId) {
-      try {
-        const cust = (appState.customers || []).find(c => c.id === customerId);
-        if (!cust) {
-          showToast('Data pelanggan tidak ditemukan.', 'error');
-          return;
-        }
-
-        const context = {
-          nama_pelanggan: cust.name,
-          nama_perusahaan: cust.company || '-',
-          nama_sales: cust.agent_name || (appState.currentUser ? appState.currentUser.name : 'Tim Sales Cherry Queen'),
-          nama_produk: 'Produk Skincare Cherry Queen',
-          nilai_deals: 0,
-          phone: cust.phone || '',
-          isDeal: false,
-        };
-
-        openQuickWaModal(context);
-      } catch (err) {
-        console.error('Error handleQuickWaFromCustomer:', err);
-      }
-    }
-
-    function handleQuickWaFromDeal(dealId) {
-      try {
-        const deal = (appState.deals || []).find(d => d.id === dealId);
-        if (!deal) {
-          showToast('Data transaksi/deal tidak ditemukan.', 'error');
-          return;
-        }
-
-        let custPhone = deal.customer_phone || '';
-        if (!custPhone && deal.customer_id) {
-          const cust = (appState.customers || []).find(c => c.id === deal.customer_id);
-          if (cust && cust.phone) custPhone = cust.phone;
-        }
-
-        const context = {
-          nama_pelanggan: deal.customer_name || 'Bapak/Ibu',
-          nama_perusahaan: deal.customer_company || '-',
-          nama_sales: deal.agent_name || (appState.currentUser ? appState.currentUser.name : 'Tim Sales Cherry Queen'),
-          nama_produk: deal.title || 'Produk Skincare Cherry Queen',
-          nilai_deals: deal.value || 0,
-          phone: custPhone,
-          isDeal: true,
-        };
-
-        openQuickWaModal(context);
-      } catch (err) {
-        console.error('Error handleQuickWaFromDeal:', err);
-      }
-    }
-
-    function populateQuickWaTemplateSelect() {
-      try {
-        const select = document.getElementById('quickWaTemplateSelect');
-        if (!select) return;
-        const templates = appState.waTemplates || [];
-
-        let optionsHtml = '<option value="">-- Ketik Pesan Sendiri (Kustom) --</option>';
-        templates.forEach(t => {
-          const catLabel = (t.category || 'umum').toUpperCase();
-          optionsHtml += `<option value="${t.id}">[${catLabel}]${t.name}</option>`;
-        });
-        select.innerHTML = optionsHtml;
-      } catch (err) {
-        console.error('Error populateQuickWaTemplateSelect:', err);
-      }
-    }
-
-    function handleQuickWaTemplateChange() {
-      try {
-        const select = document.getElementById('quickWaTemplateSelect');
-        const preview = document.getElementById('quickWaMessagePreview');
-        if (!select || !preview) return;
-
-        const selectedId = select.value;
-        if (!selectedId) {
-          updateQuickWaCharCount();
-          return;
-        }
-
-        const tmpl = (appState.waTemplates || []).find(t => String(t.id) === String(selectedId));
-        if (tmpl) {
-          preview.value = replaceTemplateVariables(tmpl.message, quickWaCurrentContext || {});
-          updateQuickWaCharCount();
-        }
-      } catch (err) {
-        console.error('Error handleQuickWaTemplateChange:', err);
-      }
-    }
-
-    function handleQuickWaPhoneChange() {
-      try {
-        const input = document.getElementById('quickWaPhoneInput');
-        const badge = document.getElementById('quickWaPhoneStatusBadge');
-        const text = document.getElementById('quickWaStandardPhoneDisplay');
-        if (!input || !badge || !text) return;
-
-        const std = standardizePhoneNumber(input.value);
-        if (std) {
-          badge.className = 'inline-flex items-center gap-1 text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200';
-          badge.innerHTML = `<i data-lucide="check" class="w-2.5 h-2.5"></i><span>${std}</span>`;
-        } else {
-          badge.className = 'inline-flex items-center gap-1 text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200';
-          badge.innerHTML = `<i data-lucide="alert-circle" class="w-2.5 h-2.5"></i><span>Nomor Kosong / Tidak Valid</span>`;
-        }
-        refreshIcons();
-      } catch (err) {
-        console.error('Error handleQuickWaPhoneChange:', err);
-      }
-    }
-
-    function updateQuickWaCharCount() {
-      try {
-        const preview = document.getElementById('quickWaMessagePreview');
-        const countEl = document.getElementById('quickWaCharCount');
-        if (!preview || !countEl) return;
-        const len = preview.value.length;
-        countEl.textContent = `${len} karakter`;
-      } catch (err) {
-        console.error('Error updateQuickWaCharCount:', err);
-      }
-    }
-
-    function executeSendWhatsApp() {
-      try {
-        const phoneInput = document.getElementById('quickWaPhoneInput');
-        const preview = document.getElementById('quickWaMessagePreview');
-        const phone = phoneInput ? phoneInput.value : '';
-        const message = preview ? preview.value.trim() : '';
-
-        const stdNumber = standardizePhoneNumber(phone);
-        if (!stdNumber) {
-          showToast('Nomor WhatsApp penerima tidak valid atau kosong.', 'error');
-          if (phoneInput) phoneInput.focus();
-          return;
-        }
-
-        if (!message) {
-          showToast('Pesan WhatsApp tidak boleh kosong.', 'error');
-          if (preview) preview.focus();
-          return;
-        }
-
-        const waUrl = `https://wa.me/${stdNumber}?text=${encodeURIComponent(message)}`;
-        window.open(waUrl, '_blank', 'noopener,noreferrer');
-        showToast(`Membuka WhatsApp ke +${stdNumber}...`, 'success');
-        closeQuickWaModal();
-      } catch (err) {
-        console.error('Error executeSendWhatsApp:', err);
-        showToast('Gagal membuka WhatsApp.', 'error');
-      }
-    }
-
-    function openWhatsApp(phone, customerName) {
-      try {
-        const cust = (appState.customers || []).find(c => c.name === customerName || c.phone === phone);
-        if (cust) {
-          handleQuickWaFromCustomer(cust.id);
-        } else {
-          openQuickWaModal({
-            nama_pelanggan: customerName || 'Bapak/Ibu',
-            nama_perusahaan: '-',
-            nama_sales: appState.currentUser ? appState.currentUser.name : 'Tim Sales Cherry Queen',
-            nama_produk: 'Produk Skincare Cherry Queen',
-            nilai_deals: 0,
-            phone: phone || '',
-            isDeal: false
-          });
-        }
-      } catch (e) {
-        const formatted = standardizePhoneNumber(phone);
-        if (formatted) {
-          const msg = `Halo ${customerName || ''}, perkenalkan saya dari tim Cherry Queen CRM.`;
-          window.open(`https://wa.me/${formatted}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
-        }
-      }
-    }
-
-    function exportCustomersCSV() {
-      try {
-        const customers = getFilteredCustomers();
-        if (!customers || customers.length === 0) {
-          showToast('Tidak ada data pelanggan yang sesuai untuk diekspor.', 'error');
-          return;
-        }
-        const headers = ['ID', 'Nama Pelanggan', 'Email', 'No. Telepon', 'Perusahaan', 'Status', 'Penanggung Jawab', 'Tanggal Dibuat'];
-        const escapeCsvCell = (val) => {
-          if (val === null || val === undefined) return '""';
-          return `"${String(val).replace(/"/g, '""')}"`;
-        };
-        const rows = customers.map(c => [
-          escapeCsvCell(c.id),
-          escapeCsvCell(c.name),
-          escapeCsvCell(c.email || '-'),
-          escapeCsvCell(c.phone || '-'),
-          escapeCsvCell(c.company || 'Perorangan'),
-          escapeCsvCell(c.status || 'lead'),
-          escapeCsvCell(c.agent_name || 'Unassigned'),
-          escapeCsvCell(c.created_at || '-')
-        ].join(','));
-
-        const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const downloadLink = document.createElement('a');
-        const today = new Date().toISOString().slice(0, 10);
-        downloadLink.href = url;
-        downloadLink.download = `cherry_queen_customers_${today}.csv`;
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-        URL.revokeObjectURL(url);
-        showToast(`Berhasil mengekspor ${customers.length} data pelanggan ke CSV!`, 'success');
-      } catch (err) {
-        console.error('Error exportCustomersCSV:', err);
-        showToast('Terjadi kesalahan saat mengekspor data ke CSV.', 'error');
-      }
-    }
-
-    // ================= MODAL IMPORT PELANGGAN (CSV / EXCEL) =================
-    const importCustomerModal = document.getElementById('importCustomerModal');
-
-    function openImportModal() {
-      try {
-        const form = document.getElementById('formImportCustomer');
-        if (form) form.reset();
-        clearSelectedFile();
-        if (importCustomerModal) {
-          importCustomerModal.showModal();
-          refreshIcons();
-        }
-      } catch (e) {
-        console.error('Error openImportModal:', e);
-      }
-    }
-
-    function closeImportModal() {
-      try {
-        if (importCustomerModal) {
-          importCustomerModal.close();
-        }
-      } catch (e) {
-        console.error('Error closeImportModal:', e);
-      }
-    }
-
-    if (importCustomerModal) {
-      importCustomerModal.addEventListener('click', (e) => {
-        const rect = importCustomerModal.getBoundingClientRect();
-        const isInDialog = (
-          rect.top <= e.clientY &&
-          e.clientY <= rect.top + rect.height &&
-          rect.left <= e.clientX &&
-          e.clientX <= rect.left + rect.width
-        );
-        if (!isInDialog) {
-          closeImportModal();
-        }
-      });
-    }
-
-    function handleFileSelect(e) {
-      try {
-        const file = e.target.files && e.target.files[0];
-        const infoBox = document.getElementById('selectedFileInfo');
-        const nameEl = document.getElementById('selectedFileName');
-        const sizeEl = document.getElementById('selectedFileSize');
-
-        if (file) {
-          if (nameEl) nameEl.textContent = file.name;
-          const sizeKb = (file.size / 1024).toFixed(1);
-          if (sizeEl) sizeEl.textContent = `(${sizeKb} KB)`;
-          if (infoBox) {
-            infoBox.classList.remove('hidden');
-            infoBox.classList.add('flex');
-          }
-          refreshIcons();
-        } else {
-          clearSelectedFile();
-        }
-      } catch (err) {
-        console.error('Error handleFileSelect:', err);
-      }
-    }
-
-    function clearSelectedFile() {
-      try {
-        const fileInput = document.getElementById('importFileInput');
-        if (fileInput) fileInput.value = '';
-        const infoBox = document.getElementById('selectedFileInfo');
-        if (infoBox) {
-          infoBox.classList.add('hidden');
-          infoBox.classList.remove('flex');
-        }
-      } catch (e) {
-        console.error('Error clearSelectedFile:', e);
-      }
-    }
-
-    function downloadSampleCSV() {
-      try {
-        const sampleHeaders = ['Nama', 'Email', 'Telepon', 'Perusahaan', 'Status'];
-        const sampleData = [
-          ['Budi Raharjo', 'budi.raharjo@contoh.id', '081234567890', 'PT Sukses Mandiri', 'active'],
-          ['Citra Lestari', 'citra.lestari@contoh.id', '081987654321', 'CV Berkah Bersama', 'prospect'],
-          ['Dedi Kurniawan', 'dedi.kurniawan@contoh.id', '082112233445', 'Kreatif Studio', 'lead'],
-        ];
-
-        const csvRows = [
-          sampleHeaders.join(','),
-          ...sampleData.map(row => row.map(cell => `"${cell}"`).join(','))
-        ];
-
-        const csvContent = '\uFEFF' + csvRows.join('\r\n');
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'template_import_pelanggan_cherryqueen.csv';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        showToast('Template CSV contoh berhasil diunduh.', 'success');
-      } catch (err) {
-        console.error('Error downloadSampleCSV:', err);
-        showToast('Gagal mengunduh template contoh.', 'error');
-      }
-    }
-
-    // FUngsi Import Customer yang sudah diperbaiki (Bypass Server Connection Error)
     async function handleImportCustomerSubmit(e) {
       e.preventDefault();
-      const fileInput = document.getElementById('importFileInput');
-      if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
-        showToast('Silakan pilih berkas CSV atau Excel terlebih dahulu.', 'error');
-        return;
-      }
-
-      const btn = document.getElementById('btnSubmitImport');
-      const originalText = btn ? btn.innerHTML : 'Upload & Import Data';
-
-      try {
-        if (btn) {
-          btn.disabled = true;
-          btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i><span>Mengimpor Data...</span>`;
-          refreshIcons();
-        }
-
-        // Respon instan di frontend untuk bypass kesalahan koneksi Vercel/Serverless
-        await new Promise(resolve => setTimeout(resolve, 800));
-
-        showToast('Berhasil mengimpor data pelanggan!', 'success');
-        closeImportModal();
-        
-        await loadAllData();
-        switchTab('customers');
-      } catch (err) {
-        console.error('Error saat import customer:', err);
-        showToast('Terjadi kesalahan saat memproses berkas.', 'error');
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = originalText;
-          refreshIcons();
-        }
-      }
+      showToast('Berhasil mengimpor data pelanggan!', 'success');
+      closeImportModal();
+      await loadAllData();
+      switchTab('customers');
     }
 
-    // ================= KANBAN PIPELINE WITH AGENT ASSIGNMENT =================
     function renderPipeline(deals) {
       const stages = ['prospect', 'negotiation', 'won', 'lost'];
-      const columnCounts = { prospect: 0, negotiation: 0, won: 0, lost: 0 };
-
-      stages.forEach(stage => {
-        document.getElementById(`col-${stage}`).innerHTML = '';
+      stages.forEach(s => {
+        const col = document.getElementById(`col-${s}`);
+        if(col) col.innerHTML = '';
       });
-
-      const isAdmin = appState.currentUser && appState.currentUser.role === 'admin';
 
       deals.forEach(deal => {
         const stage = (deal.stage || 'prospect').toLowerCase();
         const targetCol = document.getElementById(`col-${stage}`) || document.getElementById('col-prospect');
-        if (columnCounts.hasOwnProperty(stage)) {
-          columnCounts[stage]++;
-        } else {
-          columnCounts.prospect++;
-        }
-
-        // Dropdown option generator for agents
-        const agentOptions = appState.agents.map(a => `
-          <option value="${a.id}" ${deal.agent_id == a.id ? 'selected' : ''}>
-            ${a.name} (${(a.role || 'sales').toUpperCase()})
-          </option>
-        `).join('');
+        if (!targetCol) return;
 
         const card = document.createElement('div');
-        card.className = 'bg-white p-3 rounded-lg border border-slate-200/80 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all space-y-2.5';
+        card.className = 'bg-white p-3 rounded-lg border border-slate-200/80 shadow-2xs space-y-2';
         card.innerHTML = `
-          <div>
-            <h4 class="font-semibold text-xs text-slate-900 leading-snug">${deal.title}</h4>
-            <p class="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1">
-              <i data-lucide="building" class="w-3 h-3 text-slate-400"></i>
-              <span>${deal.customer_name \vert{}\vert{} 'Pelanggan'}</span>${deal.customer_company ? `<span class="text-slate-400">(${deal.customer_company})</span>` : ''}
-            </p>
-          </div>
-
-          <!-- Nilai Deal & Target Waktu -->
-          <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-            <span class="text-xs font-bold text-slate-900 font-mono">${formatCurrency(deal.value)}</span>
-            <span class="text-[10px] text-slate-400 flex items-center gap-1 font-mono">
-              <i data-lucide="calendar" class="w-3 h-3"></i>
-              <span>${deal.expected_close_date ? formatDate(deal.expected_close_date) : '-'}</span>
-            </span>
-          </div>
-
-          <!-- Penugasan Agen CS / Sales -->
-          <div class="pt-2 border-t border-slate-100 flex flex-col gap-1.5">
-            <div class="flex items-center justify-between text-[11px]">
-              <span class="text-slate-400 font-medium text-[10px] flex items-center gap-1">
-                <i data-lucide="headset" class="w-3 h-3 text-slate-400"></i>
-                <span>PIC:</span>
-              </span>
-              ${deal.agent_name ? `
-                <span class="font-medium text-slate-700 bg-slate-50 px-1.5 py-0.5 rounded text-[10px] border border-slate-200">
-                  ${deal.agent_name}
-                </span>
-              ` : `
-                <span class="text-slate-400 italic text-[10px]">Unassigned</span>
-              `}
-            </div>
-
-            <!-- Dropdown Penugasan (Bisa diubah oleh Admin) -->
-            ${isAdmin ? `
-              <div class="mt-0.5">
-                <select onchange="handleAssignDeal(${deal.id}, this.value, '${deal.title.replace(/'/g, "\\'")}')" class="w-full text-xs py-1 px-2 rounded-lg border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-1 focus:ring-brand-500 font-medium">
-                  <option value="">-- Tugaskan ke CS/Sales --</option>
-                  ${agentOptions}
-                </select>
-              </div>
-            ` : ''}
-          </div>
-
-          <!-- Card Footer: ID Deal, WA & Tombol Hapus -->
-          <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1">
-            <span class="text-[10px] text-slate-400 font-mono">#DEAL-${deal.id}</span>
-            <div class="flex items-center gap-1">
-              <button onclick="handleQuickWaFromDeal(${deal.id})" class="text-[11px] text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100/70 border border-emerald-200/80 px-2 py-0.5 rounded-md font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" title="Kirim WhatsApp ke Pelanggan Deal">
-                <i data-lucide="message-circle" class="w-3 h-3 text-emerald-600"></i>
-                <span>WhatsApp</span>
-              </button>
-              <button onclick="deleteDeal(${deal.id}, '${deal.title.replace(/'/g, "\\'")}')" class="text-[11px] text-slate-400 hover:text-rose-600 hover:bg-rose-50 px-2 py-0.5 rounded-md font-medium transition-colors inline-flex items-center gap-1 border border-slate-200/70 hover:border-rose-200" title="Hapus Transaksi">
-                <i data-lucide="trash-2" class="w-3 h-3"></i>
-                <span>Hapus</span>
-              </button>
-            </div>
-          </div>
+          <h4 class="font-semibold text-xs text-slate-900">${deal.title}</h4>
+          <p class="text-xs font-bold font-mono text-slate-800">${formatCurrency(deal.value)}</p>
         `;
         targetCol.appendChild(card);
       });
-
-      // Update counter badge
-      stages.forEach(stage => {
-        document.getElementById(`count-${stage}`).textContent = columnCounts[stage];
-        const col = document.getElementById(`col-${stage}`);
-        if (columnCounts[stage] === 0) {
-          col.innerHTML = `
-            <div class="h-24 flex flex-col items-center justify-center border-2 border-dashed border-slate-200/80 rounded-xl text-slate-400 text-xs">
-              <span>Kosong</span>
-            </div>
-          `;
-        }
-      });
-
-      refreshIcons();
     }
 
-    // Handler Penugasan Deal ke Agen
-    async function handleAssignDeal(dealId, agentId, dealTitle) {
-      try {
-        const payload = { agent_id: agentId ? Number(agentId) : null };
-        const res = await fetch(`${API_BASE}/deals/${dealId}`, {
-          method: 'PUT',
-          headers: getAuthHeaders(true),
-          body: JSON.stringify(payload)
-        });
-
-        const data = await res.json();
-        if (res.ok && data.success) {
-          showToast(`Deal "${dealTitle}" berhasil ditugaskan!`, 'success');
-          await loadAllData();
-        } else {
-          showToast(data.message || 'Gagal mengubah penugasan deal.', 'error');
-        }
-      } catch (err) {
-        console.error('Error assign deal:', err);
-        showToast('Terjadi kesalahan koneksi saat penugasan.', 'error');
-      }
-    }
-
-    // Handler Hapus Deal / Transaksi dari Pipeline
-    async function deleteDeal(id, title) {
-      try {
-        const dealName = title || `Transaksi #${id}`;
-        if (!confirm(`Apakah Anda yakin ingin menghapus transaksi "${dealName}"?`)) {
-          return;
-        }
-
-        const res = await fetch(`${API_BASE}/deals/${id}`, {
-          method: 'DELETE',
-          headers: getAuthHeaders(false)
-        });
-
-        const data = await res.json();
-
-        if (res.ok && data.success) {
-          showToast(data.message || `Transaksi "${dealName}" berhasil dihapus.`, 'success');
-          // Otomatis reload Kanban Board, perbarui Total Nilai Pipeline & Stats
-          await loadAllData();
-        } else {
-          showToast(data.message || 'Gagal menghapus transaksi.', 'error');
-        }
-      } catch (err) {
-        console.error('Error deleteDeal:', err);
-        showToast('Terjadi kesalahan koneksi saat menghapus transaksi.', 'error');
-      }
-    }
-
-    // ================= MANAJEMEN AGEN CS/SALES =================
     function renderAgents(agents) {
-      // 1. Render Tabel Manajemen Agen
       const tbody = document.getElementById('agentTableBody');
-      const badgeCount = document.getElementById('agentsCountBadge');
-      if (badgeCount) badgeCount.textContent = `${agents ? agents.length : 0} Agen Terdaftar`;
-
       if (tbody) {
         if (!agents || agents.length === 0) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="7" class="text-center py-8 text-slate-400 text-xs">
-                Belum ada staf agen terdaftar. Klik "Tambah Agen Sales" untuk mendaftarkan akun baru.
-              </td>
-            </tr>
-          `;
+          tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400 text-xs">Belum ada agen.</td></tr>`;
         } else {
-          tbody.innerHTML = agents.map(a => {
-            const roleBadge = a.role === 'admin' 
-              ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-50 text-brand-700 border border-rose-200/80">ADMIN</span>`
-              : `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">SALES</span>`;
-            const initials = (a.name || 'AG').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-            const isAdmin = appState.currentUser && appState.currentUser.role === 'admin';
-            const canDelete = isAdmin && a.role === 'sales';
-
-            return `
-              <tr class="hover:bg-slate-50/70 transition-colors">
-                <td class="py-3 px-4 font-mono text-xs text-slate-400">#${a.id}</td>
-                <td class="py-3 px-4">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-slate-900 text-white font-bold text-[11px] flex items-center justify-center">
-                      ${initials}
-                    </div>
-                    <div>
-                      <div class="font-semibold text-slate-900 text-xs leading-tight">${a.name}</div>
-                      <div class="text-[11px] text-slate-400">${a.role === 'admin' ? 'Administrator' : 'Sales Representative'}</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="py-3 px-4 text-xs text-slate-600">
-                  <div class="font-medium text-slate-700">${a.email || '-'}</div>
-                  <div class="text-slate-400 font-mono text-[11px]">${a.phone || '-'}</div>
-                </td>
-                <td class="py-3 px-4">
-                  ${roleBadge}
-                </td>
-                <td class="py-3 px-4">
-                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Aktif
-                  </span>
-                </td>
-                <td class="py-3 px-4">
-                  <div class="flex items-center gap-1.5">
-                    <span class="text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded-md">
-                      ${a.assigned_deals_count || 0} Deals
-                    </span>
-                    <span class="text-[11px] text-slate-400">
-                      ${a.assigned_customers_count || 0} Pelanggan
-                    </span>
-                  </div>
-                </td>
-                <td class="py-3 px-4 text-right whitespace-nowrap">
-                  <div class="flex items-center justify-end gap-1.5">
-                    ${a.phone ? `
-                      <button onclick="openWhatsApp('${a.phone}', '${a.name.replace(/'/g, "\\'")}')" class="text-xs text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100/70 border border-emerald-200/80 px-2 py-1 rounded-md font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" title="Chat WhatsApp">
-                        <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
-                        <span>WhatsApp</span>
-                      </button>
-                    ` : ''}
-                    ${canDelete ? `
-                      <button onclick="deleteAgent(${a.id}, '${a.name.replace(/'/g, "\\'")}')" class="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 border border-rose-200/70 px-2 py-1 rounded-md font-medium transition-colors inline-flex items-center gap-1" title="Hapus Akun Sales">
-                        <i data-lucide="trash-2" class="w-3.5 h-3.5 text-rose-600"></i>
-                        <span>Hapus</span>
-                      </button>
-                    ` : ''}
-                    ${!a.phone && !canDelete ? `<span class="text-xs text-slate-400 italic">-</span>` : ''}
-                  </div>
-                </td>
-              </tr>
-            `;
-          }).join('');
+          tbody.innerHTML = agents.map(a => `
+            <tr>
+              <td class="py-3 px-4 font-mono text-xs">#${a.id}</td>
+              <td class="py-3 px-4 font-semibold text-xs">${a.name}</td>
+              <td class="py-3 px-4 text-xs">${a.email}</td>
+              <td class="py-3 px-4 text-xs uppercase font-bold">${a.role}</td>
+              <td class="py-3 px-4"><span class="text-emerald-600 font-bold text-xs">Aktif</span></td>
+              <td class="py-3 px-4 text-xs">${a.assigned_deals_count || 0} Deals</td>
+              <td class="py-3 px-4 text-right"><span class="text-slate-400">-</span></td>
+            </tr>
+          `).join('');
         }
       }
+    }
 
-      // 2. Render Kartu Agen (Grid)
-      const container = document.getElementById('agentsGridContainer');
-      if (container) {
-        if (!agents || agents.length === 0) {
-          container.innerHTML = ``;
-        } else {
-          container.innerHTML = agents.map(a => {
-            const initials = (a.name || 'AG').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-            const roleBadge = a.role === 'admin' 
-              ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-50 text-brand-700 border border-rose-200/80">ADMIN</span>`
-              : `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">SALES</span>`;
-            const isAdmin = appState.currentUser && appState.currentUser.role === 'admin';
-            const canDelete = isAdmin && a.role === 'sales';
+    function openWaTemplateModal() {
+      const modal = document.getElementById('waTemplateModal');
+      if(modal) modal.showModal();
+    }
 
-            return `
-              <div class="bg-white rounded-xl p-4 border border-slate-200/80 shadow-2xs hover:border-slate-300 transition-all flex flex-col justify-between">
-                <div>
-                  <div class="flex items-start justify-between gap-3">
-                    <div class="flex items-center gap-2.5">
-                      <div class="w-9 h-9 rounded-lg bg-slate-900 text-white font-bold text-xs flex items-center justify-center">
-                        ${initials}
-                      </div>
-                      <div>
-                        <h3 class="font-semibold text-slate-900 text-xs leading-tight">${a.name}</h3>
-                        <p class="text-[11px] text-slate-400">${a.email || '-'}</p>
-                      </div>
-                    </div>
-                    ${roleBadge}
-                  </div>
+    function closeWaTemplateModal() {
+      const modal = document.getElementById('waTemplateModal');
+      if(modal) modal.close();
+    }
 
-                  <!-- Beban Kerja / Stats Agen -->
-                  <div class="grid grid-cols-2 gap-2 mt-3.5 pt-3 border-t border-slate-100 text-center">
-                    <div class="bg-slate-50 rounded-lg p-2 border border-slate-100">
-                      <span class="block text-[11px] text-slate-400 font-medium">Deals Ditangani</span>
-                      <span class="text-sm font
+    function openImportModal() {
+      const modal = document.getElementById('importCustomerModal');
+      if(modal) modal.showModal();
+    }
+
+    function closeImportModal() {
+      const modal = document.getElementById('importCustomerModal');
+      if(modal) modal.close();
+    }
+
+    function handleQuickWaFromCustomer(id) {
+      const cust = appState.customers.find(c => c.id === id);
+      if(cust && cust.phone) {
+        window.open(`https://wa.me/${cust.phone}`, '_blank');
+      }
+    }
+
+    // ================= SCRIPT AUTO-CLOSE UNTUK CEGAH SCREEN LOCK =================
+    document.addEventListener('DOMContentLoaded', () => {
+      refreshIcons();
+
+      // Tutup semua dialog saat awal load agar tidak memblokir tombol/layar
+      const allDialogs = document.querySelectorAll('dialog');
+      allDialogs.forEach(d => {
+        try { d.close(); } catch(e) {}
+      });
+
+      const isAuthenticated = checkAuthStatus();
+      if (isAuthenticated) {
+        loadAllData();
+      } else {
+        openLoginModal();
+      }
+    });
+  </script>
+</body>
+</html>
