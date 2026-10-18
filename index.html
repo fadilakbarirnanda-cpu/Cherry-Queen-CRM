@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cherry Queen CRM - Enterprise Dashboard</title>
+  <link rel="icon" type="image/png" href="logo baru cherry queen.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'] },
+          colors: { brand: { 50: '#fff1f2', 100: '#ffe4e6', 500: '#f43f5e', 600: '#e11d48', 700: '#be123c' } }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', Inter, sans-serif; }
+    dialog::backdrop { background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(4px); }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col md:flex-row">
+
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="w-full md:w-64 bg-[#090D16] text-slate-300 flex-shrink-0 flex flex-col justify-between border-r border-slate-800">
+    <div>
+      <div class="h-16 flex items-center gap-3 px-5 border-b border-slate-800 bg-[#090D16]">
+        <img src="logo baru cherry queen.png" alt="Logo" class="w-9 h-9 rounded-xl object-cover bg-slate-800">
+        <div>
+          <span class="font-bold text-sm text-white block">CHERRY QUEEN</span>
+          <span class="block text-[10px] font-medium text-slate-400">Enterprise Dashboard</span>
+        </div>
+      </div>
+      <div class="px-3.5 py-5">
+        <nav class="space-y-1">
+          <button onclick="switchTab('summary')" id="nav-summary" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-white bg-brand-600">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i><span>Dashboard Summary</span>
+          </button>
+          <button onclick="switchTab('customers')" id="nav-customers" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="users" class="w-4 h-4"></i><span>Data Customers</span>
+          </button>
+          <button onclick="switchTab('pipeline')" id="nav-pipeline" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="kanban" class="w-4 h-4"></i><span>Sales Pipeline</span>
+          </button>
+          <button onclick="switchTab('agents')" id="nav-agents" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="headset" class="w-4 h-4"></i><span>Manajemen Agen</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between sticky top-0 z-20">
+      <h1 id="pageTitle" class="text-base font-bold text-slate-900">Dashboard Overview</h1>
+      <div class="flex items-center gap-2.5">
+        <button onclick="openImportModal()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs">
+          <i data-lucide="upload" class="w-3.5 h-3.5"></i><span>Import Data</span>
+        </button>
+        <button onclick="openModal()" class="flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3 py-1.5 rounded-lg shadow-sm">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Tambah Pelanggan</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-6 bg-slate-50">
+      <!-- SUMMARY TAB -->
+      <section id="tab-summary" class="space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
+            <span class="text-[11px] font-semibold text-slate-500 uppercase">Total Pelanggan</span>
+            <div id="statTotalCustomers" class="text-2xl font-bold text-slate-900 mt-2">0</div>
+          </div>
+          <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-xs">
+            <span class="text-[11px] font-semibold text-slate-500 uppercase">Total Deals</span>
+            <div id="statTotalDeals" class="text-2xl font-bold text-slate-900 mt-2">Rp 0</div>
+          </div>
+        </div>
+
+        <!-- RECENT CUSTOMERS -->
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-bold text-sm text-slate-900 mb-4">Pelanggan Terbaru</h3>
+          <div id="recentCustomersList" class="space-y-3 text-xs text-slate-600">
+            <p class="text-slate-400">Belum ada pelanggan terdaftar.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CUSTOMERS TAB -->
+      <section id="tab-customers" class="hidden space-y-6">
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+          <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+            <h2 class="font-bold text-sm text-slate-900">Daftar Pelanggan</h2>
+            <div class="flex gap-2">
+              <button onclick="openImportModal()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs">
+                <i data-lucide="upload" class="w-3.5 h-3.5"></i><span>Import Data</span>
+              </button>
+              <button onclick="openModal()" class="flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3 py-1.5 rounded-lg shadow-sm">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i><span>Tambah Pelanggan</span>
+              </button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase">
+                  <th class="py-3 px-4">ID</th>
+                  <th class="py-3 px-4">Nama Pelanggan</th>
+                  <th class="py-3 px-4">Email</th>
+                  <th class="py-3 px-4">Telepon</th>
+                  <th class="py-3 px-4">Status</th>
+                </tr>
+              </thead>
+              <tbody id="customerTableBody" class="divide-y divide-slate-100 text-xs text-slate-700">
+                <tr><td colspan="5" class="text-center py-6 text-slate-400">Belum ada data pelanggan.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PIPELINE & AGENTS -->
+      <section id="tab-pipeline" class="hidden"><p class="text-xs text-slate-500">Sales Pipeline Board Active</p></section>
+      <section id="tab-agents" class="hidden"><p class="text-xs text-slate-500">Manajemen Agen Active</p></section>
+    </main>
+  </div>
+
+  <!-- MODAL IMPORT PELANGGAN -->
+  <dialog id="importCustomerModal" class="rounded-2xl shadow-xl p-6 w-full max-w-md border border-slate-200 bg-white">
+    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+      <h3 class="font-bold text-slate-900 text-sm">Import Data Pelanggan</h3>
+      <button onclick="closeImportModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+    </div>
+    <form onsubmit="handleImportCustomerSubmit(event)" class="mt-4 space-y-4">
+      <div class="border-2 border-dashed border-slate-200 rounded-xl p-6 text-center">
+        <input type="file" id="importFileInput" accept=".csv" required class="w-full text-xs text-slate-500">
+        <p class="text-[11px] text-slate-400 mt-2">Format File: .CSV (Baris: Nama, Email, Telepon, Status)</p>
+      </div>
+      <div class="flex items-center justify-end gap-2">
+        <button type="button" onclick="closeImportModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
+        <button type="submit" class="px-4 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg">Import Data</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- MODAL TAMBAH PELANGGAN -->
+  <dialog id="customerModal" class="rounded-2xl shadow-xl p-6 w-full max-w-md border border-slate-200 bg-white">
+    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+      <h3 class="font-bold text-slate-900 text-sm">Tambah Pelanggan Baru</h3>
+      <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+    </div>
+    <form onsubmit="handleAddCustomerSubmit(event)" class="mt-4 space-y-3">
+      <input type="text" id="inputName" required placeholder="Nama Lengkap" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200">
+      <input type="email" id="inputEmail" placeholder="Email" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200">
+      <input type="tel" id="inputPhone" placeholder="Nomor HP/WA" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200">
+      <div class="flex justify-end gap-2 pt-2">
+        <button type="button" onclick="closeModal()" class="px-3.5 py-1.5 text-xs text-slate-600">Batal</button>
+        <button type="submit" class="px-3.5 py-1.5 text-xs font-semibold text-white bg-brand-600 rounded-lg">Simpan</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    let appState = {
+      customers: [
+        { name: 'Budi Santoso', email: 'budi@contoh.id', phone: '081234567890', status: 'Active' },
+        { name: 'Siti Rahma', email: 'siti@contoh.id', phone: '081987654321', status: 'Prospect' }
+      ]
+    };
+
+    function refreshIcons() { if (window.lucide) window.lucide.createIcons(); }
+
+    function showToast(msg) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'bg-slate-900 text-white px-3.5 py-2.5 rounded-xl shadow-lg text-xs font-medium pointer-events-auto';
+      toast.textContent = msg;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    function switchTab(tabId) {
+      const titles = { summary: 'Dashboard Overview', customers: 'Manajemen Data Pelanggan', pipeline: 'Sales Pipeline Board', agents: 'Manajemen Agen CS/Sales' };
+      document.getElementById('pageTitle').textContent = titles[tabId] || 'Dashboard';
+      ['summary', 'customers', 'pipeline', 'agents'].forEach(t => {
+        document.getElementById(`tab-${t}`)?.classList.toggle('hidden', t !== tabId);
+      });
+      refreshIcons();
+    }
+
+    function openModal() { document.getElementById('customerModal').showModal(); }
+    function closeModal() { document.getElementById('customerModal').close(); }
+    function openImportModal() { document.getElementById('importCustomerModal').showModal(); }
+    function closeImportModal() { document.getElementById('importCustomerModal').close(); }
+
+    function renderCustomers() {
+      const tbody = document.getElementById('customerTableBody');
+      const statTotal = document.getElementById('statTotalCustomers');
+      const recentList = document.getElementById('recentCustomersList');
+
+      if (statTotal) statTotal.textContent = appState.customers.length;
+
+      if (recentList) {
+        recentList.innerHTML = appState.customers.slice(0, 5).map(c => `
+          <div class="flex items-center justify-between p-2 rounded-lg bg-slate-50">
+            <div>
+              <p class="font-bold text-slate-900">${c.name}</p>
+              <p class="text-[10px] text-slate-400">${c.email} • ${c.phone}</p>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-50 text-emerald-700 font-bold">${c.status}</span>
+          </div>
+        `).join('');
+      }
+
+      if (!tbody) return;
+      if (appState.customers.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400">Belum ada data pelanggan.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = appState.customers.map((c, i) => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 font-mono text-slate-400">#${i + 1}</td>
+          <td class="py-3 px-4 font-semibold text-slate-900">${c.name}</td>
+          <td class="py-3 px-4">${c.email || '-'}</td>
+          <td class="py-3 px-4 font-mono">${c.phone || '-'}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-50 text-emerald-700 font-bold">${c.status || 'Active'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function handleAddCustomerSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('inputName').value;
+      const email = document.getElementById('inputEmail').value;
+      const phone = document.getElementById('inputPhone').value;
+
+      appState.customers.unshift({ name, email, phone, status: 'Active' });
+      renderCustomers();
+      closeModal();
+      showToast('Pelanggan berhasil ditambahkan!');
+    }
+
+    function handleImportCustomerSubmit(e) {
+      e.preventDefault();
+      const fileInput = document.getElementById('importFileInput');
+      const file = fileInput.files[0];
+
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const text = evt.target.result;
+        const lines = text.split('\n');
+        let importedCount = 0;
+
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (!line) continue;
+          const cols = line.split(',').map(c => c.replace(/^"|"$/g, '').trim());
+          if (cols[0]) {
+            appState.customers.push({
+              name: cols[0],
+              email: cols[1] || '-',
+              phone: cols[2] || '-',
+              status: cols[3] || 'Active'
+            });
+            importedCount++;
+          }
+        }
+
+        renderCustomers();
+        closeImportModal();
+        switchTab('customers');
+        showToast(`Berhasil mengimpor ${importedCount} data pelanggan!`);
+      };
+      reader.readAsText(file);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      refreshIcons();
+      renderCustomers();
+      document.querySelectorAll('dialog').forEach(d => { try { d.close(); } catch(e) {} });
+    });
+  </script>
+</body>
+</html>
