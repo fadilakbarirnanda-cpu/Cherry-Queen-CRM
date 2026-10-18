@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const AgentController = require('../controllers/agentController');
+const { optionalAuth } = require('../middlewares/auth');
+
+// Pasang optionalAuth pada semua rute agen
+router.use(optionalAuth);
 
 // GET /api/agents
 router.get('/', AgentController.getAllAgents);

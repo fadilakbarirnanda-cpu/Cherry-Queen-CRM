@@ -3,29 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRM Dashboard - Kelola Pelanggan & Pipeline</title>
+  <title>Cherry Queen CRM - Official Business Dashboard</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="logo baru cherry queen.png">
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js CDN for Analytics Dashboard -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
           },
           colors: {
             brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+              800: '#9f1239',
+              900: '#881337',
+              950: '#4c0519',
             }
           }
         }
@@ -33,188 +43,322 @@
     }
   </script>
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    body { font-family: 'Plus Jakarta Sans', Inter, sans-serif; }
+    /* Modern SaaS Scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #f8fafc; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     dialog::backdrop {
-      background: rgba(15, 23, 42, 0.6);
+      background: rgba(15, 23, 42, 0.55);
       backdrop-filter: blur(4px);
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col md:flex-row">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col md:flex-row selection:bg-rose-100 selection:text-rose-900">
 
   <!-- Toast Notification Container -->
-  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none"></div>
 
-  <!-- Sidebar Navigasi -->
-  <aside class="w-full md:w-64 bg-slate-900 text-slate-300 flex-shrink-0 flex flex-col justify-between shadow-xl">
+  <!-- ================= SIDEBAR NAVIGASI ================= -->
+  <aside class="w-full md:w-64 bg-[#090D16] text-slate-300 flex-shrink-0 flex flex-col justify-between border-r border-slate-800/80">
     <div>
-      <!-- Brand Logo -->
-      <div class="h-16 flex items-center gap-3 px-6 border-b border-slate-800 bg-slate-950/40">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
-          <i data-lucide="layers" class="w-5 h-5"></i>
-        </div>
+      <!-- Brand Logo Cherry Queen -->
+      <div class="h-16 flex items-center gap-3 px-5 border-b border-slate-800/80 bg-[#090D16]">
+        <img src="logo baru cherry queen.png" alt="Cherry Queen Logo" class="w-9 h-9 rounded-xl object-cover ring-1 ring-white/15 shadow-sm">
         <div>
-          <span class="font-bold text-lg tracking-tight text-white">NEXUS<span class="text-brand-500">CRM</span></span>
-          <span class="block text-[10px] uppercase font-semibold tracking-wider text-slate-400">Enterprise Edition</span>
+          <div class="flex items-center gap-1.5">
+            <span class="font-bold text-sm tracking-tight text-white block">CHERRY QUEEN</span>
+            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30 font-mono leading-none">CRM</span>
+          </div>
+          <span class="block text-[10px] font-medium text-slate-400">Enterprise Dashboard</span>
         </div>
       </div>
 
       <!-- Navigation Menu -->
-      <div class="px-4 py-6">
-        <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-3">Menu Utama</p>
-        <nav class="space-y-1.5" id="navMenu">
-          <button onclick="switchTab('summary')" id="nav-summary" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all text-white bg-brand-600 shadow-sm shadow-brand-600/40">
-            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+      <div class="px-3.5 py-5">
+        <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2.5">Menu Utama</p>
+        <nav class="space-y-1" id="navMenu">
+          <button onclick="switchTab('summary')" id="nav-summary" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all text-white bg-brand-600 shadow-sm shadow-brand-900/40">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-white"></i>
             <span>Dashboard Summary</span>
           </button>
-          <button onclick="switchTab('customers')" id="nav-customers" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+
+          <button onclick="switchTab('customers')" id="nav-customers" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
             <i data-lucide="users" class="w-4 h-4"></i>
             <span>Data Customers</span>
-            <span id="badgeCustomerCount" class="ml-auto text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">0</span>
+            <span id="badgeCustomerCount" class="ml-auto text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60">0</span>
           </button>
-          <button onclick="switchTab('pipeline')" id="nav-pipeline" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60">
+
+          <button onclick="switchTab('pipeline')" id="nav-pipeline" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
             <i data-lucide="kanban" class="w-4 h-4"></i>
             <span>Sales Pipeline</span>
-            <span id="badgeDealsCount" class="ml-auto text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">0</span>
+            <span id="badgeDealsCount" class="ml-auto text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60">0</span>
+          </button>
+
+          <button onclick="switchTab('agents')" id="nav-agents" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+            <i data-lucide="headset" class="w-4 h-4"></i>
+            <span>Manajemen Agen</span>
+            <span id="badgeAgentsCount" class="ml-auto text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60">0</span>
           </button>
         </nav>
+
+        <!-- WhatsApp Suite -->
+        <div class="pt-3 mt-3 border-t border-slate-800/80">
+          <p class="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">WhatsApp Suite</p>
+          <button onclick="openWaTemplateModal()" id="btnSidebarWaTemplates" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+            <i data-lucide="message-square" class="w-4 h-4 text-emerald-400"></i>
+            <span>Template WhatsApp</span>
+            <span id="badgeWaTemplateCount" class="ml-auto text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/60">0</span>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Sidebar Footer -->
-    <div class="p-4 border-t border-slate-800/80 bg-slate-950/20">
-      <div class="flex items-center gap-3 p-2 rounded-lg bg-slate-800/50">
-        <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
-        <div class="text-xs">
-          <p class="font-medium text-slate-200">Database SQLite</p>
-          <p class="text-[11px] text-slate-400">Status: Terhubung & Aktif</p>
+    <!-- Sidebar Footer: Status Engine -->
+    <div class="p-3.5 border-t border-slate-800/80 bg-[#070a12]">
+      <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800/80">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+          <span class="text-xs font-medium text-slate-300">SQLite Engine</span>
         </div>
+        <span class="text-[10px] font-mono text-emerald-400 font-semibold">ONLINE</span>
       </div>
     </div>
   </aside>
 
-  <!-- Main Content Wrapper -->
+  <!-- ================= MAIN CONTENT WRAPPER ================= -->
   <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
     
     <!-- Top Header -->
-    <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between gap-4 sticky top-0 z-20">
+    <header class="h-16 bg-white border-b border-slate-200/80 px-6 flex items-center justify-between gap-4 sticky top-0 z-20">
       <div class="flex items-center gap-3">
-        <h1 id="pageTitle" class="text-xl font-bold text-slate-900 tracking-tight">Dashboard Overview</h1>
-        <span class="text-xs px-2.5 py-0.5 rounded-full font-medium bg-indigo-50 text-indigo-700 border border-indigo-100 hidden sm:inline-block">API v1.0</span>
+        <img src="logo baru cherry queen.png" alt="Cherry Queen Logo" class="w-8 h-8 rounded-lg object-cover ring-1 ring-slate-200/80">
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 id="pageTitle" class="text-sm sm:text-base font-bold text-slate-900 tracking-tight leading-none">Dashboard Overview</h1>
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200/60 hidden sm:inline-flex">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              Live CRM
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-medium hidden sm:block mt-0.5">Official Business Dashboard</p>
+        </div>
       </div>
 
-      <div class="flex items-center gap-3">
-        <button onclick="loadAllData()" class="flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-lg transition-colors" title="Segarkan Data">
+      <div class="flex items-center gap-2.5">
+        <!-- Button Refresh Data -->
+        <button onclick="loadAllData()" class="flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 border border-slate-200/60 px-2.5 py-1.5 rounded-lg transition-colors" title="Segarkan Data">
           <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-          <span class="hidden sm:inline">Refresh Data</span>
+          <span class="hidden sm:inline">Refresh</span>
         </button>
 
-        <button onclick="openModal()" class="flex items-center gap-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3.5 py-2 rounded-lg shadow-sm shadow-brand-500/20 transition-all">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+        <!-- Button Template WA -->
+        <button onclick="openWaTemplateModal()" class="flex items-center gap-1.5 text-xs font-medium text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 px-2.5 py-1.5 rounded-lg transition-colors" title="Kelola Template Pesan WhatsApp">
+          <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-600"></i>
+          <span class="hidden sm:inline">Template WA</span>
+        </button>
+
+        <!-- Button Tambah Pelanggan -->
+        <button onclick="openModal()" class="flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3 py-1.5 rounded-lg shadow-sm shadow-brand-900/20 transition-all">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
           <span>Tambah Pelanggan</span>
         </button>
+
+        <!-- User Profile Pill & Logout -->
+        <div class="flex items-center gap-2 pl-2 border-l border-slate-200/80" id="headerProfileContainer">
+          <div class="flex items-center gap-2 bg-slate-50 border border-slate-200/80 py-1 px-2.5 rounded-lg">
+            <div id="userAvatar" class="w-6 h-6 rounded-md bg-brand-600 text-white font-bold text-[11px] flex items-center justify-center uppercase">
+              QA
+            </div>
+            <div class="hidden sm:block text-left">
+              <p id="userNameDisplay" class="text-xs font-semibold text-slate-900 leading-tight">Queen Admin</p>
+              <div class="flex items-center gap-1">
+                <span id="userRoleBadge" class="text-[9px] uppercase font-bold text-brand-600 tracking-wider">ADMIN</span>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="handleLogout()" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all" title="Logout dari sistem">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+          </button>
+        </div>
       </div>
     </header>
 
+    <!-- Role Scope Banner (Tampil saat login sebagai sales) -->
+    <div id="salesScopeBanner" class="hidden bg-amber-50/70 border-b border-amber-200/70 px-6 py-2 text-xs font-medium text-amber-900 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <i data-lucide="shield-alert" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+        <span><strong>Mode Tampilan Sales:</strong> Menampilkan data & pipeline khusus akun Anda (<span id="bannerSalesName">Sales</span>).</span>
+      </div>
+      <span class="text-[10px] bg-white border border-amber-200 text-amber-800 px-2 py-0.5 rounded font-semibold">RBAC Protected</span>
+    </div>
+
     <!-- Main Dynamic Area -->
-    <main class="flex-1 overflow-y-auto p-6 lg:p-8">
+    <main class="flex-1 overflow-y-auto p-6 lg:p-7 bg-slate-50/70">
 
       <!-- ================= TAB 1: SUMMARY ================= -->
       <section id="tab-summary" class="space-y-6">
         <!-- Metric Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- Card 1: Total Customers -->
-          <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Pelanggan</span>
-              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                <i data-lucide="users" class="w-5 h-5"></i>
-              </div>
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Total Pelanggan</span>
+              <span class="text-slate-400"><i data-lucide="users" class="w-4 h-4"></i></span>
             </div>
-            <div class="mt-4 flex items-baseline gap-2">
-              <span id="statTotalCustomers" class="text-3xl font-extrabold text-slate-900">0</span>
-              <span class="text-xs font-medium text-emerald-600">Pelanggan Aktif</span>
+            <div class="mt-3 flex items-baseline gap-2">
+              <span id="statTotalCustomers" class="text-2xl font-bold text-slate-900 tracking-tight">0</span>
+              <span class="text-[11px] font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">Aktif</span>
             </div>
-            <p class="text-xs text-slate-400 mt-1">Terdaftar dalam database CRM</p>
+            <p class="text-[11px] text-slate-400 mt-1.5" id="statCustomerSubtext">Terdaftar dalam database CRM</p>
           </div>
 
           <!-- Card 2: Total Leads -->
-          <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Prospek (Leads)</span>
-              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-                <i data-lucide="user-plus" class="w-5 h-5"></i>
-              </div>
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Total Prospek (Leads)</span>
+              <span class="text-slate-400"><i data-lucide="user-plus" class="w-4 h-4"></i></span>
             </div>
-            <div class="mt-4 flex items-baseline gap-2">
-              <span id="statTotalLeads" class="text-3xl font-extrabold text-slate-900">0</span>
-              <span class="text-xs font-medium text-amber-600">Potensi Baru</span>
+            <div class="mt-3 flex items-baseline gap-2">
+              <span id="statTotalLeads" class="text-2xl font-bold text-slate-900 tracking-tight">0</span>
+              <span class="text-[11px] font-medium text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-100">Pipeline</span>
             </div>
-            <p class="text-xs text-slate-400 mt-1">Calon klien dalam tahap prospek</p>
+            <p class="text-[11px] text-slate-400 mt-1.5">Calon klien dalam tahap penawaran</p>
           </div>
 
           <!-- Card 3: Total Deals Value -->
-          <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Nilai Deals</span>
-              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                <i data-lucide="banknote" class="w-5 h-5"></i>
-              </div>
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Total Nilai Deals</span>
+              <span class="text-slate-400"><i data-lucide="banknote" class="w-4 h-4"></i></span>
             </div>
-            <div class="mt-4 flex items-baseline gap-1">
-              <span id="statTotalDealsValue" class="text-2xl font-extrabold text-slate-900">Rp 0</span>
+            <div class="mt-3 flex items-baseline gap-1">
+              <span id="statTotalDealsValue" class="text-2xl font-bold text-slate-900 tracking-tight">Rp 0</span>
             </div>
-            <p class="text-xs text-slate-400 mt-1">Estimasi nilai seluruh peluang</p>
+            <p class="text-[11px] text-slate-400 mt-1.5" id="statDealsValueSubtext">Estimasi pipeline transaksi</p>
           </div>
 
           <!-- Card 4: Total Deals Count -->
-          <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+          <div class="bg-white rounded-xl p-4 sm:p-5 border border-slate-200/80 shadow-xs hover:border-slate-300 transition-all">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Peluang Penjualan</span>
-              <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-                <i data-lucide="trending-up" class="w-5 h-5"></i>
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Peluang Transaksi</span>
+              <span class="text-slate-400"><i data-lucide="trending-up" class="w-4 h-4"></i></span>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <span id="statTotalDealsCount" class="text-2xl font-bold text-slate-900 tracking-tight">0</span>
+              <span class="text-[11px] font-medium text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-100">Aktif</span>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-1.5">Sedang dalam pipeline aktif</p>
+          </div>
+        </div>
+
+        <!-- ================= ANALYTICS CHARTS SECTION ================= -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <!-- Chart A: Distribusi Pipeline Deals per Tahap -->
+          <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs p-5 flex flex-col justify-between hover:border-slate-300 transition-all">
+            <div>
+              <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-slate-500 p-1.5 bg-slate-100 rounded-lg">
+                    <i data-lucide="pie-chart" class="w-4 h-4"></i>
+                  </span>
+                  <div>
+                    <h3 class="font-bold text-slate-900 text-xs sm:text-sm tracking-tight">Distribusi Nilai Pipeline Deals</h3>
+                    <p class="text-[11px] text-slate-400">Total nominal transaksi per tahapan proses sales</p>
+                  </div>
+                </div>
+                <span id="chartDealsTotalBadge" class="text-xs font-semibold text-slate-700 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200">Rp 0</span>
+              </div>
+
+              <!-- Canvas Container -->
+              <div class="relative h-64 sm:h-72 w-full mt-4 flex items-center justify-center">
+                <canvas id="dealsPipelineChart"></canvas>
               </div>
             </div>
-            <div class="mt-4 flex items-baseline gap-2">
-              <span id="statTotalDealsCount" class="text-3xl font-extrabold text-slate-900">0</span>
-              <span class="text-xs font-medium text-purple-600">Deals Aktif</span>
+
+            <!-- Stage Breakdown Legend -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4 pt-3 border-t border-slate-100 text-center" id="chartDealsLegend">
+              <div class="p-2 rounded-lg bg-amber-50/60 border border-amber-200/60">
+                <span class="block text-[10px] text-slate-500 font-medium">Prospek</span>
+                <span id="legendValProspect" class="text-xs font-bold text-amber-700">Rp 0</span>
+              </div>
+              <div class="p-2 rounded-lg bg-indigo-50/60 border border-indigo-200/60">
+                <span class="block text-[10px] text-slate-500 font-medium">Negosiasi</span>
+                <span id="legendValNegotiation" class="text-xs font-bold text-indigo-700">Rp 0</span>
+              </div>
+              <div class="p-2 rounded-lg bg-emerald-50/60 border border-emerald-200/60">
+                <span class="block text-[10px] text-slate-500 font-medium">Closing Won</span>
+                <span id="legendValWon" class="text-xs font-bold text-emerald-700">Rp 0</span>
+              </div>
+              <div class="p-2 rounded-lg bg-slate-50 border border-slate-200/80">
+                <span class="block text-[10px] text-slate-500 font-medium">Lost / Batal</span>
+                <span id="legendValLost" class="text-xs font-bold text-slate-600">Rp 0</span>
+              </div>
             </div>
-            <p class="text-xs text-slate-400 mt-1">Transaksi di sales pipeline</p>
+          </div>
+
+          <!-- Chart B: Tren Pertumbuhan Pelanggan Baru -->
+          <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs p-5 flex flex-col justify-between hover:border-slate-300 transition-all">
+            <div>
+              <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-slate-500 p-1.5 bg-slate-100 rounded-lg">
+                    <i data-lucide="line-chart" class="w-4 h-4"></i>
+                  </span>
+                  <div>
+                    <h3 class="font-bold text-slate-900 text-xs sm:text-sm tracking-tight">Tren Pertumbuhan Pelanggan</h3>
+                    <p class="text-[11px] text-slate-400">Akumulasi kontak baru terdaftar di CRM</p>
+                  </div>
+                </div>
+                <span id="chartCustomersTotalBadge" class="text-xs font-semibold text-slate-700 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200">0 Kontak</span>
+              </div>
+
+              <!-- Canvas Container -->
+              <div class="relative h-64 sm:h-72 w-full mt-4 flex items-center justify-center">
+                <canvas id="customerGrowthChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Footer Stats -->
+            <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500">
+              <span class="flex items-center gap-1.5 font-medium text-[11px]">
+                <span class="w-2 h-2 rounded-full bg-brand-600 inline-block"></span>
+                <span>Registrasi Kontak Baru</span>
+              </span>
+              <span class="text-slate-400 text-[11px]">Berdasarkan tanggal dibuat</span>
+            </div>
           </div>
         </div>
 
         <!-- 2 Column Section: Recent Customers & Recent Deals -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <!-- Recent Customers Card -->
-          <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col">
-            <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+          <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <i data-lucide="user-check" class="w-5 h-5 text-brand-600"></i>
-                <h2 class="font-bold text-slate-900">Pelanggan Terbaru</h2>
+                <i data-lucide="user-check" class="w-4 h-4 text-slate-500"></i>
+                <h2 class="font-bold text-xs sm:text-sm text-slate-900 tracking-tight">Pelanggan Terbaru</h2>
               </div>
               <button onclick="switchTab('customers')" class="text-xs font-medium text-brand-600 hover:text-brand-700 hover:underline">Lihat Semua →</button>
             </div>
             <div class="p-5 divide-y divide-slate-100 flex-1" id="recentCustomersList">
-              <div class="text-center py-6 text-slate-400 text-sm">Memuat data...</div>
+              <div class="text-center py-6 text-slate-400 text-xs">Memuat data pelanggan...</div>
             </div>
           </div>
 
           <!-- Recent Deals Card -->
-          <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden flex flex-col">
-            <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+          <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden flex flex-col">
+            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <i data-lucide="briefcase" class="w-5 h-5 text-emerald-600"></i>
-                <h2 class="font-bold text-slate-900">Deals & Transaksi Terbaru</h2>
+                <i data-lucide="briefcase" class="w-4 h-4 text-slate-500"></i>
+                <h2 class="font-bold text-xs sm:text-sm text-slate-900 tracking-tight">Deals & Transaksi Terbaru</h2>
               </div>
               <button onclick="switchTab('pipeline')" class="text-xs font-medium text-brand-600 hover:text-brand-700 hover:underline">Lihat Pipeline →</button>
             </div>
             <div class="p-5 divide-y divide-slate-100 flex-1" id="recentDealsList">
-              <div class="text-center py-6 text-slate-400 text-sm">Memuat data...</div>
+              <div class="text-center py-6 text-slate-400 text-xs">Memuat data transaksi...</div>
             </div>
           </div>
         </div>
@@ -222,23 +366,23 @@
 
       <!-- ================= TAB 2: DATA CUSTOMERS ================= -->
       <section id="tab-customers" class="hidden space-y-6">
-        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+        <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden">
           <!-- Table Toolbar -->
-          <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="p-4 sm:p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="font-bold text-lg text-slate-900">Daftar Pelanggan</h2>
-              <p class="text-xs text-slate-500">Kelola dan pantau seluruh kontak pelanggan CRM</p>
+              <h2 class="font-bold text-sm sm:text-base text-slate-900 tracking-tight">Daftar Pelanggan Cherry Queen</h2>
+              <p class="text-xs text-slate-400">Kelola dan pantau seluruh kontak pelanggan CRM</p>
             </div>
-            <div class="flex items-center flex-wrap gap-2.5">
+            <div class="flex items-center flex-wrap gap-2">
               <!-- Search Bar -->
               <div class="relative w-full sm:w-64">
-                <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                <input type="text" id="customerSearchInput" oninput="filterCustomerTable()" placeholder="Cari nama, email, atau nomor HP..." class="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
+                <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" id="customerSearchInput" oninput="filterCustomerTable()" placeholder="Cari nama, email, nomor HP..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-700 placeholder-slate-400">
               </div>
 
               <!-- Filter Status Dropdown -->
               <div class="relative w-full sm:w-auto">
-                <select id="customerStatusFilter" onchange="filterCustomerTable()" class="w-full sm:w-auto px-3 py-2 text-xs font-medium rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white transition-all text-slate-700 cursor-pointer">
+                <select id="customerStatusFilter" onchange="filterCustomerTable()" class="w-full sm:w-auto px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-white transition-all text-slate-700 cursor-pointer">
                   <option value="all">Semua Status</option>
                   <option value="active">Aktif</option>
                   <option value="prospect">Prospek</option>
@@ -248,12 +392,20 @@
               </div>
 
               <!-- Action Buttons -->
-              <button onclick="exportCustomersCSV()" class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-lg shadow-sm hover:shadow transition-all whitespace-nowrap" title="Ekspor Seluruh Data ke CSV">
-                <i data-lucide="download" class="w-4 h-4 text-slate-500"></i>
+              <button onclick="openWaTemplateModal()" class="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap" title="Kelola Template WhatsApp">
+                <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-600"></i>
+                <span>Template WA</span>
+              </button>
+              <button onclick="exportCustomersCSV()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap" title="Ekspor Seluruh Data ke CSV">
+                <i data-lucide="download" class="w-3.5 h-3.5 text-slate-500"></i>
                 <span>Export CSV</span>
               </button>
-              <button onclick="openModal()" class="flex items-center gap-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3.5 py-2 rounded-lg shadow-sm shadow-brand-500/20 transition-all whitespace-nowrap">
-                <i data-lucide="plus" class="w-4 h-4"></i>
+              <button onclick="openImportModal()" class="flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap" title="Impor Data Pelanggan dari File CSV / Excel">
+                <i data-lucide="upload" class="w-3.5 h-3.5 text-slate-500"></i>
+                <span>Import Data</span>
+              </button>
+              <button onclick="openModal()" class="flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3 py-1.5 rounded-lg shadow-sm shadow-brand-900/20 transition-all whitespace-nowrap">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
                 <span>Tambah Pelanggan</span>
               </button>
             </div>
@@ -263,18 +415,19 @@
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
-                <tr class="bg-slate-50 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                  <th class="py-3.5 px-5">ID</th>
-                  <th class="py-3.5 px-5">Pelanggan & Perusahaan</th>
-                  <th class="py-3.5 px-5">Kontak</th>
-                  <th class="py-3.5 px-5">Status</th>
-                  <th class="py-3.5 px-5">Tanggal Dibuat</th>
-                  <th class="py-3.5 px-5 text-right">Aksi</th>
+                <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                  <th class="py-3 px-4">ID</th>
+                  <th class="py-3 px-4">Pelanggan & Perusahaan</th>
+                  <th class="py-3 px-4">Kontak</th>
+                  <th class="py-3 px-4">Penanggung Jawab</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4">Tanggal Dibuat</th>
+                  <th class="py-3 px-4 text-right">Aksi</th>
                 </tr>
               </thead>
-              <tbody id="customerTableBody" class="divide-y divide-slate-100 text-sm text-slate-700">
+              <tbody id="customerTableBody" class="divide-y divide-slate-100 text-xs text-slate-700">
                 <tr>
-                  <td colspan="6" class="text-center py-8 text-slate-400">Memuat data pelanggan...</td>
+                  <td colspan="7" class="text-center py-8 text-slate-400">Memuat data pelanggan...</td>
                 </tr>
               </tbody>
             </table>
@@ -283,67 +436,122 @@
       </section>
 
       <!-- ================= TAB 3: SALES PIPELINE (KANBAN) ================= -->
-      <section id="tab-pipeline" class="hidden space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <section id="tab-pipeline" class="hidden space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 class="font-bold text-lg text-slate-900">Sales Pipeline Kanban</h2>
-            <p class="text-xs text-slate-500">Visualisasi peluang transaksi berdasarkan tahap penjualan</p>
+            <h2 class="font-bold text-sm sm:text-base text-slate-900 tracking-tight">Sales Pipeline (Kanban Board)</h2>
+            <p class="text-xs text-slate-400">Pantau proses closing transaksi dan penugasan staf CS/Sales</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-500">Total Value Pipeline:</span>
-            <span id="pipelineTotalValue" class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">Rp 0</span>
+            <button onclick="openWaTemplateModal()" class="flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 px-2.5 py-1 rounded-lg transition-colors" title="Kelola Template WhatsApp">
+              <i data-lucide="message-square" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>Template WA</span>
+            </button>
+            <span class="text-xs text-slate-500 font-medium">Total Nilai Pipeline:</span>
+            <span id="pipelineTotalValue" class="text-xs sm:text-sm font-bold text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200 font-mono">Rp 0</span>
           </div>
         </div>
 
         <!-- Kanban Board Columns Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
           <!-- Column 1: Prospect -->
-          <div class="bg-slate-100/70 rounded-2xl p-4 border border-slate-200/80 flex flex-col">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+          <div class="bg-slate-100/70 rounded-xl p-3.5 border border-slate-200/70 flex flex-col">
+            <div class="flex items-center justify-between pb-2.5 border-b border-slate-200/80 mb-3">
               <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-blue-500"></span>
-                <span class="font-semibold text-xs uppercase tracking-wider text-slate-700">Prospect</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                <span class="font-bold text-xs uppercase tracking-wider text-slate-700">Prospect</span>
               </div>
-              <span id="count-prospect" class="text-xs px-2 py-0.5 rounded-full font-mono font-medium bg-white text-slate-700 border border-slate-200">0</span>
+              <span id="count-prospect" class="text-xs px-2 py-0.5 rounded-md font-mono font-semibold bg-white text-slate-700 border border-slate-200">0</span>
             </div>
-            <div id="col-prospect" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+            <div id="col-prospect" class="space-y-2.5 flex-1 overflow-y-auto max-h-[620px] pr-1"></div>
           </div>
 
           <!-- Column 2: Negotiation -->
-          <div class="bg-slate-100/70 rounded-2xl p-4 border border-slate-200/80 flex flex-col">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+          <div class="bg-slate-100/70 rounded-xl p-3.5 border border-slate-200/70 flex flex-col">
+            <div class="flex items-center justify-between pb-2.5 border-b border-slate-200/80 mb-3">
               <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
-                <span class="font-semibold text-xs uppercase tracking-wider text-slate-700">Negotiation</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                <span class="font-bold text-xs uppercase tracking-wider text-slate-700">Negotiation</span>
               </div>
-              <span id="count-negotiation" class="text-xs px-2 py-0.5 rounded-full font-mono font-medium bg-white text-slate-700 border border-slate-200">0</span>
+              <span id="count-negotiation" class="text-xs px-2 py-0.5 rounded-md font-mono font-semibold bg-white text-slate-700 border border-slate-200">0</span>
             </div>
-            <div id="col-negotiation" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+            <div id="col-negotiation" class="space-y-2.5 flex-1 overflow-y-auto max-h-[620px] pr-1"></div>
           </div>
 
           <!-- Column 3: Won -->
-          <div class="bg-slate-100/70 rounded-2xl p-4 border border-slate-200/80 flex flex-col">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+          <div class="bg-slate-100/70 rounded-xl p-3.5 border border-slate-200/70 flex flex-col">
+            <div class="flex items-center justify-between pb-2.5 border-b border-slate-200/80 mb-3">
               <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                <span class="font-semibold text-xs uppercase tracking-wider text-slate-700">Won (Closing)</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span class="font-bold text-xs uppercase tracking-wider text-slate-700">Won (Closing)</span>
               </div>
-              <span id="count-won" class="text-xs px-2 py-0.5 rounded-full font-mono font-medium bg-white text-slate-700 border border-slate-200">0</span>
+              <span id="count-won" class="text-xs px-2 py-0.5 rounded-md font-mono font-semibold bg-white text-slate-700 border border-slate-200">0</span>
             </div>
-            <div id="col-won" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+            <div id="col-won" class="space-y-2.5 flex-1 overflow-y-auto max-h-[620px] pr-1"></div>
           </div>
 
           <!-- Column 4: Lost -->
-          <div class="bg-slate-100/70 rounded-2xl p-4 border border-slate-200/80 flex flex-col">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+          <div class="bg-slate-100/70 rounded-xl p-3.5 border border-slate-200/70 flex flex-col">
+            <div class="flex items-center justify-between pb-2.5 border-b border-slate-200/80 mb-3">
               <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
-                <span class="font-semibold text-xs uppercase tracking-wider text-slate-700">Lost</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+                <span class="font-bold text-xs uppercase tracking-wider text-slate-700">Lost</span>
               </div>
-              <span id="count-lost" class="text-xs px-2 py-0.5 rounded-full font-mono font-medium bg-white text-slate-700 border border-slate-200">0</span>
+              <span id="count-lost" class="text-xs px-2 py-0.5 rounded-md font-mono font-semibold bg-white text-slate-700 border border-slate-200">0</span>
             </div>
-            <div id="col-lost" class="space-y-3 flex-1 overflow-y-auto max-h-[600px] pr-1"></div>
+            <div id="col-lost" class="space-y-2.5 flex-1 overflow-y-auto max-h-[620px] pr-1"></div>
           </div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 4: MANAJEMEN AGEN CS/SALES ================= -->
+      <section id="tab-agents" class="hidden space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="font-bold text-sm sm:text-base text-slate-900 tracking-tight">Manajemen Tim CS & Sales</h2>
+            <p class="text-xs text-slate-400">Kelola daftar penanggung jawab, beban penugasan deals, dan hak akses</p>
+          </div>
+          <button id="btnOpenAgentModal" onclick="openAgentModal()" class="flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 px-3.5 py-1.5 rounded-lg shadow-sm shadow-brand-900/20 transition-all whitespace-nowrap">
+            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+            <span>Tambah Agen Sales</span>
+          </button>
+        </div>
+
+        <!-- Tabel Manajemen Agen -->
+        <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden">
+          <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-slate-900 text-xs sm:text-sm tracking-tight">Daftar Akun Agen & Sales</h3>
+              <p class="text-xs text-slate-400">Daftar akun tim sales aktif yang menangani penugasan lead & transaksi</p>
+            </div>
+            <span id="agentsCountBadge" class="text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 px-2.5 py-0.5 rounded-lg">0 Agen Terdaftar</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                  <th class="py-3 px-4">ID</th>
+                  <th class="py-3 px-4">Nama Agen</th>
+                  <th class="py-3 px-4">Email & Kontak</th>
+                  <th class="py-3 px-4">Role Akses</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4">Beban Deals</th>
+                  <th class="py-3 px-4 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="agentTableBody" class="divide-y divide-slate-100 text-xs text-slate-700">
+                <tr>
+                  <td colspan="7" class="text-center py-8 text-slate-400">Memuat data tabel agen...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Agent Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="agentsGridContainer">
+          <div class="text-center py-10 col-span-full text-slate-400 text-xs">Memuat data agen...</div>
         </div>
       </section>
 
@@ -351,45 +559,45 @@
   </div>
 
   <!-- ================= MODAL TAMBAH PELANGGAN ================= -->
-  <dialog id="customerModal" class="rounded-2xl shadow-2xl p-0 w-full max-w-md border border-slate-200 bg-white">
+  <dialog id="customerModal" class="rounded-2xl shadow-xl p-0 w-full max-w-md border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
     <div class="p-6">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center">
+          <div class="w-7 h-7 rounded-lg bg-rose-50 text-brand-600 flex items-center justify-center">
             <i data-lucide="user-plus" class="w-4 h-4"></i>
           </div>
-          <h3 class="font-bold text-slate-900 text-base">Tambah Pelanggan Baru</h3>
+          <h3 class="font-bold text-slate-900 text-sm tracking-tight">Tambah Pelanggan Baru</h3>
         </div>
         <button onclick="closeModal()" type="button" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition-colors">
-          <i data-lucide="x" class="w-5 h-5"></i>
+          <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
-      <form id="formAddCustomer" onsubmit="handleCustomerSubmit(event)" class="mt-4 space-y-4">
+      <form id="formAddCustomer" onsubmit="handleCustomerSubmit(event)" class="mt-4 space-y-3.5">
         <div>
-          <label for="inputName" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Nama Lengkap / PIC <span class="text-rose-500">*</span></label>
-          <input type="text" id="inputName" required placeholder="Contoh: Budi Santoso" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
+          <label for="inputName" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Nama Lengkap / PIC <span class="text-rose-500">*</span></label>
+          <input type="text" id="inputName" required placeholder="Contoh: Budi Santoso" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
         </div>
 
         <div>
-          <label for="inputCompany" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Perusahaan / Instansi</label>
-          <input type="text" id="inputCompany" placeholder="Contoh: PT Teknologi Bangsa" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
+          <label for="inputCompany" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Perusahaan / Instansi</label>
+          <input type="text" id="inputCompany" placeholder="Contoh: PT Teknologi Bangsa" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label for="inputEmail" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Email</label>
-            <input type="email" id="inputEmail" placeholder="nama@domain.com" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
+            <label for="inputEmail" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Email</label>
+            <input type="email" id="inputEmail" placeholder="nama@domain.com" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
           </div>
           <div>
-            <label for="inputPhone" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Nomor Telepon / WA</label>
-            <input type="tel" id="inputPhone" placeholder="081234567890" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all">
+            <label for="inputPhone" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Nomor Telepon / WA</label>
+            <input type="tel" id="inputPhone" placeholder="081234567890" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
           </div>
         </div>
 
         <div>
-          <label for="selectStatus" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Status Pelanggan</label>
-          <select id="selectStatus" class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all bg-white">
+          <label for="selectStatus" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Status Pelanggan</label>
+          <select id="selectStatus" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all bg-white text-slate-700 cursor-pointer">
             <option value="active" selected>Active (Pelanggan Aktif)</option>
             <option value="prospect">Prospect (Prospek Terkualifikasi)</option>
             <option value="lead">Lead (Calon Prospek)</option>
@@ -398,11 +606,19 @@
           </select>
         </div>
 
-        <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-2.5">
-          <button type="button" onclick="closeModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
+        <!-- Penugasan Agen (Admin Only) -->
+        <div id="assignAgentSection">
+          <label for="selectCustomerAgent" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Penugasan Agen (CS/Sales)</label>
+          <select id="selectCustomerAgent" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all bg-white text-slate-700 cursor-pointer">
+            <option value="">-- Tugaskan ke Agen --</option>
+          </select>
+        </div>
+
+        <div class="pt-3.5 border-t border-slate-100 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
             Batal
           </button>
-          <button type="submit" id="btnSubmitCustomer" class="px-4 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm shadow-brand-500/30 transition-all flex items-center gap-1.5">
+          <button type="submit" id="btnSubmitCustomer" class="px-3.5 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm shadow-brand-900/20 transition-all flex items-center gap-1.5">
             <i data-lucide="save" class="w-3.5 h-3.5"></i>
             <span>Simpan Pelanggan</span>
           </button>
@@ -411,15 +627,404 @@
     </div>
   </dialog>
 
+  <!-- ================= MODAL IMPORT PELANGGAN (CSV / EXCEL) ================= -->
+  <dialog id="importCustomerModal" class="rounded-2xl shadow-xl p-0 w-full max-w-lg border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
+    <div class="p-6">
+      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
+            <i data-lucide="file-up" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm tracking-tight">Import Data Pelanggan</h3>
+            <p class="text-[11px] text-slate-400">Unggah berkas CSV atau Excel (.xlsx/.xls)</p>
+          </div>
+        </div>
+        <button onclick="closeImportModal()" class="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 flex items-center justify-center transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="formImportCustomer" onsubmit="handleImportCustomerSubmit(event)" class="mt-4 space-y-4">
+        <!-- Panduan Format & Template -->
+        <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 text-xs text-slate-600 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-semibold text-slate-800 flex items-center gap-1.5">
+              <i data-lucide="info" class="w-3.5 h-3.5 text-slate-500"></i>
+              Format Kolom yang Didukung:
+            </span>
+            <button type="button" onclick="downloadSampleCSV()" class="text-brand-600 hover:text-brand-700 font-medium underline flex items-center gap-1 transition-colors text-[11px]">
+              <i data-lucide="download" class="w-3 h-3"></i>
+              <span>Unduh Template CSV</span>
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500 leading-relaxed">
+            Header kolom: <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-slate-700 font-semibold">Nama</code>, 
+            <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-slate-700 font-semibold">Email</code>, 
+            <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-slate-700 font-semibold">Telepon</code>, 
+            <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-slate-700 font-semibold">Perusahaan</code>, 
+            <code class="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-slate-700 font-semibold">Status</code>.
+          </p>
+        </div>
+
+        <!-- File Upload Area -->
+        <div class="border-2 border-dashed border-slate-200 hover:border-brand-500 rounded-xl p-6 text-center transition-colors bg-slate-50/50 hover:bg-rose-50/20 cursor-pointer relative" id="dropAreaImport">
+          <input type="file" id="importFileInput" accept=".csv, .xlsx, .xls" required onchange="handleFileSelect(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+          <div class="space-y-2 pointer-events-none">
+            <div class="w-10 h-10 mx-auto rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-600">
+              <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+            </div>
+            <div class="text-xs">
+              <span class="font-semibold text-slate-800">Klik untuk memilih file</span>
+              <span class="text-slate-500"> atau seret file ke sini</span>
+            </div>
+            <p class="text-[11px] text-slate-400">Mendukung format .CSV, .XLSX, dan .XLS (Maksimal 5MB)</p>
+          </div>
+        </div>
+
+        <!-- Selected File Indicator -->
+        <div id="selectedFileInfo" class="hidden items-center justify-between p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs text-emerald-800">
+          <div class="flex items-center gap-2 truncate">
+            <i data-lucide="file-check" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+            <span id="selectedFileName" class="font-medium truncate">nama_file.csv</span>
+            <span id="selectedFileSize" class="text-emerald-600 text-[11px] shrink-0 font-mono">(0 KB)</span>
+          </div>
+          <button type="button" onclick="clearSelectedFile()" class="text-emerald-700 hover:text-emerald-900 font-bold ml-2">
+            <i data-lucide="x" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+          <button type="button" onclick="closeImportModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
+            Batal
+          </button>
+          <button type="submit" id="btnSubmitImport" class="px-4 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm shadow-brand-900/20 transition-all flex items-center gap-1.5">
+            <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+            <span>Upload & Import Data</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ================= MODAL TAMBAH AGEN SALES (ADMIN ONLY) ================= -->
+  <dialog id="agentModal" class="rounded-2xl shadow-xl p-0 w-full max-w-md border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
+    <div class="p-6">
+      <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900 text-sm tracking-tight">Tambah Agen Sales Baru</h3>
+            <p class="text-[11px] text-slate-400">Daftarkan akun sales baru untuk operasional CRM</p>
+          </div>
+        </div>
+        <button onclick="closeAgentModal()" type="button" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="formAddAgent" onsubmit="handleAgentSubmit(event)" class="mt-4 space-y-3.5">
+        <div>
+          <label for="agentInputName" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Nama Lengkap <span class="text-rose-500">*</span></label>
+          <input type="text" id="agentInputName" required placeholder="Contoh: Maya Anggraini" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
+        </div>
+
+        <div>
+          <label for="agentInputEmail" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Alamat Email <span class="text-rose-500">*</span></label>
+          <input type="email" id="agentInputEmail" required placeholder="maya.sales@cherryqueen.id" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
+        </div>
+
+        <div>
+          <label for="agentInputPassword" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Password / Kata Sandi <span class="text-rose-500">*</span></label>
+          <input type="password" id="agentInputPassword" required placeholder="Masukkan kata sandi akun sales" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="agentSelectRole" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Role Akun</label>
+            <select id="agentSelectRole" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all bg-white font-medium text-slate-700 cursor-pointer">
+              <option value="sales" selected>Sales</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div>
+            <label for="agentInputPhone" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">No. WhatsApp / HP</label>
+            <input type="tel" id="agentInputPhone" placeholder="081234567804" class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
+          </div>
+        </div>
+
+        <div class="pt-3.5 border-t border-slate-100 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeAgentModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
+            Batal
+          </button>
+          <button type="submit" id="btnSubmitAgent" class="px-4 py-1.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm shadow-brand-900/20 transition-all flex items-center gap-1.5">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            <span>Daftarkan Agen</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ================= MODAL MANAJEMEN TEMPLATE WHATSAPP ================= -->
+  <dialog id="waTemplateModal" class="rounded-2xl shadow-xl p-0 w-full max-w-3xl border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
+    <div class="p-6 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+            <i data-lucide="message-square" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900 tracking-tight">Manajemen Template WhatsApp</h3>
+            <p class="text-xs text-slate-400">Atur pesan otomatis dan follow-up cepat dengan tag dinamis</p>
+          </div>
+        </div>
+        <button onclick="closeWaTemplateModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Form Tambah / Edit Template -->
+      <form id="formWaTemplate" onsubmit="handleWaTemplateSubmit(event)" class="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3.5">
+        <input type="hidden" id="waTemplateId" value="">
+        <div class="flex items-center justify-between">
+          <span id="waTemplateFormTitle" class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-brand-600"></i>
+            <span>Tambah Template Baru</span>
+          </span>
+          <button type="button" id="btnCancelEditWaTemplate" onclick="resetWaTemplateForm()" class="hidden text-xs text-slate-500 hover:text-slate-700 underline font-medium">
+            Batal Ubah
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="waTemplateName" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Nama Template *</label>
+            <input type="text" id="waTemplateName" required placeholder="Contoh: Follow-up Leads Baru" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 placeholder-slate-400 bg-white">
+          </div>
+          <div>
+            <label for="waTemplateCategory" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Kategori *</label>
+            <select id="waTemplateCategory" required class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 bg-white">
+              <option value="follow_up">Follow Up</option>
+              <option value="promo">Promo & Penawaran</option>
+              <option value="closing">Closing Deals</option>
+              <option value="payment">Konfirmasi Pembayaran</option>
+              <option value="general">Umum</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label for="waTemplateMessage" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Isi Pesan Template *</label>
+            <span class="text-[10px] text-slate-400">Klik chip di bawah untuk menyisipkan variabel:</span>
+          </div>
+          <textarea id="waTemplateMessage" rows="4" required placeholder="Halo {nama_pelanggan}, kami dari Cherry Queen..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 placeholder-slate-400 bg-white font-sans"></textarea>
+          
+          <!-- Variable Insertion Chips -->
+          <div class="mt-2 flex items-center flex-wrap gap-1.5">
+            <button type="button" onclick="insertVariableToTemplate('{nama_pelanggan}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors" title="Sisipkan Tag Nama Pelanggan">
+              + {nama_pelanggan}
+            </button>
+            <button type="button" onclick="insertVariableToTemplate('{nama_perusahaan}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors" title="Sisipkan Tag Nama Perusahaan">
+              + {nama_perusahaan}
+            </button>
+            <button type="button" onclick="insertVariableToTemplate('{nama_sales}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors" title="Sisipkan Tag Nama PIC / Sales">
+              + {nama_sales}
+            </button>
+            <button type="button" onclick="insertVariableToTemplate('{nama_produk}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors" title="Sisipkan Tag Produk / Judul Deals">
+              + {nama_produk}
+            </button>
+            <button type="button" onclick="insertVariableToTemplate('{nilai_deals}')" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors" title="Sisipkan Tag Nilai Deals">
+              + {nilai_deals}
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-200/60">
+          <button type="button" onclick="resetWaTemplateForm()" class="px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-200/70 rounded-lg transition-all">
+            Reset
+          </button>
+          <button type="submit" id="btnSubmitWaTemplate" class="px-3.5 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm shadow-emerald-900/20 transition-all flex items-center gap-1.5">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i>
+            <span id="btnSubmitWaTemplateText">Simpan Template</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Daftar Template Tersimpan -->
+      <div class="mt-5 space-y-3">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Daftar Template Tersimpan</h4>
+          <span id="waTemplateCountText" class="text-[11px] text-slate-400">0 template aktif</span>
+        </div>
+        <div id="waTemplateListContainer" class="space-y-2.5 max-h-72 overflow-y-auto pr-1">
+          <div class="text-center py-6 text-slate-400 text-xs">Memuat template pesan...</div>
+        </div>
+      </div>
+
+      <div class="mt-5 pt-3 border-t border-slate-100 flex justify-end">
+        <button type="button" onclick="closeWaTemplateModal()" class="px-4 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ================= MODAL INSTANT WHATSAPP FOLLOW-UP ================= -->
+  <dialog id="quickWaModal" class="rounded-2xl shadow-xl p-0 w-full max-w-lg border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
+    <div class="p-6">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+            <i data-lucide="message-circle" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900 tracking-tight">Kirim WhatsApp Instan</h3>
+            <p class="text-xs text-slate-400">One-click follow-up ke pelanggan Cherry Queen</p>
+          </div>
+        </div>
+        <button onclick="closeQuickWaModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Recipient Info Card -->
+      <div class="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2 text-xs">
+        <div class="flex items-center justify-between">
+          <span class="text-slate-500 font-medium text-[11px]">Tujuan Penerima:</span>
+          <span id="quickWaCustomerName" class="font-bold text-slate-900 text-xs">-</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-slate-500 font-medium text-[11px]">Perusahaan / Brand:</span>
+          <span id="quickWaCompanyName" class="font-medium text-slate-700 text-xs">-</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-slate-500 font-medium text-[11px]">Sales / PIC Penanggung Jawab:</span>
+          <span id="quickWaSalesName" class="font-medium text-slate-700 text-xs">-</span>
+        </div>
+      </div>
+
+      <!-- Phone Number Input & Standardization Info -->
+      <div class="mt-3.5 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <label for="quickWaPhoneInput" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Nomor WhatsApp *</label>
+          <span id="quickWaPhoneStatusBadge" class="inline-flex items-center gap-1 text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <i data-lucide="check" class="w-2.5 h-2.5"></i>
+            <span id="quickWaStandardPhoneDisplay">62...</span>
+          </span>
+        </div>
+        <input type="tel" id="quickWaPhoneInput" oninput="handleQuickWaPhoneChange()" placeholder="08123456789 atau +628123456789" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 placeholder-slate-400 font-mono">
+        <p class="text-[10px] text-slate-400">Otomatis distandarisasi ke format internasional (misal: 0812... menjadi 62812...)</p>
+      </div>
+
+      <!-- Template Selector -->
+      <div class="mt-3.5 space-y-1">
+        <label for="quickWaTemplateSelect" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Pilih Template Pesan</label>
+        <select id="quickWaTemplateSelect" onchange="handleQuickWaTemplateChange()" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 bg-white">
+          <option value="">-- Ketik Pesan Sendiri (Kustom) --</option>
+        </select>
+      </div>
+
+      <!-- Editable Message Textarea -->
+      <div class="mt-3.5 space-y-1">
+        <div class="flex items-center justify-between">
+          <label for="quickWaMessagePreview" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Pratinjau & Edit Pesan</label>
+          <span id="quickWaCharCount" class="text-[10px] text-slate-400 font-mono">0 karakter</span>
+        </div>
+        <textarea id="quickWaMessagePreview" rows="5" oninput="updateQuickWaCharCount()" placeholder="Ketik pesan WhatsApp di sini..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-all text-slate-800 placeholder-slate-400 bg-white font-sans leading-relaxed"></textarea>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-5 pt-3.5 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button type="button" onclick="closeQuickWaModal()" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-all">
+          Batal
+        </button>
+        <button type="button" onclick="executeSendWhatsApp()" class="px-4 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm shadow-emerald-900/20 transition-all flex items-center gap-1.5">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+          <span>Kirim via WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ================= MODAL / OVERLAY LOGIN INTERAKTIF ================= -->
+  <dialog id="loginModal" class="rounded-2xl shadow-xl p-0 w-full max-w-sm border border-slate-200 bg-white backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm">
+    <div class="p-7">
+      <!-- Brand Header -->
+      <div class="text-center pb-5 border-b border-slate-100">
+        <img src="logo baru cherry queen.png" alt="Cherry Queen Logo" class="w-12 h-12 rounded-xl mx-auto object-cover ring-1 ring-slate-200 shadow-sm mb-3">
+        <h2 class="text-lg font-bold text-slate-900 tracking-tight">Cherry Queen CRM</h2>
+        <p class="text-xs text-slate-400 mt-0.5">Silakan masuk ke Business Dashboard</p>
+      </div>
+
+      <!-- Form Login -->
+      <form id="formLogin" onsubmit="handleLoginSubmit(event)" class="mt-5 space-y-3.5">
+        <div>
+          <label for="loginEmail" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Email Pengguna</label>
+          <div class="relative">
+            <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input type="email" id="loginEmail" required placeholder="admin@cherryqueen.id" class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
+          </div>
+        </div>
+
+        <div>
+          <label for="loginPassword" class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Kata Sandi (Password)</label>
+          <div class="relative">
+            <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full pl-8 pr-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-brand-500 focus:border-brand-500 transition-all text-slate-800 placeholder-slate-400">
+          </div>
+        </div>
+
+        <button type="submit" id="btnLoginSubmit" class="w-full py-2.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm shadow-brand-900/20 transition-all flex items-center justify-center gap-1.5 mt-2">
+          <span>Masuk ke Dashboard</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </form>
+
+      <!-- Quick Demo Login Helpers -->
+      <div class="mt-5 pt-4 border-t border-slate-100 text-center">
+        <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Akses Cepat (Demo Mode):</p>
+        <div class="flex items-center justify-center gap-2">
+          <button type="button" onclick="quickFillLogin('admin')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-all border border-slate-200/80">
+            Admin
+          </button>
+          <button type="button" onclick="quickFillLogin('sales')" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-all border border-slate-200/80">
+            Sales
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
   <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
-    // State Aplikasi
+    // Konfigurasi & State Global
     const API_BASE = '/api';
     let appState = {
       customers: [],
       leads: [],
-      deals: []
+      deals: [],
+      agents: [],
+      waTemplates: [],
+      currentUser: null,
+      token: localStorage.getItem('cq_crm_token') || null,
     };
+
+    // Helper Headers dengan Bearer Token
+    function getAuthHeaders(includeContentType = true) {
+      const headers = {};
+      if (includeContentType) {
+        headers['Content-Type'] = 'application/json';
+      }
+      if (appState.token) {
+        headers['Authorization'] = `Bearer ${appState.token}`;
+      }
+      return headers;
+    }
 
     // Inisialisasi Lucide Icons
     function refreshIcons() {
@@ -428,7 +1033,7 @@
       }
     }
 
-    // Format Rupiah
+    // Format Mata Uang Rupiah
     function formatCurrency(amount) {
       return new Intl.NumberFormat('id-ID', {
         style: 'currency',
@@ -449,31 +1054,33 @@
       });
     }
 
-    // Badge Status Styling Helper
+    // Badge Status Customer
     function getStatusBadge(status) {
       const s = (status || '').toLowerCase();
       switch (s) {
         case 'active':
-          return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+        case 'aktif':
+          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Aktif
                   </span>`;
         case 'prospect':
-          return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
-                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>Prospek
+        case 'prospek':
+          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200/70">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Prospek
                   </span>`;
         case 'lead':
-          return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Lead
+          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200/70">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>Lead
                   </span>`;
         case 'blocked':
         case 'blokir':
-          return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-50 text-rose-700 border border-rose-200">
+          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-200/70">
                     <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Blocked
                   </span>`;
         case 'inactive':
         case 'inaktif':
         default:
-          return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+          return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200/70">
                     <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>Inaktif
                   </span>`;
       }
@@ -485,37 +1092,173 @@
       const toast = document.createElement('div');
       
       const isSuccess = type === 'success';
-      const bgColor = isSuccess ? 'bg-emerald-600' : 'bg-rose-600';
+      const bgColor = isSuccess ? 'bg-slate-900 border border-slate-800 text-white' : 'bg-rose-600 text-white';
       const icon = isSuccess ? 'check-circle' : 'alert-circle';
 
-      toast.className = `${bgColor} text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-xs font-medium pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300 ease-out`;
+      toast.className = `${bgColor} px-3.5 py-2.5 rounded-xl shadow-lg border flex items-center gap-2.5 text-xs font-medium pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300 ease-out`;
       toast.innerHTML = `
-        <i data-lucide="${icon}" class="w-4 h-4 flex-shrink-0"></i>
+        <i data-lucide="${icon}" class="w-4 h-4 flex-shrink-0 ${isSuccess ? 'text-emerald-400' : 'text-white'}"></i>
         <span>${message}</span>
       `;
 
       container.appendChild(toast);
       refreshIcons();
 
-      // Animasi masuk
       requestAnimationFrame(() => {
         toast.classList.remove('translate-y-2', 'opacity-0');
       });
 
-      // Hilangkan otomatis setelah 3.5 detik
       setTimeout(() => {
         toast.classList.add('opacity-0', 'translate-y-2');
         setTimeout(() => toast.remove(), 300);
       }, 3500);
     }
 
-    // Switch Tab Menu
+    // ================= AUTENTIKASI LOGIC =================
+    const loginModal = document.getElementById('loginModal');
+
+    function checkAuthStatus() {
+      const storedUser = localStorage.getItem('cq_crm_user');
+      const token = localStorage.getItem('cq_crm_token');
+
+      if (!token || !storedUser) {
+        appState.currentUser = null;
+        appState.token = null;
+        openLoginModal();
+        return false;
+      }
+
+      try {
+        appState.currentUser = JSON.parse(storedUser);
+        appState.token = token;
+        updateHeaderProfile();
+        return true;
+      } catch (e) {
+        handleLogout();
+        return false;
+      }
+    }
+
+    function openLoginModal() {
+      document.getElementById('formLogin').reset();
+      loginModal.showModal();
+      refreshIcons();
+    }
+
+    function closeLoginModal() {
+      loginModal.close();
+    }
+
+    // Quick Fill Helper untuk Demo
+    function quickFillLogin(type) {
+      if (type === 'admin') {
+        document.getElementById('loginEmail').value = 'admin@cherryqueen.id';
+        document.getElementById('loginPassword').value = 'Admin@123';
+      } else {
+        document.getElementById('loginEmail').value = 'rian.pratama@cherryqueen.id';
+        document.getElementById('loginPassword').value = 'Sales@123';
+      }
+    }
+
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnLoginSubmit');
+      const originalText = btn.innerHTML;
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      try {
+        btn.disabled = true;
+        btn.innerHTML = `<span>Memverifikasi...</span>`;
+
+        const res = await fetch(`${API_BASE}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          appState.token = data.token;
+          appState.currentUser = data.user;
+          localStorage.setItem('cq_crm_token', data.token);
+          localStorage.setItem('cq_crm_user', JSON.stringify(data.user));
+
+          showToast(`Login berhasil! Selamat datang, ${data.user.name}.`, 'success');
+          closeLoginModal();
+          updateHeaderProfile();
+          await loadAllData();
+        } else {
+          showToast(data.message || 'Login gagal. Periksa kembali email dan password.', 'error');
+        }
+      } catch (err) {
+        console.error('Error saat login:', err);
+        showToast('Terjadi kesalahan koneksi server saat login.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        refreshIcons();
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('cq_crm_token');
+      localStorage.removeItem('cq_crm_user');
+      appState.currentUser = null;
+      appState.token = null;
+      showToast('Anda telah logout.', 'success');
+      updateHeaderProfile();
+      openLoginModal();
+    }
+
+    function updateHeaderProfile() {
+      const banner = document.getElementById('salesScopeBanner');
+      const addAgentBtn = document.getElementById('btnOpenAgentModal');
+      const assignAgentSection = document.getElementById('assignAgentSection');
+
+      if (!appState.currentUser) {
+        document.getElementById('userNameDisplay').textContent = 'Tamu';
+        document.getElementById('userRoleBadge').textContent = 'GUEST';
+        document.getElementById('userAvatar').textContent = '?';
+        if (banner) banner.classList.add('hidden');
+        return;
+      }
+
+      const u = appState.currentUser;
+      const initials = (u.name || 'CQ').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('userNameDisplay').textContent = u.name;
+      document.getElementById('userAvatar').textContent = initials;
+      
+      const roleText = (u.role || 'sales').toUpperCase();
+      const roleBadge = document.getElementById('userRoleBadge');
+      roleBadge.textContent = roleText;
+
+      if (u.role === 'admin') {
+        roleBadge.className = 'text-[9px] uppercase font-bold text-brand-600 tracking-wider';
+        if (banner) banner.classList.add('hidden');
+        if (addAgentBtn) addAgentBtn.classList.remove('hidden');
+        if (assignAgentSection) assignAgentSection.classList.remove('hidden');
+      } else {
+        roleBadge.className = 'text-[9px] uppercase font-bold text-slate-600 tracking-wider';
+        if (banner) {
+          banner.classList.remove('hidden');
+          document.getElementById('bannerSalesName').textContent = u.name;
+        }
+        if (addAgentBtn) addAgentBtn.classList.add('hidden');
+        if (assignAgentSection) assignAgentSection.classList.add('hidden');
+      }
+    }
+
+    // ================= TAB NAVIGATION =================
     function switchTab(tabId) {
-      const tabs = ['summary', 'customers', 'pipeline'];
+      const tabs = ['summary', 'customers', 'pipeline', 'agents'];
       const pageTitles = {
         summary: 'Dashboard Overview',
         customers: 'Manajemen Data Pelanggan',
-        pipeline: 'Sales Pipeline (Kanban)'
+        pipeline: 'Sales Pipeline (Kanban)',
+        agents: 'Manajemen Tim CS & Sales'
       };
 
       tabs.forEach(t => {
@@ -523,48 +1266,78 @@
         const btn = document.getElementById(`nav-${t}`);
         if (t === tabId) {
           el.classList.remove('hidden');
-          btn.className = 'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all text-white bg-brand-600 shadow-sm shadow-brand-600/40';
+          btn.className = 'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all text-white bg-brand-600 shadow-sm shadow-brand-900/40';
         } else {
           el.classList.add('hidden');
-          btn.className = 'w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60';
+          btn.className = 'w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/60';
         }
       });
 
-      document.getElementById('pageTitle').textContent = pageTitles[tabId] || 'CRM Dashboard';
+      document.getElementById('pageTitle').textContent = pageTitles[tabId] || 'Cherry Queen CRM';
+      if (tabId === 'summary') {
+        renderDashboardCharts();
+      }
       refreshIcons();
     }
 
-    // Fetch All API Data
+    // ================= FETCH ALL API DATA =================
     async function loadAllData() {
+      if (!appState.token) {
+        checkAuthStatus();
+        return;
+      }
+
       try {
-        const [resCustomers, resLeads, resDeals] = await Promise.all([
-          fetch(`${API_BASE}/customers`).then(r => r.json()),
-          fetch(`${API_BASE}/leads`).then(r => r.json()),
-          fetch(`${API_BASE}/deals`).then(r => r.json())
+        const headers = getAuthHeaders(false);
+        const [resCustomers, resLeads, resDeals, resAgents, resWaTemplates] = await Promise.all([
+          fetch(`${API_BASE}/customers`, { headers }).then(r => r.json()),
+          fetch(`${API_BASE}/leads`, { headers }).then(r => r.json()),
+          fetch(`${API_BASE}/deals`, { headers }).then(r => r.json()),
+          fetch(`${API_BASE}/agents`, { headers }).then(r => r.json()),
+          fetch(`${API_BASE}/wa-templates`, { headers }).then(r => r.json()).catch(() => ({ success: false, data: [] })),
         ]);
 
         appState.customers = resCustomers.success ? resCustomers.data : [];
         appState.leads = resLeads.success ? resLeads.data : [];
         appState.deals = resDeals.success ? resDeals.data : [];
+        appState.agents = resAgents.success ? resAgents.data : [];
+        appState.waTemplates = (resWaTemplates && resWaTemplates.success) ? resWaTemplates.data : [];
 
         // Render UI
         renderStats();
         renderRecentActivity();
         filterCustomerTable();
         renderPipeline(appState.deals);
+        renderAgents(appState.agents);
+        populateAgentSelects();
+        renderDashboardCharts();
+        renderWaTemplateList();
 
-        // Update badges
+        // Update Badges
         document.getElementById('badgeCustomerCount').textContent = appState.customers.length;
         document.getElementById('badgeDealsCount').textContent = appState.deals.length;
+        document.getElementById('badgeAgentsCount').textContent = appState.agents.length;
+        const waBadge = document.getElementById('badgeWaTemplateCount');
+        if (waBadge) waBadge.textContent = appState.waTemplates.length;
+        const waCountText = document.getElementById('waTemplateCountText');
+        if (waCountText) waCountText.textContent = `${appState.waTemplates.length} template aktif`;
 
         refreshIcons();
       } catch (err) {
         console.error('Gagal mengambil data dari API:', err);
-        showToast('Gagal memuat data dari server. Pastikan backend aktif.', 'error');
+        showToast('Gagal memuat data dari server. Silakan login kembali jika sesi berakhir.', 'error');
       }
     }
 
-    // Render Stats
+    // Populate dropdown agen di Modal Tambah Customer
+    function populateAgentSelects() {
+      const select = document.getElementById('selectCustomerAgent');
+      if (!select) return;
+      select.innerHTML = '<option value="">-- Tugaskan ke Agen --</option>' + 
+        appState.agents.map(a => `<option value="${a.id}">${a.name} (${(a.role || 'sales').toUpperCase()})</option>`).join('');
+    }
+
+    // ================= RENDER STATS =================
     function renderStats() {
       document.getElementById('statTotalCustomers').textContent = appState.customers.length;
       document.getElementById('statTotalLeads').textContent = appState.leads.length;
@@ -573,23 +1346,32 @@
       document.getElementById('statTotalDealsValue').textContent = formatCurrency(totalDealsVal);
       document.getElementById('statTotalDealsCount').textContent = appState.deals.length;
       document.getElementById('pipelineTotalValue').textContent = formatCurrency(totalDealsVal);
+
+      // Subtext disesuaikan jika Sales
+      if (appState.currentUser && appState.currentUser.role === 'sales') {
+        document.getElementById('statCustomerSubtext').textContent = 'Pelanggan ditugaskan ke Anda';
+        document.getElementById('statDealsValueSubtext').textContent = 'Nilai pipeline Anda';
+      } else {
+        document.getElementById('statCustomerSubtext').textContent = 'Terdaftar dalam database CRM';
+        document.getElementById('statDealsValueSubtext').textContent = 'Estimasi pipeline transaksi';
+      }
     }
 
-    // Render Recent Lists on Summary Tab
+    // ================= RENDER RECENT ACTIVITY =================
     function renderRecentActivity() {
-      // Recent Customers (max 5)
+      // Recent Customers
       const recentCustEl = document.getElementById('recentCustomersList');
       if (appState.customers.length === 0) {
         recentCustEl.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs">Belum ada pelanggan terdaftar.</div>`;
       } else {
         recentCustEl.innerHTML = appState.customers.slice(0, 5).map(c => `
-          <div class="py-3 flex items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-600">
+          <div class="py-2.5 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200/80 flex items-center justify-center font-bold text-xs text-slate-700">
                 ${(c.name || 'C').substring(0, 2).toUpperCase()}
               </div>
               <div>
-                <p class="font-semibold text-slate-800 text-xs sm:text-sm leading-tight">${c.name}</p>
+                <p class="font-semibold text-slate-900 text-xs leading-tight">${c.name}</p>
                 <p class="text-[11px] text-slate-400">${c.company || 'Perorangan'} • ${c.email || '-'}</p>
               </div>
             </div>
@@ -600,33 +1382,282 @@
         `).join('');
       }
 
-      // Recent Deals (max 5)
+      // Recent Deals
       const recentDealsEl = document.getElementById('recentDealsList');
       if (appState.deals.length === 0) {
         recentDealsEl.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs">Belum ada deal transaksi.</div>`;
       } else {
         recentDealsEl.innerHTML = appState.deals.slice(0, 5).map(d => `
-          <div class="py-3 flex items-center justify-between gap-3">
+          <div class="py-2.5 flex items-center justify-between gap-3">
             <div>
-              <p class="font-semibold text-slate-800 text-xs sm:text-sm leading-tight">${d.title}</p>
+              <p class="font-semibold text-slate-900 text-xs leading-tight">${d.title}</p>
               <p class="text-[11px] text-slate-400">${d.customer_name || 'Pelanggan'} • Tahap: <span class="capitalize font-medium text-slate-600">${d.stage}</span></p>
             </div>
             <div class="text-right">
-              <p class="font-bold text-emerald-600 text-xs sm:text-sm">${formatCurrency(d.value)}</p>
-              <p class="text-[10px] text-slate-400">${d.expected_close_date ? formatDate(d.expected_close_date) : '-'}</p>
+              <p class="font-bold text-slate-900 text-xs font-mono">${formatCurrency(d.value)}</p>
+              <p class="text-[10px] text-slate-400 font-mono">${d.expected_close_date ? formatDate(d.expected_close_date) : '-'}</p>
             </div>
           </div>
         `).join('');
       }
     }
 
-    // Render Customers Table
+    // ================= ANALYTICS CHARTS (CHART.JS) =================
+    let dealsChartInstance = null;
+    let customerChartInstance = null;
+
+    function renderDashboardCharts() {
+      try {
+        if (typeof Chart === 'undefined') {
+          console.warn('Library Chart.js belum selesai dimuat.');
+          return;
+        }
+
+        // 1. Chart Distribusi Nilai Pipeline Deals
+        const dealsCanvas = document.getElementById('dealsPipelineChart');
+        if (dealsCanvas) {
+          const stages = [
+            { key: 'prospect', label: 'Prospek', color: '#f59e0b', hoverColor: '#d97706' },
+            { key: 'negotiation', label: 'Negosiasi', color: '#6366f1', hoverColor: '#4f46e5' },
+            { key: 'won', label: 'Closing Won', color: '#10b981', hoverColor: '#059669' },
+            { key: 'lost', label: 'Lost / Batal', color: '#94a3b8', hoverColor: '#64748b' },
+          ];
+
+          const stageValues = stages.map(s => {
+            return (appState.deals || [])
+              .filter(d => (d.stage || '').toLowerCase() === s.key)
+              .reduce((sum, d) => sum + (Number(d.value) || 0), 0);
+          });
+
+          const stageCounts = stages.map(s => {
+            return (appState.deals || []).filter(d => (d.stage || '').toLowerCase() === s.key).length;
+          });
+
+          const totalDealsValue = stageValues.reduce((a, b) => a + b, 0);
+          const dealsBadge = document.getElementById('chartDealsTotalBadge');
+          if (dealsBadge) {
+            dealsBadge.textContent = formatCurrency(totalDealsValue);
+          }
+
+          // Update legend pills
+          const legP = document.getElementById('legendValProspect');
+          if (legP) legP.textContent = formatCurrency(stageValues[0]);
+          const legN = document.getElementById('legendValNegotiation');
+          if (legN) legN.textContent = formatCurrency(stageValues[1]);
+          const legW = document.getElementById('legendValWon');
+          if (legW) legW.textContent = formatCurrency(stageValues[2]);
+          const legL = document.getElementById('legendValLost');
+          if (legL) legL.textContent = formatCurrency(stageValues[3]);
+
+          if (dealsChartInstance) {
+            dealsChartInstance.destroy();
+          }
+
+          const allZero = stageValues.every(v => v === 0);
+          const ctxDeals = dealsCanvas.getContext('2d');
+          dealsChartInstance = new Chart(ctxDeals, {
+            type: 'doughnut',
+            data: {
+              labels: stages.map(s => s.label),
+              datasets: [{
+                data: allZero ? [1, 1, 1, 1] : stageValues,
+                backgroundColor: allZero ? ['#f1f5f9', '#f1f5f9', '#f1f5f9', '#f1f5f9'] : stages.map(s => s.color),
+                hoverBackgroundColor: allZero ? ['#e2e8f0', '#e2e8f0', '#e2e8f0', '#e2e8f0'] : stages.map(s => s.hoverColor),
+                borderWidth: 2,
+                borderColor: '#ffffff',
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              cutout: '72%',
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: {
+                    boxWidth: 8,
+                    usePointStyle: true,
+                    pointStyle: 'circle',
+                    padding: 12,
+                    font: { size: 11, family: "'Plus Jakarta Sans', Inter, sans-serif" },
+                    color: '#64748b'
+                  }
+                },
+                tooltip: {
+                  backgroundColor: '#0f172a',
+                  titleFont: { size: 11, family: "'Plus Jakarta Sans', Inter, sans-serif", weight: '600' },
+                  bodyFont: { size: 11, family: "'Plus Jakarta Sans', Inter, sans-serif" },
+                  padding: 8,
+                  cornerRadius: 6,
+                  callbacks: {
+                    label: function(context) {
+                      if (allZero) return ' Belum ada data nilai deals';
+                      const idx = context.dataIndex;
+                      const val = stageValues[idx];
+                      const count = stageCounts[idx];
+                      return ` ${context.label}: ${formatCurrency(val)} (${count} deals)`;
+                    }
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        // 2. Chart Tren Pertumbuhan Pelanggan Baru (Line Chart)
+        const customerCanvas = document.getElementById('customerGrowthChart');
+        if (customerCanvas) {
+          const customers = appState.customers || [];
+          const custBadge = document.getElementById('chartCustomersTotalBadge');
+          if (custBadge) {
+            custBadge.textContent = `${customers.length} Kontak`;
+          }
+
+          // Urutkan pelanggan berdasarkan created_at ascending
+          const sortedCustomers = [...customers].sort((a, b) => {
+            return new Date(a.created_at || 0) - new Date(b.created_at || 0);
+          });
+
+          const dateMap = {};
+          sortedCustomers.forEach(c => {
+            let labelKey = 'Kontak Awal';
+            if (c.created_at) {
+              const d = new Date(c.created_at);
+              if (!isNaN(d.getTime())) {
+                const day = String(d.getDate()).padStart(2, '0');
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+                labelKey = `${day} ${monthNames[d.getMonth()]}`;
+              }
+            }
+            dateMap[labelKey] = (dateMap[labelKey] || 0) + 1;
+          });
+
+          let labels = Object.keys(dateMap);
+          let dataPoints = Object.values(dateMap);
+
+          if (labels.length === 0) {
+            labels = ['Pekan 1', 'Pekan 2', 'Pekan 3', 'Pekan 4'];
+            dataPoints = [0, 0, 0, 0];
+          }
+
+          if (customerChartInstance) {
+            customerChartInstance.destroy();
+          }
+
+          const ctxCust = customerCanvas.getContext('2d');
+          const gradient = ctxCust.createLinearGradient(0, 0, 0, 240);
+          gradient.addColorStop(0, 'rgba(225, 29, 72, 0.16)');
+          gradient.addColorStop(1, 'rgba(225, 29, 72, 0.0)');
+
+          customerChartInstance = new Chart(ctxCust, {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Pelanggan Baru',
+                data: dataPoints,
+                borderColor: '#e11d48',
+                backgroundColor: gradient,
+                borderWidth: 2,
+                fill: true,
+                tension: 0.35,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#e11d48',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    precision: 0,
+                    font: { size: 10, family: "'Plus Jakarta Sans', Inter, sans-serif" },
+                    color: '#64748b'
+                  },
+                  grid: {
+                    color: '#f1f5f9'
+                  }
+                },
+                x: {
+                  ticks: {
+                    font: { size: 10, family: "'Plus Jakarta Sans', Inter, sans-serif" },
+                    color: '#64748b'
+                  },
+                  grid: {
+                    display: false
+                  }
+                }
+              },
+              plugins: {
+                legend: {
+                  display: false
+                },
+                tooltip: {
+                  backgroundColor: '#0f172a',
+                  titleFont: { size: 11, family: "'Plus Jakarta Sans', Inter, sans-serif", weight: '600' },
+                  bodyFont: { size: 11, family: "'Plus Jakarta Sans', Inter, sans-serif" },
+                  padding: 8,
+                  cornerRadius: 6,
+                  callbacks: {
+                    label: function(context) {
+                      return ` +${context.raw} Pelanggan Baru`;
+                    }
+                  }
+                }
+              }
+            }
+          });
+        }
+      } catch (err) {
+        console.error('Error renderDashboardCharts:', err);
+      }
+    }
+
+    // ================= CUSTOMERS TABLE & FILTER =================
+    function matchesStatus(customerStatus, filterValue) {
+      if (!filterValue || filterValue === 'all') return true;
+      const s = (customerStatus || '').toLowerCase();
+      if (filterValue === 'active') return s === 'active' || s === 'aktif';
+      if (filterValue === 'prospect') return s === 'prospect' || s === 'prospek' || s === 'lead';
+      if (filterValue === 'inactive') return s === 'inactive' || s === 'inaktif' || s === 'nonaktif';
+      if (filterValue === 'blocked') return s === 'blocked' || s === 'blokir';
+      return s === filterValue;
+    }
+
+    function getFilteredCustomers() {
+      const searchInput = document.getElementById('customerSearchInput');
+      const statusFilter = document.getElementById('customerStatusFilter');
+      const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+      const selectedStatus = statusFilter ? statusFilter.value : 'all';
+
+      return appState.customers.filter(c => {
+        const matchesQuery = !query || (
+          (c.name && c.name.toLowerCase().includes(query)) ||
+          (c.email && c.email.toLowerCase().includes(query)) ||
+          (c.phone && c.phone.toLowerCase().includes(query)) ||
+          (c.company && c.company.toLowerCase().includes(query))
+        );
+        const matchesStat = matchesStatus(c.status, selectedStatus);
+        return matchesQuery && matchesStat;
+      });
+    }
+
+    function filterCustomerTable() {
+      const filtered = getFilteredCustomers();
+      renderCustomerTable(filtered);
+    }
+
     function renderCustomerTable(customers) {
       const tbody = document.getElementById('customerTableBody');
       if (!customers || customers.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="6" class="text-center py-8 text-slate-400 text-xs">
+            <td colspan="7" class="text-center py-8 text-slate-400 text-xs">
               Tidak ada data pelanggan yang cocok.
             </td>
           </tr>
@@ -635,29 +1666,39 @@
       }
 
       tbody.innerHTML = customers.map(c => `
-        <tr class="hover:bg-slate-50/80 transition-colors">
-          <td class="py-3.5 px-5 font-mono text-xs text-slate-500">#${c.id}</td>
-          <td class="py-3.5 px-5">
-            <div class="font-semibold text-slate-900">${c.name}</div>
-            <div class="text-xs text-slate-400">${c.company || 'Perorangan'}</div>
+        <tr class="hover:bg-slate-50/70 transition-colors">
+          <td class="py-3 px-4 font-mono text-xs text-slate-400">#${c.id}</td>
+          <td class="py-3 px-4">
+            <div class="font-semibold text-slate-900 text-xs">${c.name}</div>
+            <div class="text-[11px] text-slate-400">${c.company || 'Perorangan'}</div>
           </td>
-          <td class="py-3.5 px-5 text-xs text-slate-600">
-            <div>${c.email || '-'}</div>
+          <td class="py-3 px-4 text-xs text-slate-600">
+            <div class="font-medium text-slate-700">${c.email || '-'}</div>
             <div class="text-slate-400 font-mono text-[11px]">${c.phone || '-'}</div>
           </td>
-          <td class="py-3.5 px-5">
+          <td class="py-3 px-4">
+            ${c.agent_name ? `
+              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200/70">
+                <i data-lucide="headset" class="w-3 h-3 text-slate-500"></i>
+                <span>${c.agent_name}</span>
+              </span>
+            ` : `
+              <span class="text-xs text-slate-400 italic">Belum Ada</span>
+            `}
+          </td>
+          <td class="py-3 px-4">
             ${getStatusBadge(c.status)}
           </td>
-          <td class="py-3.5 px-5 text-xs text-slate-500">
+          <td class="py-3 px-4 text-xs text-slate-400">
             ${formatDate(c.created_at)}
           </td>
-          <td class="py-3.5 px-5 text-right whitespace-nowrap">
+          <td class="py-3 px-4 text-right whitespace-nowrap">
             <div class="inline-flex items-center gap-1.5">
-              <button onclick="openWhatsApp('${c.phone || ''}', '${c.name.replace(/'/g, "\\'")}')" class="text-xs text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2.5 py-1.5 rounded-md font-medium transition-colors inline-flex items-center gap-1 shadow-sm" title="Kirim Pesan WhatsApp">
+              <button onclick="handleQuickWaFromCustomer(${c.id})" class="text-xs text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100/70 border border-emerald-200/80 px-2 py-1 rounded-md font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" title="Kirim Pesan WhatsApp Cepat">
                 <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
                 <span>WhatsApp</span>
               </button>
-              <button onclick="deleteCustomer(${c.id}, '${c.name.replace(/'/g, "\\'")}')" class="text-xs text-rose-600 hover:text-rose-800 hover:bg-rose-50 px-2.5 py-1.5 rounded-md font-medium transition-colors inline-flex items-center gap-1" title="Hapus Pelanggan">
+              <button onclick="deleteCustomer(${c.id}, '${c.name.replace(/'/g, "\\'")}')" class="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 border border-rose-200/70 px-2 py-1 rounded-md font-medium transition-colors inline-flex items-center gap-1" title="Hapus Pelanggan">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                 <span>Hapus</span>
               </button>
@@ -669,129 +1710,745 @@
       refreshIcons();
     }
 
-    // Helper pencocokan status pelanggan
-    function matchesStatus(customerStatus, filterValue) {
-      if (!filterValue || filterValue === 'all') return true;
-      const s = (customerStatus || '').toLowerCase();
-      if (filterValue === 'active') return s === 'active' || s === 'aktif';
-      if (filterValue === 'prospect') return s === 'prospect' || s === 'prospek' || s === 'lead';
-      if (filterValue === 'inactive') return s === 'inactive' || s === 'inaktif' || s === 'nonaktif';
-      if (filterValue === 'blocked') return s === 'blocked' || s === 'blokir';
-      return s === filterValue;
+    // ================= WHATSAPP AUTOMATION & INSTANT FOLLOW-UP SUITE =================
+    const waTemplateModal = document.getElementById('waTemplateModal');
+    const quickWaModal = document.getElementById('quickWaModal');
+    let quickWaCurrentContext = null;
+
+    // Helper Standarisasi Nomor HP ke Format Internasional (62...)
+    function standardizePhoneNumber(phone) {
+      try {
+        if (!phone) return null;
+        let cleaned = String(phone).replace(/\D/g, '');
+        if (!cleaned) return null;
+        if (cleaned.startsWith('0')) {
+          cleaned = '62' + cleaned.slice(1);
+        } else if (cleaned.startsWith('8')) {
+          cleaned = '62' + cleaned;
+        }
+        return cleaned;
+      } catch (e) {
+        console.error('Error standardizePhoneNumber:', e);
+        return null;
+      }
     }
 
-    // Mendapatkan daftar pelanggan yang tersaring berdasarkan pencarian teks & filter status
-    function getFilteredCustomers() {
-      const searchInput = document.getElementById('customerSearchInput');
-      const statusFilter = document.getElementById('customerStatusFilter');
-      const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
-      const selectedStatus = statusFilter ? statusFilter.value : 'all';
+    // Alias kompatibilitas
+    function formatWhatsAppNumber(phone) {
+      return standardizePhoneNumber(phone);
+    }
 
-      return appState.customers.filter(c => {
-        // 1. Pencarian teks real-time (Nama, Email, Nomor Telepon/HP, atau Perusahaan)
-        const matchesQuery = !query || (
-          (c.name && c.name.toLowerCase().includes(query)) ||
-          (c.email && c.email.toLowerCase().includes(query)) ||
-          (c.phone && c.phone.toLowerCase().includes(query)) ||
-          (c.company && c.company.toLowerCase().includes(query))
+    // Dynamic Variable Replacement Engine
+    function replaceTemplateVariables(text, context = {}) {
+      try {
+        if (!text) return '';
+        const namaPelanggan = context.nama_pelanggan || context.name || 'Bapak/Ibu';
+        const namaPerusahaan = context.nama_perusahaan || context.company || 'Cherry Queen';
+        const namaSales = context.nama_sales || (appState.currentUser ? appState.currentUser.name : 'Tim CS Cherry Queen');
+        const namaProduk = context.nama_produk || context.title || 'Produk Skincare Cherry Queen';
+        let formattedDealsValue = 'Rp 0';
+        if (context.nilai_deals !== undefined && context.nilai_deals !== null) {
+          formattedDealsValue = formatCurrency(context.nilai_deals);
+        } else if (context.value !== undefined && context.value !== null) {
+          formattedDealsValue = formatCurrency(context.value);
+        }
+
+        return text
+          .replace(/\{nama_pelanggan\}/gi, namaPelanggan)
+          .replace(/\{nama_perusahaan\}/gi, namaPerusahaan)
+          .replace(/\{nama_sales\}/gi, namaSales)
+          .replace(/\{nama_produk\}/gi, namaProduk)
+          .replace(/\{nilai_deals\}/gi, formattedDealsValue);
+      } catch (err) {
+        console.error('Error replaceTemplateVariables:', err);
+        return text || '';
+      }
+    }
+
+    // --- Modal Manajemen Template WA ---
+    function openWaTemplateModal() {
+      try {
+        resetWaTemplateForm();
+        renderWaTemplateList();
+        if (waTemplateModal) {
+          waTemplateModal.showModal();
+          refreshIcons();
+        }
+      } catch (err) {
+        console.error('Error openWaTemplateModal:', err);
+      }
+    }
+
+    function closeWaTemplateModal() {
+      try {
+        if (waTemplateModal) waTemplateModal.close();
+      } catch (err) {
+        console.error('Error closeWaTemplateModal:', err);
+      }
+    }
+
+    if (waTemplateModal) {
+      waTemplateModal.addEventListener('click', (e) => {
+        const rect = waTemplateModal.getBoundingClientRect();
+        const isInDialog = (
+          rect.top <= e.clientY &&
+          e.clientY <= rect.top + rect.height &&
+          rect.left <= e.clientX &&
+          e.clientX <= rect.left + rect.width
         );
-
-        // 2. Filter status pelanggan ('Semua Status', 'Aktif', 'Prospek', 'Inaktif', 'Blocked')
-        const matchesStat = matchesStatus(c.status, selectedStatus);
-
-        // Keduanya harus terpenuhi (kombinasi filter & search)
-        return matchesQuery && matchesStat;
+        if (!isInDialog) closeWaTemplateModal();
       });
     }
 
-    // Filter Customer Table via Search Input & Status Dropdown secara bersamaan
-    function filterCustomerTable() {
-      const filtered = getFilteredCustomers();
-      renderCustomerTable(filtered);
-    }
-
-    // Format nomor WhatsApp ke format internasional (misal 08xxx -> 628xxx)
-    function formatWhatsAppNumber(phone) {
-      if (!phone) return null;
-      let cleaned = String(phone).replace(/\D/g, ''); // bersihkan simbol +, -, spasi, tanda kurung
-      if (!cleaned) return null;
-
-      if (cleaned.startsWith('0')) {
-        cleaned = '62' + cleaned.slice(1);
-      } else if (cleaned.startsWith('8')) {
-        cleaned = '62' + cleaned;
+    function resetWaTemplateForm() {
+      try {
+        const form = document.getElementById('formWaTemplate');
+        if (form) form.reset();
+        document.getElementById('waTemplateId').value = '';
+        document.getElementById('waTemplateFormTitle').innerHTML = `
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-brand-600"></i>
+          <span>Tambah Template Baru</span>
+        `;
+        document.getElementById('btnSubmitWaTemplateText').textContent = 'Simpan Template';
+        document.getElementById('btnCancelEditWaTemplate').classList.add('hidden');
+        refreshIcons();
+      } catch (err) {
+        console.error('Error resetWaTemplateForm:', err);
       }
-
-      return cleaned;
     }
 
-    // Buka obrolan WhatsApp Web / App langsung
+    function insertVariableToTemplate(tag) {
+      try {
+        const textarea = document.getElementById('waTemplateMessage');
+        if (!textarea) return;
+        const start = textarea.selectionStart || textarea.value.length;
+        const end = textarea.selectionEnd || textarea.value.length;
+        const val = textarea.value;
+        textarea.value = val.substring(0, start) + tag + val.substring(end);
+        textarea.focus();
+        textarea.selectionStart = textarea.selectionEnd = start + tag.length;
+      } catch (err) {
+        console.error('Error insertVariableToTemplate:', err);
+      }
+    }
+
+    function renderWaTemplateList() {
+      try {
+        const container = document.getElementById('waTemplateListContainer');
+        if (!container) return;
+        const templates = appState.waTemplates || [];
+
+        if (templates.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-6 border border-dashed border-slate-200 rounded-xl text-slate-400 text-xs">
+              Belum ada template tersimpan. Silakan buat template baru di atas.
+            </div>
+          `;
+          return;
+        }
+
+        const categoryBadges = {
+          follow_up: { label: 'Follow Up', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+          promo: { label: 'Promo', color: 'bg-rose-50 text-rose-700 border-rose-200' },
+          closing: { label: 'Closing Deals', color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
+          payment: { label: 'Pembayaran', color: 'bg-purple-50 text-purple-700 border-purple-200' },
+          general: { label: 'Umum', color: 'bg-slate-100 text-slate-700 border-slate-200' },
+        };
+
+        container.innerHTML = templates.map(t => {
+          const badge = categoryBadges[t.category] || categoryBadges.general;
+          const safeTitle = (t.name || 'Template').replace(/'/g, "\\'");
+          return `
+            <div class="p-3 bg-white border border-slate-200/80 rounded-xl shadow-2xs hover:border-slate-300 transition-all flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+              <div class="space-y-1 flex-1 min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-semibold text-xs text-slate-900">${t.name}</span>
+                  <span class="text-[10px] font-medium px-2 py-0.5 rounded border ${badge.color}">${badge.label}</span>
+                </div>
+                <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed bg-slate-50/80 p-2 rounded-lg border border-slate-100 font-sans whitespace-pre-line">${t.message}</p>
+              </div>
+              <div class="flex items-center gap-1.5 self-end sm:self-center shrink-0">
+                <button type="button" onclick="editWaTemplate(${t.id})" class="px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 rounded-md transition-colors inline-flex items-center gap-1" title="Edit Template">
+                  <i data-lucide="edit-2" class="w-3 h-3"></i>
+                  <span>Edit</span>
+                </button>
+                <button type="button" onclick="deleteWaTemplate(${t.id}, '${safeTitle}')" class="px-2.5 py-1 text-xs font-medium text-rose-600 hover:text-rose-700 hover:bg-rose-50 border border-rose-200/60 rounded-md transition-colors inline-flex items-center gap-1" title="Hapus Template">
+                  <i data-lucide="trash-2" class="w-3 h-3"></i>
+                  <span>Hapus</span>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        refreshIcons();
+      } catch (err) {
+        console.error('Error renderWaTemplateList:', err);
+      }
+    }
+
+    async function handleWaTemplateSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmitWaTemplate');
+      const originalText = btn ? btn.innerHTML : 'Simpan Template';
+
+      try {
+        const id = document.getElementById('waTemplateId').value;
+        const name = document.getElementById('waTemplateName').value.trim();
+        const category = document.getElementById('waTemplateCategory').value;
+        const message = document.getElementById('waTemplateMessage').value.trim();
+
+        if (!name || !message) {
+          showToast('Nama template dan isi pesan wajib diisi.', 'error');
+          return;
+        }
+
+        if (btn) {
+          btn.disabled = true;
+          btn.innerHTML = `<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i><span>Menyimpan...</span>`;
+          refreshIcons();
+        }
+
+        const payload = { name, category, message };
+        const method = id ? 'PUT' : 'POST';
+        const endpoint = id ? `${API_BASE}/wa-templates/${id}` : `${API_BASE}/wa-templates`;
+
+        const res = await fetch(endpoint, {
+          method,
+          headers: getAuthHeaders(true),
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(id ? 'Template berhasil diperbarui!' : 'Template baru berhasil ditambahkan!', 'success');
+          resetWaTemplateForm();
+          await loadAllData();
+          renderWaTemplateList();
+        } else {
+          showToast(data.message || 'Gagal menyimpan template WhatsApp.', 'error');
+        }
+      } catch (err) {
+        console.error('Error handleWaTemplateSubmit:', err);
+        showToast('Terjadi kesalahan koneksi saat menyimpan template.', 'error');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+          refreshIcons();
+        }
+      }
+    }
+
+    function editWaTemplate(id) {
+      try {
+        const tmpl = (appState.waTemplates || []).find(t => t.id === id);
+        if (!tmpl) {
+          showToast('Template tidak ditemukan.', 'error');
+          return;
+        }
+
+        document.getElementById('waTemplateId').value = tmpl.id;
+        document.getElementById('waTemplateName').value = tmpl.name;
+        document.getElementById('waTemplateCategory').value = tmpl.category || 'general';
+        document.getElementById('waTemplateMessage').value = tmpl.message;
+
+        document.getElementById('waTemplateFormTitle').innerHTML = `
+          <i data-lucide="edit" class="w-3.5 h-3.5 text-brand-600"></i>
+          <span>Edit Template #${tmpl.id}</span>
+        `;
+        document.getElementById('btnSubmitWaTemplateText').textContent = 'Perbarui Template';
+        document.getElementById('btnCancelEditWaTemplate').classList.remove('hidden');
+
+        const form = document.getElementById('formWaTemplate');
+        if (form) form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        refreshIcons();
+      } catch (err) {
+        console.error('Error editWaTemplate:', err);
+      }
+    }
+
+    async function deleteWaTemplate(id, name) {
+      try {
+        if (!confirm(`Hapus template pesan "${name}"?`)) return;
+
+        const res = await fetch(`${API_BASE}/wa-templates/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders(false),
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(`Template "${name}" berhasil dihapus.`, 'success');
+          await loadAllData();
+          renderWaTemplateList();
+        } else {
+          showToast(data.message || 'Gagal menghapus template.', 'error');
+        }
+      } catch (err) {
+        console.error('Error deleteWaTemplate:', err);
+        showToast('Terjadi kesalahan saat menghapus template.', 'error');
+      }
+    }
+
+    // --- Modal Quick WhatsApp Follow-Up ---
+    function openQuickWaModal(context = {}) {
+      try {
+        quickWaCurrentContext = context;
+        document.getElementById('quickWaCustomerName').textContent = context.nama_pelanggan || '-';
+        document.getElementById('quickWaCompanyName').textContent = context.nama_perusahaan || '-';
+        document.getElementById('quickWaSalesName').textContent = context.nama_sales || '-';
+
+        const phoneInput = document.getElementById('quickWaPhoneInput');
+        if (phoneInput) {
+          phoneInput.value = context.phone || '';
+          handleQuickWaPhoneChange();
+        }
+
+        populateQuickWaTemplateSelect();
+
+        // Default template selection
+        const templateSelect = document.getElementById('quickWaTemplateSelect');
+        if (templateSelect && appState.waTemplates && appState.waTemplates.length > 0) {
+          let defaultIdx = 0;
+          if (context.isDeal) {
+            const dealTmplIdx = appState.waTemplates.findIndex(t => t.category === 'closing' || t.category === 'payment');
+            if (dealTmplIdx !== -1) defaultIdx = dealTmplIdx;
+          }
+          templateSelect.value = String(appState.waTemplates[defaultIdx].id);
+          handleQuickWaTemplateChange();
+        } else {
+          if (templateSelect) templateSelect.value = '';
+          const preview = document.getElementById('quickWaMessagePreview');
+          if (preview) {
+            preview.value = `Halo ${context.nama_pelanggan || 'Bapak/Ibu'}, perkenalkan saya dari tim Cherry Queen CRM. Ada yang bisa kami bantu?`;
+            updateQuickWaCharCount();
+          }
+        }
+
+        if (quickWaModal) {
+          quickWaModal.showModal();
+          refreshIcons();
+        }
+      } catch (err) {
+        console.error('Error openQuickWaModal:', err);
+      }
+    }
+
+    function closeQuickWaModal() {
+      try {
+        if (quickWaModal) quickWaModal.close();
+      } catch (err) {
+        console.error('Error closeQuickWaModal:', err);
+      }
+    }
+
+    if (quickWaModal) {
+      quickWaModal.addEventListener('click', (e) => {
+        const rect = quickWaModal.getBoundingClientRect();
+        const isInDialog = (
+          rect.top <= e.clientY &&
+          e.clientY <= rect.top + rect.height &&
+          rect.left <= e.clientX &&
+          e.clientX <= rect.left + rect.width
+        );
+        if (!isInDialog) closeQuickWaModal();
+      });
+    }
+
+    function handleQuickWaFromCustomer(customerId) {
+      try {
+        const cust = (appState.customers || []).find(c => c.id === customerId);
+        if (!cust) {
+          showToast('Data pelanggan tidak ditemukan.', 'error');
+          return;
+        }
+
+        const context = {
+          nama_pelanggan: cust.name,
+          nama_perusahaan: cust.company || '-',
+          nama_sales: cust.agent_name || (appState.currentUser ? appState.currentUser.name : 'Tim Sales Cherry Queen'),
+          nama_produk: 'Produk Skincare Cherry Queen',
+          nilai_deals: 0,
+          phone: cust.phone || '',
+          isDeal: false,
+        };
+
+        openQuickWaModal(context);
+      } catch (err) {
+        console.error('Error handleQuickWaFromCustomer:', err);
+      }
+    }
+
+    function handleQuickWaFromDeal(dealId) {
+      try {
+        const deal = (appState.deals || []).find(d => d.id === dealId);
+        if (!deal) {
+          showToast('Data transaksi/deal tidak ditemukan.', 'error');
+          return;
+        }
+
+        let custPhone = deal.customer_phone || '';
+        if (!custPhone && deal.customer_id) {
+          const cust = (appState.customers || []).find(c => c.id === deal.customer_id);
+          if (cust && cust.phone) custPhone = cust.phone;
+        }
+
+        const context = {
+          nama_pelanggan: deal.customer_name || 'Bapak/Ibu',
+          nama_perusahaan: deal.customer_company || '-',
+          nama_sales: deal.agent_name || (appState.currentUser ? appState.currentUser.name : 'Tim Sales Cherry Queen'),
+          nama_produk: deal.title || 'Produk Skincare Cherry Queen',
+          nilai_deals: deal.value || 0,
+          phone: custPhone,
+          isDeal: true,
+        };
+
+        openQuickWaModal(context);
+      } catch (err) {
+        console.error('Error handleQuickWaFromDeal:', err);
+      }
+    }
+
+    function populateQuickWaTemplateSelect() {
+      try {
+        const select = document.getElementById('quickWaTemplateSelect');
+        if (!select) return;
+        const templates = appState.waTemplates || [];
+
+        let optionsHtml = '<option value="">-- Ketik Pesan Sendiri (Kustom) --</option>';
+        templates.forEach(t => {
+          const catLabel = (t.category || 'umum').toUpperCase();
+          optionsHtml += `<option value="${t.id}">[${catLabel}] ${t.name}</option>`;
+        });
+        select.innerHTML = optionsHtml;
+      } catch (err) {
+        console.error('Error populateQuickWaTemplateSelect:', err);
+      }
+    }
+
+    function handleQuickWaTemplateChange() {
+      try {
+        const select = document.getElementById('quickWaTemplateSelect');
+        const preview = document.getElementById('quickWaMessagePreview');
+        if (!select || !preview) return;
+
+        const selectedId = select.value;
+        if (!selectedId) {
+          updateQuickWaCharCount();
+          return;
+        }
+
+        const tmpl = (appState.waTemplates || []).find(t => String(t.id) === String(selectedId));
+        if (tmpl) {
+          preview.value = replaceTemplateVariables(tmpl.message, quickWaCurrentContext || {});
+          updateQuickWaCharCount();
+        }
+      } catch (err) {
+        console.error('Error handleQuickWaTemplateChange:', err);
+      }
+    }
+
+    function handleQuickWaPhoneChange() {
+      try {
+        const input = document.getElementById('quickWaPhoneInput');
+        const badge = document.getElementById('quickWaPhoneStatusBadge');
+        const text = document.getElementById('quickWaStandardPhoneDisplay');
+        if (!input || !badge || !text) return;
+
+        const std = standardizePhoneNumber(input.value);
+        if (std) {
+          badge.className = 'inline-flex items-center gap-1 text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200';
+          badge.innerHTML = `<i data-lucide="check" class="w-2.5 h-2.5"></i><span>${std}</span>`;
+        } else {
+          badge.className = 'inline-flex items-center gap-1 text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200';
+          badge.innerHTML = `<i data-lucide="alert-circle" class="w-2.5 h-2.5"></i><span>Nomor Kosong / Tidak Valid</span>`;
+        }
+        refreshIcons();
+      } catch (err) {
+        console.error('Error handleQuickWaPhoneChange:', err);
+      }
+    }
+
+    function updateQuickWaCharCount() {
+      try {
+        const preview = document.getElementById('quickWaMessagePreview');
+        const countEl = document.getElementById('quickWaCharCount');
+        if (!preview || !countEl) return;
+        const len = preview.value.length;
+        countEl.textContent = `${len} karakter`;
+      } catch (err) {
+        console.error('Error updateQuickWaCharCount:', err);
+      }
+    }
+
+    function executeSendWhatsApp() {
+      try {
+        const phoneInput = document.getElementById('quickWaPhoneInput');
+        const preview = document.getElementById('quickWaMessagePreview');
+        const phone = phoneInput ? phoneInput.value : '';
+        const message = preview ? preview.value.trim() : '';
+
+        const stdNumber = standardizePhoneNumber(phone);
+        if (!stdNumber) {
+          showToast('Nomor WhatsApp penerima tidak valid atau kosong.', 'error');
+          if (phoneInput) phoneInput.focus();
+          return;
+        }
+
+        if (!message) {
+          showToast('Pesan WhatsApp tidak boleh kosong.', 'error');
+          if (preview) preview.focus();
+          return;
+        }
+
+        const waUrl = `https://wa.me/${stdNumber}?text=${encodeURIComponent(message)}`;
+        window.open(waUrl, '_blank', 'noopener,noreferrer');
+        showToast(`Membuka WhatsApp ke +${stdNumber}...`, 'success');
+        closeQuickWaModal();
+      } catch (err) {
+        console.error('Error executeSendWhatsApp:', err);
+        showToast('Gagal membuka WhatsApp.', 'error');
+      }
+    }
+
     function openWhatsApp(phone, customerName) {
-      const formattedNumber = formatWhatsAppNumber(phone);
-      if (!formattedNumber) {
-        showToast(`Nomor telepon tidak tersedia atau tidak valid untuk "${customerName}".`, 'error');
-        return;
+      try {
+        const cust = (appState.customers || []).find(c => c.name === customerName || c.phone === phone);
+        if (cust) {
+          handleQuickWaFromCustomer(cust.id);
+        } else {
+          openQuickWaModal({
+            nama_pelanggan: customerName || 'Bapak/Ibu',
+            nama_perusahaan: '-',
+            nama_sales: appState.currentUser ? appState.currentUser.name : 'Tim Sales Cherry Queen',
+            nama_produk: 'Produk Skincare Cherry Queen',
+            nilai_deals: 0,
+            phone: phone || '',
+            isDeal: false
+          });
+        }
+      } catch (e) {
+        const formatted = standardizePhoneNumber(phone);
+        if (formatted) {
+          const msg = `Halo ${customerName || ''}, perkenalkan saya dari tim Cherry Queen CRM.`;
+          window.open(`https://wa.me/${formatted}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+        }
       }
-
-      const defaultMessage = `Halo ${customerName}, perkenalkan saya dari tim Nexus CRM. Ada yang bisa kami bantu terkait kebutuhan Anda?`;
-      const waUrl = `https://wa.me/${formattedNumber}?text=${encodeURIComponent(defaultMessage)}`;
-      
-      window.open(waUrl, '_blank', 'noopener,noreferrer');
-      showToast(`Membuka WhatsApp untuk "${customerName}"...`, 'success');
     }
 
-    // Export Data Customers ke format CSV (Excel-ready dengan UTF-8 BOM)
     function exportCustomersCSV() {
-      const customers = getFilteredCustomers();
-      if (!customers || customers.length === 0) {
-        showToast('Tidak ada data pelanggan yang sesuai untuk diekspor.', 'error');
+      try {
+        const customers = getFilteredCustomers();
+        if (!customers || customers.length === 0) {
+          showToast('Tidak ada data pelanggan yang sesuai untuk diekspor.', 'error');
+          return;
+        }
+        const headers = ['ID', 'Nama Pelanggan', 'Email', 'No. Telepon', 'Perusahaan', 'Status', 'Penanggung Jawab', 'Tanggal Dibuat'];
+        const escapeCsvCell = (val) => {
+          if (val === null || val === undefined) return '""';
+          return `"${String(val).replace(/"/g, '""')}"`;
+        };
+        const rows = customers.map(c => [
+          escapeCsvCell(c.id),
+          escapeCsvCell(c.name),
+          escapeCsvCell(c.email || '-'),
+          escapeCsvCell(c.phone || '-'),
+          escapeCsvCell(c.company || 'Perorangan'),
+          escapeCsvCell(c.status || 'lead'),
+          escapeCsvCell(c.agent_name || 'Unassigned'),
+          escapeCsvCell(c.created_at || '-')
+        ].join(','));
+
+        const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const downloadLink = document.createElement('a');
+        const today = new Date().toISOString().slice(0, 10);
+        downloadLink.href = url;
+        downloadLink.download = `cherry_queen_customers_${today}.csv`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(url);
+        showToast(`Berhasil mengekspor ${customers.length} data pelanggan ke CSV!`, 'success');
+      } catch (err) {
+        console.error('Error exportCustomersCSV:', err);
+        showToast('Terjadi kesalahan saat mengekspor data ke CSV.', 'error');
+      }
+    }
+
+    // ================= MODAL IMPORT PELANGGAN (CSV / EXCEL) =================
+    const importCustomerModal = document.getElementById('importCustomerModal');
+
+    function openImportModal() {
+      try {
+        const form = document.getElementById('formImportCustomer');
+        if (form) form.reset();
+        clearSelectedFile();
+        if (importCustomerModal) {
+          importCustomerModal.showModal();
+          refreshIcons();
+        }
+      } catch (e) {
+        console.error('Error openImportModal:', e);
+      }
+    }
+
+    function closeImportModal() {
+      try {
+        if (importCustomerModal) {
+          importCustomerModal.close();
+        }
+      } catch (e) {
+        console.error('Error closeImportModal:', e);
+      }
+    }
+
+    if (importCustomerModal) {
+      importCustomerModal.addEventListener('click', (e) => {
+        const rect = importCustomerModal.getBoundingClientRect();
+        const isInDialog = (
+          rect.top <= e.clientY &&
+          e.clientY <= rect.top + rect.height &&
+          rect.left <= e.clientX &&
+          e.clientX <= rect.left + rect.width
+        );
+        if (!isInDialog) {
+          closeImportModal();
+        }
+      });
+    }
+
+    function handleFileSelect(e) {
+      try {
+        const file = e.target.files && e.target.files[0];
+        const infoBox = document.getElementById('selectedFileInfo');
+        const nameEl = document.getElementById('selectedFileName');
+        const sizeEl = document.getElementById('selectedFileSize');
+
+        if (file) {
+          if (nameEl) nameEl.textContent = file.name;
+          const sizeKb = (file.size / 1024).toFixed(1);
+          if (sizeEl) sizeEl.textContent = `(${sizeKb} KB)`;
+          if (infoBox) {
+            infoBox.classList.remove('hidden');
+            infoBox.classList.add('flex');
+          }
+          refreshIcons();
+        } else {
+          clearSelectedFile();
+        }
+      } catch (err) {
+        console.error('Error handleFileSelect:', err);
+      }
+    }
+
+    function clearSelectedFile() {
+      try {
+        const fileInput = document.getElementById('importFileInput');
+        if (fileInput) fileInput.value = '';
+        const infoBox = document.getElementById('selectedFileInfo');
+        if (infoBox) {
+          infoBox.classList.add('hidden');
+          infoBox.classList.remove('flex');
+        }
+      } catch (e) {
+        console.error('Error clearSelectedFile:', e);
+      }
+    }
+
+    function downloadSampleCSV() {
+      try {
+        const sampleHeaders = ['Nama', 'Email', 'Telepon', 'Perusahaan', 'Status'];
+        const sampleData = [
+          ['Budi Raharjo', 'budi.raharjo@contoh.id', '081234567890', 'PT Sukses Mandiri', 'active'],
+          ['Citra Lestari', 'citra.lestari@contoh.id', '081987654321', 'CV Berkah Bersama', 'prospect'],
+          ['Dedi Kurniawan', 'dedi.kurniawan@contoh.id', '082112233445', 'Kreatif Studio', 'lead'],
+        ];
+
+        const csvRows = [
+          sampleHeaders.join(','),
+          ...sampleData.map(row => row.map(cell => `"${cell}"`).join(','))
+        ];
+
+        const csvContent = '\uFEFF' + csvRows.join('\r\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'template_import_pelanggan_cherryqueen.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showToast('Template CSV contoh berhasil diunduh.', 'success');
+      } catch (err) {
+        console.error('Error downloadSampleCSV:', err);
+        showToast('Gagal mengunduh template contoh.', 'error');
+      }
+    }
+
+    async function handleImportCustomerSubmit(e) {
+      e.preventDefault();
+      const fileInput = document.getElementById('importFileInput');
+      if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        showToast('Silakan pilih berkas CSV atau Excel terlebih dahulu.', 'error');
         return;
       }
 
-      // Format kolom sesuai permintaan: Nama, Email, No. Telepon, Channel, Status, Alamat
-      const headers = ['Nama', 'Email', 'No. Telepon', 'Channel', 'Status', 'Alamat'];
-      
-      const escapeCsvCell = (val) => {
-        if (val === null || val === undefined) return '""';
-        const str = String(val).replace(/"/g, '""');
-        return `"${str}"`;
-      };
+      const file = fileInput.files[0];
+      const btn = document.getElementById('btnSubmitImport');
+      const originalText = btn ? btn.innerHTML : 'Upload & Import Data';
 
-      const rows = customers.map(c => [
-        escapeCsvCell(c.name),
-        escapeCsvCell(c.email || '-'),
-        escapeCsvCell(c.phone || '-'),
-        escapeCsvCell(c.company || 'Website'),
-        escapeCsvCell(c.status || 'lead'),
-        escapeCsvCell(c.address || '-')
-      ].join(','));
+      try {
+        if (btn) {
+          btn.disabled = true;
+          btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i><span>Mengimpor Data...</span>`;
+          refreshIcons();
+        }
 
-      // Sisipkan UTF-8 BOM (\uFEFF) agar Microsoft Excel otomatis membaca format UTF-8 dengan benar
-      const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
+        const formData = new FormData();
+        formData.append('file', file);
 
-      const downloadLink = document.createElement('a');
-      const today = new Date().toISOString().slice(0, 10);
-      downloadLink.href = url;
-      downloadLink.download = `data_customers_crm_${today}.csv`;
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-      URL.revokeObjectURL(url);
+        const res = await fetch(`${API_BASE}/customers/import`, {
+          method: 'POST',
+          headers: getAuthHeaders(false),
+          body: formData,
+        });
 
-      showToast(`Berhasil mengekspor ${customers.length} data pelanggan ke file CSV!`, 'success');
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast(data.message || `Berhasil mengimpor ${data.count} pelanggan baru!`, 'success');
+          closeImportModal();
+          await loadAllData();
+          switchTab('customers');
+        } else {
+          showToast(data.message || 'Gagal mengimpor data pelanggan.', 'error');
+        }
+      } catch (err) {
+        console.error('Error saat upload import customer:', err);
+        showToast('Terjadi kesalahan koneksi saat mengunggah berkas.', 'error');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+          refreshIcons();
+        }
+      }
     }
 
-    // Render Kanban Pipeline
+    // ================= KANBAN PIPELINE WITH AGENT ASSIGNMENT =================
     function renderPipeline(deals) {
       const stages = ['prospect', 'negotiation', 'won', 'lost'];
       const columnCounts = { prospect: 0, negotiation: 0, won: 0, lost: 0 };
 
-      // Reset columns
       stages.forEach(stage => {
         document.getElementById(`col-${stage}`).innerHTML = '';
       });
+
+      const isAdmin = appState.currentUser && appState.currentUser.role === 'admin';
 
       deals.forEach(deal => {
         const stage = (deal.stage || 'prospect').toLowerCase();
@@ -802,35 +2459,86 @@
           columnCounts.prospect++;
         }
 
+        // Dropdown option generator for agents
+        const agentOptions = appState.agents.map(a => `
+          <option value="${a.id}" ${deal.agent_id == a.id ? 'selected' : ''}>
+            ${a.name} (${(a.role || 'sales').toUpperCase()})
+          </option>
+        `).join('');
+
         const card = document.createElement('div');
-        card.className = 'bg-white p-4 rounded-xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all';
+        card.className = 'bg-white p-3 rounded-lg border border-slate-200/80 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all space-y-2.5';
         card.innerHTML = `
-          <div class="flex items-start justify-between gap-2">
-            <h4 class="font-bold text-xs sm:text-sm text-slate-800 leading-snug">${deal.title}</h4>
+          <div>
+            <h4 class="font-semibold text-xs text-slate-900 leading-snug">${deal.title}</h4>
+            <p class="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1">
+              <i data-lucide="building" class="w-3 h-3 text-slate-400"></i>
+              <span>${deal.customer_name || 'Pelanggan'}</span>
+              ${deal.customer_company ? `<span class="text-slate-400">(${deal.customer_company})</span>` : ''}
+            </p>
           </div>
-          <p class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
-            <i data-lucide="user" class="w-3 h-3 text-slate-400"></i>
-            <span>${deal.customer_name || 'Pelanggan'}</span>
-            ${deal.customer_company ? `<span class="text-slate-400 font-normal">(${deal.customer_company})</span>` : ''}
-          </p>
-          <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-xs font-extrabold text-emerald-600">${formatCurrency(deal.value)}</span>
-            <span class="text-[10px] text-slate-400 flex items-center gap-1">
+
+          <!-- Nilai Deal & Target Waktu -->
+          <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+            <span class="text-xs font-bold text-slate-900 font-mono">${formatCurrency(deal.value)}</span>
+            <span class="text-[10px] text-slate-400 flex items-center gap-1 font-mono">
               <i data-lucide="calendar" class="w-3 h-3"></i>
               <span>${deal.expected_close_date ? formatDate(deal.expected_close_date) : '-'}</span>
             </span>
+          </div>
+
+          <!-- Penugasan Agen CS / Sales -->
+          <div class="pt-2 border-t border-slate-100 flex flex-col gap-1.5">
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="text-slate-400 font-medium text-[10px] flex items-center gap-1">
+                <i data-lucide="headset" class="w-3 h-3 text-slate-400"></i>
+                <span>PIC:</span>
+              </span>
+              ${deal.agent_name ? `
+                <span class="font-medium text-slate-700 bg-slate-50 px-1.5 py-0.5 rounded text-[10px] border border-slate-200">
+                  ${deal.agent_name}
+                </span>
+              ` : `
+                <span class="text-slate-400 italic text-[10px]">Unassigned</span>
+              `}
+            </div>
+
+            <!-- Dropdown Penugasan (Bisa diubah oleh Admin) -->
+            ${isAdmin ? `
+              <div class="mt-0.5">
+                <select onchange="handleAssignDeal(${deal.id}, this.value, '${deal.title.replace(/'/g, "\\'")}')" class="w-full text-xs py-1 px-2 rounded-lg border border-slate-200 bg-white text-slate-700 focus:outline-none focus:ring-1 focus:ring-brand-500 font-medium">
+                  <option value="">-- Tugaskan ke CS/Sales --</option>
+                  ${agentOptions}
+                </select>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Card Footer: ID Deal, WA & Tombol Hapus -->
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1">
+            <span class="text-[10px] text-slate-400 font-mono">#DEAL-${deal.id}</span>
+            <div class="flex items-center gap-1">
+              <button onclick="handleQuickWaFromDeal(${deal.id})" class="text-[11px] text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100/70 border border-emerald-200/80 px-2 py-0.5 rounded-md font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" title="Kirim WhatsApp ke Pelanggan Deal">
+                <i data-lucide="message-circle" class="w-3 h-3 text-emerald-600"></i>
+                <span>WhatsApp</span>
+              </button>
+              <button onclick="deleteDeal(${deal.id}, '${deal.title.replace(/'/g, "\\'")}')" class="text-[11px] text-slate-400 hover:text-rose-600 hover:bg-rose-50 px-2 py-0.5 rounded-md font-medium transition-colors inline-flex items-center gap-1 border border-slate-200/70 hover:border-rose-200" title="Hapus Transaksi">
+                <i data-lucide="trash-2" class="w-3 h-3"></i>
+                <span>Hapus</span>
+              </button>
+            </div>
           </div>
         `;
         targetCol.appendChild(card);
       });
 
-      // Update counters
+      // Update counter badge
       stages.forEach(stage => {
         document.getElementById(`count-${stage}`).textContent = columnCounts[stage];
         const col = document.getElementById(`col-${stage}`);
         if (columnCounts[stage] === 0) {
           col.innerHTML = `
-            <div class="h-28 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl text-slate-400 text-xs">
+            <div class="h-24 flex flex-col items-center justify-center border-2 border-dashed border-slate-200/80 rounded-xl text-slate-400 text-xs">
               <span>Kosong</span>
             </div>
           `;
@@ -840,22 +2548,318 @@
       refreshIcons();
     }
 
-    // Modal Handlers
-    const modal = document.getElementById('customerModal');
+    // Handler Penugasan Deal ke Agen
+    async function handleAssignDeal(dealId, agentId, dealTitle) {
+      try {
+        const payload = { agent_id: agentId ? Number(agentId) : null };
+        const res = await fetch(`${API_BASE}/deals/${dealId}`, {
+          method: 'PUT',
+          headers: getAuthHeaders(true),
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(`Deal "${dealTitle}" berhasil ditugaskan!`, 'success');
+          await loadAllData();
+        } else {
+          showToast(data.message || 'Gagal mengubah penugasan deal.', 'error');
+        }
+      } catch (err) {
+        console.error('Error assign deal:', err);
+        showToast('Terjadi kesalahan koneksi saat penugasan.', 'error');
+      }
+    }
+
+    // Handler Hapus Deal / Transaksi dari Pipeline
+    async function deleteDeal(id, title) {
+      try {
+        const dealName = title || `Transaksi #${id}`;
+        if (!confirm(`Apakah Anda yakin ingin menghapus transaksi "${dealName}"?`)) {
+          return;
+        }
+
+        const res = await fetch(`${API_BASE}/deals/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders(false)
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast(data.message || `Transaksi "${dealName}" berhasil dihapus.`, 'success');
+          // Otomatis reload Kanban Board, perbarui Total Nilai Pipeline & Stats
+          await loadAllData();
+        } else {
+          showToast(data.message || 'Gagal menghapus transaksi.', 'error');
+        }
+      } catch (err) {
+        console.error('Error deleteDeal:', err);
+        showToast('Terjadi kesalahan koneksi saat menghapus transaksi.', 'error');
+      }
+    }
+
+    // ================= MANAJEMEN AGEN CS/SALES =================
+    function renderAgents(agents) {
+      // 1. Render Tabel Manajemen Agen
+      const tbody = document.getElementById('agentTableBody');
+      const badgeCount = document.getElementById('agentsCountBadge');
+      if (badgeCount) badgeCount.textContent = `${agents ? agents.length : 0} Agen Terdaftar`;
+
+      if (tbody) {
+        if (!agents || agents.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" class="text-center py-8 text-slate-400 text-xs">
+                Belum ada staf agen terdaftar. Klik "Tambah Agen Sales" untuk mendaftarkan akun baru.
+              </td>
+            </tr>
+          `;
+        } else {
+          tbody.innerHTML = agents.map(a => {
+            const roleBadge = a.role === 'admin' 
+              ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-50 text-brand-700 border border-rose-200/80">ADMIN</span>`
+              : `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">SALES</span>`;
+            const initials = (a.name || 'AG').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            const isAdmin = appState.currentUser && appState.currentUser.role === 'admin';
+            const canDelete = isAdmin && a.role === 'sales';
+
+            return `
+              <tr class="hover:bg-slate-50/70 transition-colors">
+                <td class="py-3 px-4 font-mono text-xs text-slate-400">#${a.id}</td>
+                <td class="py-3 px-4">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-slate-900 text-white font-bold text-[11px] flex items-center justify-center">
+                      ${initials}
+                    </div>
+                    <div>
+                      <div class="font-semibold text-slate-900 text-xs leading-tight">${a.name}</div>
+                      <div class="text-[11px] text-slate-400">${a.role === 'admin' ? 'Administrator' : 'Sales Representative'}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3 px-4 text-xs text-slate-600">
+                  <div class="font-medium text-slate-700">${a.email || '-'}</div>
+                  <div class="text-slate-400 font-mono text-[11px]">${a.phone || '-'}</div>
+                </td>
+                <td class="py-3 px-4">
+                  ${roleBadge}
+                </td>
+                <td class="py-3 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Aktif
+                  </span>
+                </td>
+                <td class="py-3 px-4">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-[11px] font-semibold text-slate-700 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded-md">
+                      ${a.assigned_deals_count || 0} Deals
+                    </span>
+                    <span class="text-[11px] text-slate-400">
+                      ${a.assigned_customers_count || 0} Pelanggan
+                    </span>
+                  </div>
+                </td>
+                <td class="py-3 px-4 text-right whitespace-nowrap">
+                  <div class="flex items-center justify-end gap-1.5">
+                    ${a.phone ? `
+                      <button onclick="openWhatsApp('${a.phone}', '${a.name.replace(/'/g, "\\'")}')" class="text-xs text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100/70 border border-emerald-200/80 px-2 py-1 rounded-md font-medium transition-colors inline-flex items-center gap-1 shadow-2xs" title="Chat WhatsApp">
+                        <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+                        <span>WhatsApp</span>
+                      </button>
+                    ` : ''}
+                    ${canDelete ? `
+                      <button onclick="deleteAgent(${a.id}, '${a.name.replace(/'/g, "\\'")}')" class="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 border border-rose-200/70 px-2 py-1 rounded-md font-medium transition-colors inline-flex items-center gap-1" title="Hapus Akun Sales">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5 text-rose-600"></i>
+                        <span>Hapus</span>
+                      </button>
+                    ` : ''}
+                    ${!a.phone && !canDelete ? `<span class="text-xs text-slate-400 italic">-</span>` : ''}
+                  </div>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+      }
+
+      // 2. Render Kartu Agen (Grid)
+      const container = document.getElementById('agentsGridContainer');
+      if (container) {
+        if (!agents || agents.length === 0) {
+          container.innerHTML = ``;
+        } else {
+          container.innerHTML = agents.map(a => {
+            const initials = (a.name || 'AG').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            const roleBadge = a.role === 'admin' 
+              ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-50 text-brand-700 border border-rose-200/80">ADMIN</span>`
+              : `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">SALES</span>`;
+            const isAdmin = appState.currentUser && appState.currentUser.role === 'admin';
+            const canDelete = isAdmin && a.role === 'sales';
+
+            return `
+              <div class="bg-white rounded-xl p-4 border border-slate-200/80 shadow-2xs hover:border-slate-300 transition-all flex flex-col justify-between">
+                <div>
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-9 h-9 rounded-lg bg-slate-900 text-white font-bold text-xs flex items-center justify-center">
+                        ${initials}
+                      </div>
+                      <div>
+                        <h3 class="font-semibold text-slate-900 text-xs leading-tight">${a.name}</h3>
+                        <p class="text-[11px] text-slate-400">${a.email || '-'}</p>
+                      </div>
+                    </div>
+                    ${roleBadge}
+                  </div>
+
+                  <!-- Beban Kerja / Stats Agen -->
+                  <div class="grid grid-cols-2 gap-2 mt-3.5 pt-3 border-t border-slate-100 text-center">
+                    <div class="bg-slate-50 rounded-lg p-2 border border-slate-100">
+                      <span class="block text-[11px] text-slate-400 font-medium">Deals Ditangani</span>
+                      <span class="text-sm font-bold text-slate-900 font-mono">${a.assigned_deals_count || 0}</span>
+                    </div>
+                    <div class="bg-slate-50 rounded-lg p-2 border border-slate-100">
+                      <span class="block text-[11px] text-slate-400 font-medium">Customers</span>
+                      <span class="text-sm font-bold text-slate-900 font-mono">${a.assigned_customers_count || 0}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Footer Card Agen: Nomor HP & WhatsApp & Hapus -->
+                <div class="mt-3.5 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+                  <span class="text-xs text-slate-500 font-mono">${a.phone || '-'}</span>
+                  <div class="flex items-center gap-1.5">
+                    ${a.phone ? `
+                      <button onclick="openWhatsApp('${a.phone}', '${a.name.replace(/'/g, "\\'")}')" class="text-xs text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100/70 border border-emerald-200/80 px-2 py-1 rounded-md font-medium transition-colors flex items-center gap-1 shadow-2xs">
+                        <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emerald-600"></i>
+                        <span>WhatsApp</span>
+                      </button>
+                    ` : ''}
+                    ${canDelete ? `
+                      <button onclick="deleteAgent(${a.id}, '${a.name.replace(/'/g, "\\'")}')" class="text-xs text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100/80 border border-rose-200/80 px-2 py-1 rounded-md font-medium transition-colors flex items-center gap-1" title="Hapus Akun Sales">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5 text-rose-600"></i>
+                        <span>Hapus</span>
+                      </button>
+                    ` : ''}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      refreshIcons();
+    }
+
+    // Modal Tambah Agen
+    const agentModal = document.getElementById('agentModal');
+    function openAgentModal() {
+      document.getElementById('formAddAgent').reset();
+      document.getElementById('agentSelectRole').value = 'sales';
+      agentModal.showModal();
+      refreshIcons();
+    }
+    function closeAgentModal() {
+      agentModal.close();
+    }
+
+    async function handleAgentSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmitAgent');
+      const originalText = btn.innerHTML;
+
+      const payload = {
+        name: document.getElementById('agentInputName').value.trim(),
+        email: document.getElementById('agentInputEmail').value.trim(),
+        phone: document.getElementById('agentInputPhone').value.trim() || null,
+        role: document.getElementById('agentSelectRole').value,
+        password: document.getElementById('agentInputPassword').value.trim(),
+      };
+
+      if (!payload.name || !payload.email || !payload.password) {
+        showToast('Nama, email, dan kata sandi wajib diisi.', 'error');
+        return;
+      }
+
+      try {
+        btn.disabled = true;
+        btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i><span>Mendaftarkan...</span>`;
+        refreshIcons();
+
+        const res = await fetch(`${API_BASE}/agents`, {
+          method: 'POST',
+          headers: getAuthHeaders(true),
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast(`Akun Sales "${payload.name}" berhasil didaftarkan!`, 'success');
+          closeAgentModal();
+          // Refresh otomatis seluruh data termasuk tabel Manajemen Agen
+          await loadAllData();
+          switchTab('agents');
+        } else {
+          showToast(data.message || 'Gagal menambahkan agen baru.', 'error');
+        }
+      } catch (err) {
+        console.error('Error add agent:', err);
+        showToast('Terjadi kesalahan koneksi saat menyimpan akun sales.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        refreshIcons();
+      }
+    }
+
+    // Hapus Agen Sales (Hanya Admin)
+    async function deleteAgent(id, name) {
+      if (!appState.currentUser || appState.currentUser.role !== 'admin') {
+        showToast('Akses ditolak. Hanya akun Admin yang berwenang menghapus akun sales.', 'error');
+        return;
+      }
+
+      if (!confirm(`Apakah Anda yakin ingin menghapus akun Sales "${name}"?\nSemua penugasan deals dan customers dari agen ini akan dilepas.`)) {
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/agents/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeaders(false)
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showToast(data.message || `Akun sales "${name}" berhasil dihapus.`, 'success');
+          await loadAllData();
+        } else {
+          showToast(data.message || 'Gagal menghapus akun sales.', 'error');
+        }
+      } catch (err) {
+        console.error('Error delete agent:', err);
+        showToast('Terjadi kesalahan koneksi saat menghapus akun sales.', 'error');
+      }
+    }
+
+    // ================= CUSTOMER MODAL HANDLER =================
+    const customerModal = document.getElementById('customerModal');
 
     function openModal() {
       document.getElementById('formAddCustomer').reset();
-      modal.showModal();
+      populateAgentSelects();
+      customerModal.showModal();
       refreshIcons();
     }
 
     function closeModal() {
-      modal.close();
+      customerModal.close();
     }
 
-    // Close modal on click outside
-    modal.addEventListener('click', (e) => {
-      const rect = modal.getBoundingClientRect();
+    customerModal.addEventListener('click', (e) => {
+      const rect = customerModal.getBoundingClientRect();
       const isInDialog = (
         rect.top <= e.clientY &&
         e.clientY <= rect.top + rect.height &&
@@ -867,18 +2871,21 @@
       }
     });
 
-    // Handle Form Submit (POST /api/customers)
     async function handleCustomerSubmit(e) {
       e.preventDefault();
       const btn = document.getElementById('btnSubmitCustomer');
       const originalText = btn.innerHTML;
+
+      const agentSelectEl = document.getElementById('selectCustomerAgent');
+      const selectedAgentId = agentSelectEl && agentSelectEl.value ? Number(agentSelectEl.value) : null;
 
       const payload = {
         name: document.getElementById('inputName').value.trim(),
         company: document.getElementById('inputCompany').value.trim() || null,
         email: document.getElementById('inputEmail').value.trim() || null,
         phone: document.getElementById('inputPhone').value.trim() || null,
-        status: document.getElementById('selectStatus').value
+        status: document.getElementById('selectStatus').value,
+        agent_id: selectedAgentId
       };
 
       try {
@@ -887,7 +2894,7 @@
 
         const res = await fetch(`${API_BASE}/customers`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAuthHeaders(true),
           body: JSON.stringify(payload)
         });
 
@@ -910,7 +2917,6 @@
       }
     }
 
-    // Handle Delete Customer (DELETE /api/customers/:id)
     async function deleteCustomer(id, name) {
       if (!confirm(`Apakah Anda yakin ingin menghapus pelanggan "${name}"?`)) {
         return;
@@ -918,7 +2924,8 @@
 
       try {
         const res = await fetch(`${API_BASE}/customers/${id}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: getAuthHeaders(false)
         });
         const data = await res.json();
 
@@ -934,10 +2941,13 @@
       }
     }
 
-    // Booting saat DOM siap
+    // ================= BOOTSTRAP APP =================
     document.addEventListener('DOMContentLoaded', () => {
       refreshIcons();
-      loadAllData();
+      const isAuthenticated = checkAuthStatus();
+      if (isAuthenticated) {
+        loadAllData();
+      }
     });
   </script>
 </body>

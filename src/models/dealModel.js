@@ -1,12 +1,32 @@
 const db = require('../config/db');
 
 const DealModel = {
-  findAll: async () => {
+  findAll: async (agentId = null) => {
+    if (agentId) {
+      return await db.all(`
+        SELECT 
+          deals.*, 
+          customers.name AS customer_name, 
+          customers.company AS customer_company,
+          customers.phone AS customer_phone,
+          customers.email AS customer_email,
+          agents.name AS agent_name,
+          agents.role AS agent_role,
+          agents.phone AS agent_phone
+        FROM deals
+        LEFT JOIN customers ON deals.customer_id = customers.id
+        LEFT JOIN agents ON deals.agent_id = agents.id
+        WHERE deals.agent_id = ?
+        ORDER BY deals.created_at DESC
+      `, [agentId]);
+    }
     return await db.all(`
       SELECT 
         deals.*, 
         customers.name AS customer_name, 
         customers.company AS customer_company,
+        customers.phone AS customer_phone,
+        customers.email AS customer_email,
         agents.name AS agent_name,
         agents.role AS agent_role,
         agents.phone AS agent_phone
@@ -17,12 +37,31 @@ const DealModel = {
     `);
   },
 
-  findById: async (id) => {
+  findById: async (id, agentId = null) => {
+    if (agentId) {
+      return await db.get(`
+        SELECT 
+          deals.*, 
+          customers.name AS customer_name, 
+          customers.company AS customer_company,
+          customers.phone AS customer_phone,
+          customers.email AS customer_email,
+          agents.name AS agent_name,
+          agents.role AS agent_role,
+          agents.phone AS agent_phone
+        FROM deals
+        LEFT JOIN customers ON deals.customer_id = customers.id
+        LEFT JOIN agents ON deals.agent_id = agents.id
+        WHERE deals.id = ? AND deals.agent_id = ?
+      `, [id, agentId]);
+    }
     return await db.get(`
       SELECT 
         deals.*, 
         customers.name AS customer_name, 
         customers.company AS customer_company,
+        customers.phone AS customer_phone,
+        customers.email AS customer_email,
         agents.name AS agent_name,
         agents.role AS agent_role,
         agents.phone AS agent_phone
@@ -50,7 +89,6 @@ const DealModel = {
   },
 
   update: async (id, { title, customer_id, agent_id, value, stage, expected_close_date }) => {
-    // Bangun query dinamis agar field null/tertentu dapat diupdate dengan benar
     await db.run(
       `UPDATE deals
        SET title = COALESCE(?, title),
@@ -69,7 +107,7 @@ const DealModel = {
         value !== undefined ? value : null,
         stage !== undefined ? stage : null,
         expected_close_date !== undefined ? expected_close_date : null,
-        id
+        id,
       ]
     );
     return await DealModel.findById(id);

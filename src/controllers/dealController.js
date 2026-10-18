@@ -4,7 +4,12 @@ const DealController = {
   // GET /api/deals
   getAllDeals: async (req, res, next) => {
     try {
-      const deals = await DealModel.findAll();
+      // RBAC: jika role 'sales', hanya tampilkan deals milik sales tersebut
+      const agentFilter = req.user && req.user.role === 'sales'
+        ? req.user.id
+        : (req.query.agent_id ? Number(req.query.agent_id) : null);
+
+      const deals = await DealModel.findAll(agentFilter);
       res.json({
         success: true,
         count: deals.length,
@@ -19,12 +24,13 @@ const DealController = {
   getDealById: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const deal = await DealModel.findById(id);
+      const agentFilter = req.user && req.user.role === 'sales' ? req.user.id : null;
+      const deal = await DealModel.findById(id, agentFilter);
 
       if (!deal) {
         return res.status(404).json({
           success: false,
-          message: `Deal dengan ID ${id} tidak ditemukan.`,
+          message: `Deal dengan ID ${id} tidak ditemukan atau Anda tidak memiliki hak akses.`,
         });
       }
 
@@ -40,13 +46,18 @@ const DealController = {
   // POST /api/deals
   createDeal: async (req, res, next) => {
     try {
-      const { title, customer_id, agent_id, value, stage, expected_close_date } = req.body;
+      let { title, customer_id, agent_id, value, stage, expected_close_date } = req.body;
 
       if (!title) {
         return res.status(400).json({
           success: false,
           message: 'Judul transaksi/deal wajib diisi.',
         });
+      }
+
+      // Jika role adalah sales, otomatis ditugaskan ke sales bersangkutan
+      if (req.user && req.user.role === 'sales') {
+        agent_id = req.user.id;
       }
 
       const newDeal = await DealModel.create({
@@ -72,14 +83,20 @@ const DealController = {
   updateDeal: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { title, customer_id, agent_id, value, stage, expected_close_date } = req.body;
+      let { title, customer_id, agent_id, value, stage, expected_close_date } = req.body;
 
-      const existing = await DealModel.findById(id);
+      const agentFilter = req.user && req.user.role === 'sales' ? req.user.id : null;
+      const existing = await DealModel.findById(id, agentFilter);
       if (!existing) {
         return res.status(404).json({
           success: false,
-          message: `Deal dengan ID ${id} tidak ditemukan.`,
+          message: `Deal dengan ID ${id} tidak ditemukan atau Anda tidak memiliki izin mengeditnya.`,
         });
+      }
+
+      // Jika Sales, tidak boleh reassign deal ke sales lain
+      if (req.user && req.user.role === 'sales') {
+        agent_id = req.user.id;
       }
 
       const updatedDeal = await DealModel.update(id, {
@@ -105,12 +122,13 @@ const DealController = {
   deleteDeal: async (req, res, next) => {
     try {
       const { id } = req.params;
-      const existing = await DealModel.findById(id);
+      const agentFilter = req.user && req.user.role === 'sales' ? req.user.id : null;
+      const existing = await DealModel.findById(id, agentFilter);
 
       if (!existing) {
         return res.status(404).json({
           success: false,
-          message: `Deal dengan ID ${id} tidak ditemukan.`,
+          message: `Deal dengan ID ${id} tidak ditemukan atau Anda tidak memiliki hak menghapusnya.`,
         });
       }
 
@@ -118,7 +136,7 @@ const DealController = {
 
       res.json({
         success: true,
-        message: `Deal dengan ID ${id} berhasil dihapus.`,
+        message: `Transaksi/Deal "${existing.title}" berhasil dihapus.`,
       });
     } catch (error) {
       next(error);

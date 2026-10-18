@@ -8,13 +8,15 @@ async function startServer() {
     // Pastikan skema database SQLite telah terinisialisasi
     await initDatabase();
 
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log('==================================================');
-      console.log(`🚀 Server CRM Backend berjalan di port ${PORT}`);
-      console.log(`🌐 API Endpoint: http://localhost:${PORT}/api`);
+      console.log(`🌸 Server Cherry Queen CRM berjalan di port ${PORT}`);
+      console.log(`🌐 Base API:      http://localhost:${PORT}/api`);
+      console.log(`🔐 Auth API:      http://localhost:${PORT}/api/auth`);
       console.log(`📑 Customers API: http://localhost:${PORT}/api/customers`);
       console.log(`📑 Leads API:     http://localhost:${PORT}/api/leads`);
       console.log(`📑 Deals API:     http://localhost:${PORT}/api/deals`);
+      console.log(`👥 Agents API:    http://localhost:${PORT}/api/agents`);
       console.log('==================================================');
     });
   } catch (error) {
