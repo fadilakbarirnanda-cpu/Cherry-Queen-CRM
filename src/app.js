@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const path = require('path');
 const routes = require('./routes');
 const requestLogger = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
