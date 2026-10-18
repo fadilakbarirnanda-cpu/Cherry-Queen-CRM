@@ -22,7 +22,12 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Mount main API routes
 app.use('/api', routes);
 
-// 404 Handler untuk rute yang tidak ditemukan
+// Fallback catch-all: non-API routes serve index.html (SPA)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+// 404 Handler khusus API yang tidak ditemukan
 app.use((req, res) => {
   res.status(404).json({
     success: false,
